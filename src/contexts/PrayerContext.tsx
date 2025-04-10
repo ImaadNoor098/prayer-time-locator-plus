@@ -1,5 +1,6 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PrayerTime, Mosque, FilterOption } from '@/types';
+import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 import { prayerTimes } from '@/data/prayers';
 import { mosques } from '@/data/mosques';
 
@@ -9,10 +10,15 @@ interface PrayerContextType {
   selectedPrayer: PrayerTime | null;
   currentFilter: FilterOption;
   currentTime: Date;
+  searchParams: SearchParams;
+  favorites: string[]; // Array of mosque IDs
   setSelectedPrayer: (prayer: PrayerTime | null) => void;
   setCurrentFilter: (filter: FilterOption) => void;
+  setSearchParams: (params: Partial<SearchParams>) => void;
   getFilteredMosques: () => Mosque[];
   isPrayerPassed: (time: string) => boolean;
+  toggleFavorite: (mosqueId: string) => void;
+  isFavorite: (mosqueId: string) => boolean;
 }
 
 const PrayerContext = createContext<PrayerContextType | undefined>(undefined);
@@ -23,6 +29,18 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [selectedPrayer, setSelectedPrayer] = useState<PrayerTime | null>(null);
   const [currentFilter, setCurrentFilter] = useState<FilterOption>('earliest');
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [searchParams, setSearchParams] = useState<SearchParams>({ query: '', showFavorites: false });
+  
+  // Load favorites from localStorage on mount
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const savedFavorites = localStorage.getItem('mosque-favorites');
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
+
+  // Save favorites to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('mosque-favorites', JSON.stringify(favorites));
+  }, [favorites]);
 
   // Update current time every minute
   useEffect(() => {
@@ -44,16 +62,51 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return prayerDate < currentTime;
   };
 
-  // Get filtered mosques based on current filter and selected prayer
+  // Toggle a mosque as favorite
+  const toggleFavorite = (mosqueId: string) => {
+    setFavorites(prev => {
+      if (prev.includes(mosqueId)) {
+        return prev.filter(id => id !== mosqueId);
+      } else {
+        return [...prev, mosqueId];
+      }
+    });
+  };
+
+  // Check if a mosque is favorited
+  const isFavorite = (mosqueId: string): boolean => {
+    return favorites.includes(mosqueId);
+  };
+
+  // Update search parameters
+  const updateSearchParams = (params: Partial<SearchParams>) => {
+    setSearchParams(prev => ({ ...prev, ...params }));
+  };
+
+  // Get filtered mosques based on current filter, selected prayer, and search
   const getFilteredMosques = (): Mosque[] => {
     if (!selectedPrayer) return [];
     
     const prayerName = selectedPrayer.name.toLowerCase();
     
     // Filter mosques that have the selected prayer time
-    const filtered = mosqueList.filter(mosque => 
+    let filtered = mosqueList.filter(mosque => 
       mosque.prayerTimes[prayerName] !== undefined
     );
+    
+    // Apply search filter if query exists
+    if (searchParams.query.trim()) {
+      const query = searchParams.query.toLowerCase();
+      filtered = filtered.filter(mosque => 
+        mosque.name.toLowerCase().includes(query) || 
+        mosque.address.toLowerCase().includes(query)
+      );
+    }
+    
+    // Filter by favorites if showFavorites is true
+    if (searchParams.showFavorites) {
+      filtered = filtered.filter(mosque => favorites.includes(mosque.id));
+    }
     
     // Sort based on the current filter
     switch (currentFilter) {
@@ -108,10 +161,15 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         selectedPrayer,
         currentFilter,
         currentTime,
+        searchParams,
+        favorites,
         setSelectedPrayer,
         setCurrentFilter,
+        setSearchParams: updateSearchParams,
         getFilteredMosques,
-        isPrayerPassed
+        isPrayerPassed,
+        toggleFavorite,
+        isFavorite
       }}
     >
       {children}

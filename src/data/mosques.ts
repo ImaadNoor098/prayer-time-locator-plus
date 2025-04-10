@@ -19,7 +19,12 @@ export const mosques: Mosque[] = [
       maghrib: '19:30',
       isha: '21:00',
       jummah: '13:30'
-    }
+    },
+    images: [
+      'https://images.unsplash.com/photo-1584551246679-ac93133d14dc',
+      'https://images.unsplash.com/photo-1584551246679-ac93133d14dc'
+    ],
+    facilities: ['Prayer Hall', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
   {
     id: 'm2',
@@ -37,7 +42,12 @@ export const mosques: Mosque[] = [
       maghrib: '19:45',
       isha: '21:15',
       jummah: '13:15'
-    }
+    },
+    images: [
+      'https://images.unsplash.com/photo-1542377575-1a78e9f2befa',
+      'https://images.unsplash.com/photo-1542377575-1a78e9f2befa'
+    ],
+    facilities: ['Prayer Hall', 'Library', 'Conference Room', 'Educational Classes']
   },
   {
     id: 'm3',
@@ -55,7 +65,12 @@ export const mosques: Mosque[] = [
       maghrib: '19:15',
       isha: '20:45',
       jummah: '13:45'
-    }
+    },
+    images: [
+      'https://images.unsplash.com/photo-1564769625688-78e0ff96661a',
+      'https://images.unsplash.com/photo-1564769625688-78e0ff96661a'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
   {
     id: 'm4',
@@ -73,7 +88,12 @@ export const mosques: Mosque[] = [
       maghrib: '19:00',
       isha: '20:30',
       jummah: '13:00'
-    }
+    },
+    images: [
+      'https://images.unsplash.com/photo-1585129918930-d358629058ec',
+      'https://images.unsplash.com/photo-1585129918930-d358629058ec'
+    ],
+    facilities: ['Prayer Hall', 'Islamic Shop', 'Funeral Services', 'Marriage Services']
   },
   {
     id: 'm5',
@@ -91,6 +111,11 @@ export const mosques: Mosque[] = [
       maghrib: '19:20',
       isha: '20:50',
       jummah: '13:20'
-    }
+    },
+    images: [
+      'https://images.unsplash.com/photo-1585129918930-d358629058ec',
+      'https://images.unsplash.com/photo-1585129918930-d358629058ec'
+    ],
+    facilities: ['Prayer Hall', 'Food Bank', 'Madrasah', 'Multilingual Sermons']
   }
 ];

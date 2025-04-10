@@ -18,6 +18,8 @@ export type Mosque = {
   prayerTimes: {
     [key: string]: string; // prayer name -> time (HH:MM format)
   };
+  images?: string[]; // URLs to mosque images
+  facilities?: string[]; // Available facilities
 };
 
 export type FilterOption = 
@@ -25,3 +27,8 @@ export type FilterOption =
   | 'latest'
   | 'nearest'
   | 'farthest';
+
+export type SearchParams = {
+  query: string;
+  showFavorites: boolean;
+};

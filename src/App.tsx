@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrayerProvider } from "@/contexts/PrayerContext";
 import PrayerSelection from "./pages/PrayerSelection";
 import MosqueList from "./pages/MosqueList";
+import Favorites from "./pages/Favorites";
+import MosqueDetailPage from "./pages/MosqueDetailPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +23,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<PrayerSelection />} />
             <Route path="/mosques" element={<MosqueList />} />
+            <Route path="/favorites" element={<Favorites />} />
+            <Route path="/mosque/:id" element={<MosqueDetailPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

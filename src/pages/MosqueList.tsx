@@ -5,6 +5,8 @@ import { usePrayer } from '@/contexts/PrayerContext';
 import MosqueCard from '@/components/MosqueCard';
 import FilterBar from '@/components/FilterBar';
 import CurrentTime from '@/components/CurrentTime';
+import SearchBar from '@/components/SearchBar';
+import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
@@ -20,8 +22,8 @@ const MosqueList: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen islamic-pattern-bg">
-      <div className="container mx-auto max-w-4xl px-4 pb-8">
+    <div className="min-h-screen islamic-pattern-bg pb-20">
+      <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
           <Button
             onClick={() => navigate('/')}
@@ -37,9 +39,11 @@ const MosqueList: React.FC = () => {
               <span className="mr-2">{selectedPrayer.icon}</span>
               {selectedPrayer.name} Prayer Times
             </h1>
-            <p className="text-sm text-islamic-gray dark:text-islamic-cream/70">
+            <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 mb-4">
               Find mosques offering {selectedPrayer.name} prayer
             </p>
+            
+            <SearchBar />
           </header>
         </div>
         
@@ -61,6 +65,8 @@ const MosqueList: React.FC = () => {
           )}
         </div>
       </div>
+      
+      <BottomBar />
     </div>
   );
 };
