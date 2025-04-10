@@ -1,0 +1,68 @@
+
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePrayer } from '@/contexts/PrayerContext';
+import MosqueCard from '@/components/MosqueCard';
+import FilterBar from '@/components/FilterBar';
+import CurrentTime from '@/components/CurrentTime';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
+
+const MosqueList: React.FC = () => {
+  const { selectedPrayer, getFilteredMosques } = usePrayer();
+  const navigate = useNavigate();
+  
+  const mosques = getFilteredMosques();
+  
+  if (!selectedPrayer) {
+    navigate('/');
+    return null;
+  }
+  
+  return (
+    <div className="min-h-screen islamic-pattern-bg">
+      <div className="container mx-auto max-w-4xl px-4 pb-8">
+        <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
+          <Button
+            onClick={() => navigate('/')}
+            variant="ghost"
+            className="mb-2 text-islamic-blue dark:text-islamic-cream"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Prayers
+          </Button>
+          
+          <header className="mb-2">
+            <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream flex items-center">
+              <span className="mr-2">{selectedPrayer.icon}</span>
+              {selectedPrayer.name} Prayer Times
+            </h1>
+            <p className="text-sm text-islamic-gray dark:text-islamic-cream/70">
+              Find mosques offering {selectedPrayer.name} prayer
+            </p>
+          </header>
+        </div>
+        
+        <CurrentTime />
+        
+        <FilterBar />
+        
+        <div className="pt-4 space-y-4">
+          {mosques.length > 0 ? (
+            mosques.map((mosque) => (
+              <MosqueCard key={mosque.id} mosque={mosque} />
+            ))
+          ) : (
+            <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card">
+              <p className="text-islamic-gray dark:text-islamic-cream/70">
+                No mosques found for {selectedPrayer.name} prayer.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default MosqueList;
