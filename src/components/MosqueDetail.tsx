@@ -100,7 +100,7 @@ const MosqueDetail: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2 mt-1">
                   {Object.entries(mosque.prayerTimes).map(([prayer, time]) => {
                     const isCurrentPrayer = prayer === prayerName;
-                    const isPrayerPassed = isPrayerPassed(time);
+                    const isPrayerTimeOver = isPrayerPassed(time);
                     
                     return (
                       <div 
@@ -108,11 +108,11 @@ const MosqueDetail: React.FC = () => {
                         className={cn(
                           "flex items-center justify-between p-2 rounded-md",
                           isCurrentPrayer ? "bg-islamic-green/10" : "",
-                          isPrayerPassed ? "opacity-70" : ""
+                          isPrayerTimeOver ? "opacity-70" : ""
                         )}
                       >
                         <span className="capitalize">{prayer}</span>
-                        <Badge variant={isPrayerPassed ? "outline" : "default"}>
+                        <Badge variant={isPrayerTimeOver ? "outline" : "default"}>
                           {time}
                         </Badge>
                       </div>
