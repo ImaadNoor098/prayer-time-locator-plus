@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePrayer } from '@/contexts/PrayerContext';
 import MosqueCard from '@/components/MosqueCard';
@@ -14,12 +14,19 @@ const MosqueList: React.FC = () => {
   const { selectedPrayer, getFilteredMosques } = usePrayer();
   const navigate = useNavigate();
   
-  const mosques = getFilteredMosques();
+  // Use useEffect to handle navigation
+  useEffect(() => {
+    if (!selectedPrayer) {
+      navigate('/');
+    }
+  }, [selectedPrayer, navigate]);
   
+  // If no prayer is selected, render nothing while redirecting
   if (!selectedPrayer) {
-    navigate('/');
     return null;
   }
+  
+  const mosques = getFilteredMosques();
   
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">

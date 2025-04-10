@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 import { prayerTimes } from '@/data/prayers';
@@ -102,18 +103,15 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           const timeA = a.prayerTimes[prayerName];
           const timeB = b.prayerTimes[prayerName];
           
-          if (isPrayerPassed(timeA) && isPrayerPassed(timeB)) {
-            return 0;
-          }
+          // Separate passed and upcoming prayers
+          const aPassed = isPrayerPassed(timeA);
+          const bPassed = isPrayerPassed(timeB);
           
-          if (isPrayerPassed(timeA) && !isPrayerPassed(timeB)) {
-            return 1;
-          }
+          // If one is passed and one isn't, prioritize upcoming prayers
+          if (aPassed && !bPassed) return 1;
+          if (!aPassed && bPassed) return -1;
           
-          if (!isPrayerPassed(timeA) && isPrayerPassed(timeB)) {
-            return -1;
-          }
-          
+          // For either both passed or both upcoming, sort by time
           return timeA.localeCompare(timeB);
         });
         
