@@ -35,12 +35,12 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   
   return (
     <Card className={cn(
-      "islamic-card transition-all relative",
-      isPassed ? "opacity-70" : ""
+      "islamic-card transition-all relative overflow-hidden",
+      isPassed ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
     )}>
       {isPassed && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-full h-[1px] bg-islamic-gray opacity-70"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-0 w-[200%] h-[1px] bg-islamic-gray/80 dark:bg-islamic-cream/80 rotate-[-35deg] transform origin-top-left translate-x-[-20%] translate-y-[50%] border-t border-islamic-gray/80 dark:border-islamic-cream/80"></div>
         </div>
       )}
       
@@ -48,7 +48,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         <div className="flex justify-between items-start mb-2">
           <h3 className={cn(
             "text-lg font-semibold",
-            isPassed ? "text-islamic-gray" : "text-islamic-blue"
+            isPassed ? "text-islamic-gray dark:text-islamic-cream/60" : "text-islamic-blue"
           )}>
             {mosque.name}
           </h3>
@@ -66,7 +66,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         
         <div className="flex items-center text-sm mb-3">
           <Clock size={16} className="mr-1 text-islamic-green" />
-          <span className={isPassed ? "text-islamic-gray" : "text-islamic-blue"}>
+          <span className={isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue"}>
             {selectedPrayer.name}: {prayerTime}
             {isPassed && " (Passed)"}
           </span>

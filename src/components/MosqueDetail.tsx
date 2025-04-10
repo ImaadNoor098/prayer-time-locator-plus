@@ -106,11 +106,16 @@ const MosqueDetail: React.FC = () => {
                       <div 
                         key={prayer}
                         className={cn(
-                          "flex items-center justify-between p-2 rounded-md",
+                          "flex items-center justify-between p-2 rounded-md relative overflow-hidden",
                           isCurrentPrayer ? "bg-islamic-green/10" : "",
-                          isPrayerTimeOver ? "opacity-70" : ""
+                          isPrayerTimeOver ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
                         )}
                       >
+                        {isPrayerTimeOver && (
+                          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div className="absolute top-0 left-0 w-[200%] h-[1px] bg-islamic-gray/80 dark:bg-islamic-cream/80 rotate-[-35deg] transform origin-top-left translate-x-[-20%] translate-y-[50%] border-t border-islamic-gray/80 dark:border-islamic-cream/80"></div>
+                          </div>
+                        )}
                         <span className="capitalize">{prayer}</span>
                         <Badge variant={isPrayerTimeOver ? "outline" : "default"}>
                           {time}
