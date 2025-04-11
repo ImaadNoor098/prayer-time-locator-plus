@@ -8,7 +8,7 @@ import CurrentTime from '@/components/CurrentTime';
 import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Prayer } from 'lucide-react';
+import { ArrowLeft, Calendar } from 'lucide-react';
 
 const MosqueList: React.FC = () => {
   const { selectedPrayer, getFilteredMosques } = usePrayer();
@@ -44,9 +44,10 @@ const MosqueList: React.FC = () => {
             
             <Button
               onClick={() => navigate('/')}
-              variant="outline"
-              className="text-islamic-blue border-islamic-blue dark:text-islamic-cream"
+              variant="default"
+              className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md transform transition-transform hover:scale-105 animate-pulse-gentle"
             >
+              <Calendar className="h-4 w-4 mr-2" />
               Select Prayer
             </Button>
           </div>

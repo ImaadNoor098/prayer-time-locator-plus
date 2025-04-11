@@ -88,4 +88,19 @@
   .islamic-border {
     @apply border-islamic-gold/40 dark:border-islamic-gold/20;
   }
+  
+  @keyframes pulse-gentle {
+    0%, 100% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% { 
+      transform: scale(1.02); 
+      opacity: 0.9;
+    }
+  }
+  
+  .animate-pulse-gentle {
+    animation: pulse-gentle 3s infinite;
+  }
 }
