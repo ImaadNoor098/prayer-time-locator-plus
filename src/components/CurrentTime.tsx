@@ -21,7 +21,7 @@ const CurrentTime: React.FC = () => {
           Current Time
         </div>
         <div className="text-2xl font-semibold text-islamic-blue dark:text-islamic-cream animate-pulse-gentle">
-          {format(time, 'hh:mm:ss a')}
+          {format(time, 'h:mm:ss a')}
         </div>
         <div className="text-sm text-islamic-gray dark:text-islamic-cream/70 mt-1">
           {format(time, 'EEEE, MMMM do, yyyy')}

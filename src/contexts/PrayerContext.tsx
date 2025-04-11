@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 import { prayerTimes } from '@/data/prayers';
 import { mosques } from '@/data/mosques';
+import { format, addMinutes, parse } from 'date-fns';
 
 interface PrayerContextType {
   prayers: PrayerTime[];
@@ -19,6 +20,7 @@ interface PrayerContextType {
   isPrayerPassed: (time: string) => boolean;
   toggleFavorite: (mosqueId: string) => void;
   isFavorite: (mosqueId: string) => boolean;
+  formatTimeToAmPm: (time: string) => string;
 }
 
 const PrayerContext = createContext<PrayerContextType | undefined>(undefined);
@@ -48,6 +50,21 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return () => clearInterval(interval);
   }, []);
 
+  // Format time from 24-hour to 12-hour format
+  const formatTimeToAmPm = (time: string): string => {
+    if (!time) return '';
+    
+    try {
+      // Parse the time string to a date object
+      const date = parse(time, 'HH:mm', new Date());
+      // Format to 12-hour time with AM/PM
+      return format(date, 'h:mm a');
+    } catch (error) {
+      console.error("Error formatting time:", error);
+      return time; // Return original if parsing fails
+    }
+  };
+
   const isPrayerPassed = (time: string): boolean => {
     if (!time) return false;
     
@@ -55,7 +72,11 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const prayerDate = new Date();
     prayerDate.setHours(hours, minutes, 0);
     
-    return prayerDate < currentTime;
+    // Add 5 minutes grace period to the prayer time
+    const graceEndTime = addMinutes(prayerDate, 5);
+    
+    // Prayer is considered passed only after the grace period
+    return graceEndTime < currentTime;
   };
 
   const toggleFavorite = (mosqueId: string) => {
@@ -149,7 +170,8 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         getFilteredMosques,
         isPrayerPassed,
         toggleFavorite,
-        isFavorite
+        isFavorite,
+        formatTimeToAmPm
       }}
     >
       {children}

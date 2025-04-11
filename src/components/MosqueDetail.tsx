@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
 const MosqueDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { mosques, selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite } = usePrayer();
+  const { mosques, selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
   
   const mosque = mosques.find(m => m.id === id);
   
@@ -101,6 +101,7 @@ const MosqueDetail: React.FC = () => {
                   {Object.entries(mosque.prayerTimes).map(([prayer, time]) => {
                     const isCurrentPrayer = prayer === prayerName;
                     const isPrayerTimeOver = isPrayerPassed(time);
+                    const formattedTime = formatTimeToAmPm(time);
                     
                     return (
                       <div 
@@ -118,7 +119,7 @@ const MosqueDetail: React.FC = () => {
                         )}
                         <span className="capitalize">{prayer}</span>
                         <Badge variant={isPrayerTimeOver ? "outline" : "default"}>
-                          {time}
+                          {formattedTime}
                         </Badge>
                       </div>
                     );

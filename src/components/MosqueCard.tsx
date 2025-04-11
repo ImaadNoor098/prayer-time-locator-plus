@@ -14,13 +14,14 @@ interface MosqueCardProps {
 }
 
 const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
-  const { selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite } = usePrayer();
+  const { selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
   const navigate = useNavigate();
   
   if (!selectedPrayer) return null;
   
   const prayerName = selectedPrayer.name.toLowerCase();
   const prayerTime = mosque.prayerTimes[prayerName];
+  const formattedPrayerTime = formatTimeToAmPm(prayerTime);
   const isPassed = isPrayerPassed(prayerTime);
   const favorite = isFavorite(mosque.id);
   
@@ -59,7 +60,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
           <Badge variant={isPassed ? "outline" : "default"} className={cn(
             isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-green"
           )}>
-            {prayerTime}
+            {formattedPrayerTime}
           </Badge>
         </div>
         
@@ -71,7 +72,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         <div className="flex items-center text-sm mb-3">
           <Clock size={16} className="mr-1 text-islamic-green" />
           <span className={isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue"}>
-            {selectedPrayer.name}: {prayerTime}
+            {selectedPrayer.name}: {formattedPrayerTime}
             {isPassed && " (Passed)"}
           </span>
         </div>
