@@ -1,16 +1,32 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useNavigation } from '@/contexts/NavigationContext';
 
 const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { previousPath, setPreviousPath } = useNavigation();
+  
+  useEffect(() => {
+    if (location.pathname !== '/favorites' && location.pathname !== '/') {
+      setPreviousPath(location.pathname);
+    }
+  }, [location.pathname, setPreviousPath]);
   
   const isActive = (path: string) => {
-    return location.pathname === path;
+    return location.pathname === path || 
+           (path === '/mosques' && location.pathname.startsWith('/mosque/'));
+  };
+  
+  const handleHomeClick = () => {
+    if (location.pathname === '/favorites') {
+      navigate(previousPath);
+    } else {
+      navigate('/');
+    }
   };
   
   return (
@@ -21,7 +37,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/') || isActive('/mosques') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={() => navigate('/')}
+        onClick={handleHomeClick}
       >
         <Home className={cn(
           "h-5 w-5",

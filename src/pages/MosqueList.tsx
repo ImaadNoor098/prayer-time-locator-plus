@@ -8,7 +8,7 @@ import CurrentTime from '@/components/CurrentTime';
 import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Prayer } from 'lucide-react';
 
 const MosqueList: React.FC = () => {
   const { selectedPrayer, getFilteredMosques } = usePrayer();
@@ -32,14 +32,24 @@ const MosqueList: React.FC = () => {
     <div className="min-h-screen islamic-pattern-bg pb-20">
       <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
-          <Button
-            onClick={() => navigate('/')}
-            variant="ghost"
-            className="mb-2 text-islamic-blue dark:text-islamic-cream"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Prayers
-          </Button>
+          <div className="flex justify-between items-center mb-2">
+            <Button
+              onClick={() => navigate('/')}
+              variant="ghost"
+              className="text-islamic-blue dark:text-islamic-cream"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+            
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
+              className="text-islamic-blue border-islamic-blue dark:text-islamic-cream"
+            >
+              Select Prayer
+            </Button>
+          </div>
           
           <header className="mb-2">
             <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream flex items-center">

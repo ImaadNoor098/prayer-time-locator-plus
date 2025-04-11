@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PrayerProvider } from "@/contexts/PrayerContext";
+import { NavigationProvider } from "@/contexts/NavigationContext";
 import PrayerSelection from "./pages/PrayerSelection";
 import MosqueList from "./pages/MosqueList";
 import Favorites from "./pages/Favorites";
@@ -17,18 +18,20 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <PrayerProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<PrayerSelection />} />
-            <Route path="/mosques" element={<MosqueList />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/mosque/:id" element={<MosqueDetailPage />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <NavigationProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<PrayerSelection />} />
+              <Route path="/mosques" element={<MosqueList />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/mosque/:id" element={<MosqueDetailPage />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </NavigationProvider>
       </PrayerProvider>
     </TooltipProvider>
   </QueryClientProvider>
