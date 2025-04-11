@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePrayer } from '@/contexts/PrayerContext';
@@ -36,8 +35,15 @@ const MosqueDetail: React.FC = () => {
   };
   
   const handleDirections = () => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.latitude},${mosque.coordinates.longitude}&travelmode=driving`;
-    window.open(url, '_blank');
+    if (mosque.googleMapsLink) {
+      window.open(mosque.googleMapsLink, '_blank');
+    } else if (mosque.coordinates) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.latitude},${mosque.coordinates.longitude}&travelmode=driving`;
+      window.open(url, '_blank');
+    } else {
+      const searchQuery = encodeURIComponent(`${mosque.name} ${mosque.address}`);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${searchQuery}`, '_blank');
+    }
   };
   
   return (

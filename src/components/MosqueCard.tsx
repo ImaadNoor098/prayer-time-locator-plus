@@ -27,8 +27,18 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   
   const handleDirections = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.latitude},${mosque.coordinates.longitude}&travelmode=driving`;
-    window.open(url, '_blank');
+    
+    // Use the googleMapsLink if available, otherwise fall back to coordinates
+    if (mosque.googleMapsLink) {
+      window.open(mosque.googleMapsLink, '_blank');
+    } else if (mosque.coordinates) {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.latitude},${mosque.coordinates.longitude}&travelmode=driving`;
+      window.open(url, '_blank');
+    } else {
+      // If neither are available, search for the mosque by name and address
+      const searchQuery = encodeURIComponent(`${mosque.name} ${mosque.address}`);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${searchQuery}`, '_blank');
+    }
   };
   
   const handleDetails = () => {

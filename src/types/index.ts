@@ -11,10 +11,11 @@ export type Mosque = {
   name: string;
   address: string;
   distance: number; // in kilometers
-  coordinates: {
+  coordinates?: {
     latitude: number;
     longitude: number;
   };
+  googleMapsLink?: string; // New field for direct Google Maps link
   prayerTimes: {
     [key: string]: string; // prayer name -> time (HH:MM format)
   };
