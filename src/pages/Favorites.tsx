@@ -4,6 +4,7 @@ import { usePrayer } from '@/contexts/PrayerContext';
 import MosqueCard from '@/components/MosqueCard';
 import SearchBar from '@/components/SearchBar';
 import CurrentTime from '@/components/CurrentTime';
+import BottomBar from '@/components/BottomBar';
 import { Heart } from 'lucide-react';
 
 const Favorites: React.FC = () => {
@@ -53,6 +54,8 @@ const Favorites: React.FC = () => {
           )}
         </div>
       </div>
+      
+      <BottomBar />
     </div>
   );
 };

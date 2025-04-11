@@ -24,7 +24,8 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const isPassed = isPrayerPassed(prayerTime);
   const favorite = isFavorite(mosque.id);
   
-  const handleDirections = () => {
+  const handleDirections = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
     const url = `https://www.google.com/maps/dir/?api=1&destination=${mosque.coordinates.latitude},${mosque.coordinates.longitude}&travelmode=driving`;
     window.open(url, '_blank');
   };
@@ -34,10 +35,13 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   };
   
   return (
-    <Card className={cn(
-      "islamic-card transition-all relative overflow-hidden",
-      isPassed ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
-    )}>
+    <Card 
+      className={cn(
+        "islamic-card transition-all relative overflow-hidden cursor-pointer",
+        isPassed ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
+      )}
+      onClick={handleDetails}
+    >
       {isPassed && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-[200%] h-[1px] bg-islamic-gray/80 dark:bg-islamic-cream/80 rotate-[-35deg] transform origin-top-left translate-x-[-20%] translate-y-[50%] border-t border-islamic-gray/80 dark:border-islamic-cream/80"></div>
@@ -90,7 +94,10 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
           variant="default"
           size="sm"
           className="w-1/2 bg-islamic-green hover:bg-islamic-light-green"
-          onClick={handleDetails}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent card click
+            handleDetails();
+          }}
         >
           Details
         </Button>
