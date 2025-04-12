@@ -74,7 +74,7 @@ const SalahTimes: React.FC = () => {
           dhuhr: `${baseHours.dhuhr}:${10 + minuteAdjustment}`,
           asr: `${baseHours.asr}:${45 - minuteAdjustment}`,
           maghrib: `${baseHours.maghrib}:${30 - minuteAdjustment}`,
-          isha: `${baseHours.isha}:${00 + minuteAdjustment}`,
+          isha: `${baseHours.isha}:0${0 + minuteAdjustment}`, // Fixed octal literal error here
           date: selectedDate
         };
         
