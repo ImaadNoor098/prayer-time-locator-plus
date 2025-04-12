@@ -1,7 +1,8 @@
+
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, Heart } from 'lucide-react';
+import { Home, Heart, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNavigation } from '@/contexts/NavigationContext';
 
@@ -18,7 +19,8 @@ const BottomBar: React.FC = () => {
   
   const isActive = (path: string) => {
     return location.pathname === path || 
-           (path === '/mosques' && location.pathname.startsWith('/mosque/'));
+           (path === '/mosques' && location.pathname.startsWith('/mosque/')) ||
+           (path === '/salah-times' && location.pathname === '/salah-times');
   };
   
   const handleHomeClick = () => {
@@ -44,6 +46,20 @@ const BottomBar: React.FC = () => {
           isActive('/') || isActive('/mosques') ? "text-islamic-green" : ""
         )} />
         <span className="text-xs">Home</span>
+      </Button>
+      
+      <Button
+        variant="ghost"
+        className={cn(
+          "flex flex-col items-center gap-1 h-14 w-full",
+          isActive('/salah-times') ? "text-islamic-green" : "text-islamic-gray"
+        )}
+        onClick={() => navigate('/salah-times')}
+      >
+        <div className="relative">
+          <span className="text-xl" role="img" aria-label="Prayer">🧎‍♂️</span>
+        </div>
+        <span className="text-xs">Prayer Times</span>
       </Button>
       
       <Button

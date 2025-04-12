@@ -8,7 +8,7 @@ import {
   Home, 
   ArrowLeftCircle 
 } from 'lucide-react';
-import { format, addDays, subDays } from 'date-fns';
+import { format, addDays, subDays, parse } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
@@ -45,36 +45,38 @@ const SalahTimes: React.FC = () => {
       
       try {
         // In a real implementation, this would be an API call to Muslims Pro
-        // For now, we'll simulate with realistic prayer times based on date
+        // For now, we'll simulate with realistic prayer times based on date for Bareilly
         const formattedDate = format(selectedDate, 'yyyy-MM-dd');
         
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Generate times based on the date (simplified for demo)
-        // In reality, you would fetch from an API or calculate based on location
+        // Generate times based on the date for Bareilly (simplified for demo)
         const dateObj = new Date(formattedDate);
         const month = dateObj.getMonth();
         const day = dateObj.getDate();
         
-        // Adjust times slightly based on date to simulate real changes
+        // Bareilly prayer times (approximate)
+        // Adjusted times slightly based on date to simulate real changes
         const minuteAdjustment = ((month * 30) + day) % 10;
+        
+        // Bareilly prayer times (approximate for Hanafi School)
         const baseHours = {
-          fajr: 5,
-          sunrise: 6, 
-          dhuhr: 13,
-          asr: 16,
-          maghrib: 19,
-          isha: 21
+          fajr: 4,
+          sunrise: 5, 
+          dhuhr: 12,
+          asr: 15,
+          maghrib: 18,
+          isha: 19
         };
         
         const times: SalahTime = {
-          fajr: `0${baseHours.fajr}:${30 + minuteAdjustment}`,
-          sunrise: `0${baseHours.sunrise}:${15 + minuteAdjustment}`,
-          dhuhr: `${baseHours.dhuhr}:${10 + minuteAdjustment}`,
-          asr: `${baseHours.asr}:${45 - minuteAdjustment}`,
-          maghrib: `${baseHours.maghrib}:${30 - minuteAdjustment}`,
-          isha: `${baseHours.isha}:0${0 + minuteAdjustment}`, // Fixed octal literal error here
+          fajr: `0${baseHours.fajr}:${45 + minuteAdjustment}`,
+          sunrise: `0${baseHours.sunrise}:${30 + minuteAdjustment}`,
+          dhuhr: `${baseHours.dhuhr}:${15 + minuteAdjustment}`,
+          asr: `${baseHours.asr}:${30 - minuteAdjustment}`,
+          maghrib: `${baseHours.maghrib}:${20 - minuteAdjustment}`,
+          isha: `${baseHours.isha}:4${0 + minuteAdjustment}`,
           date: selectedDate
         };
         
@@ -181,10 +183,10 @@ const SalahTimes: React.FC = () => {
             SALAH TIMES
           </h1>
           <p className="text-islamic-gray dark:text-islamic-cream/70 text-center mb-6">
-            Prayer times according to Hanafi School of Thought
+            Prayer times for Bareilly according to Hanafi School of Thought
           </p>
           
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
             <Button
               onClick={handlePreviousDay}
               variant="outline"
@@ -245,9 +247,9 @@ const SalahTimes: React.FC = () => {
                 {salahTimes && Object.entries(salahTimes).map(([prayer, time]) => {
                   if (prayer === 'date') return null;
                   
-                  const formattedTime = formatTimeToAmPm(time);
-                  const isCurrentPrayer = isPrayerTime(time);
-                  const isPassed = isPrayerPassed(time);
+                  const formattedTime = formatTimeToAmPm(time as string);
+                  const isCurrentPrayer = isPrayerTime(time as string);
+                  const isPassed = isPrayerPassed(time as string);
                   
                   return (
                     <div 
