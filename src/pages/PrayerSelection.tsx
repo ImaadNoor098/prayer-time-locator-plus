@@ -20,7 +20,7 @@ const PrayerSelection: React.FC = () => {
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <header className="text-center mb-8">
           <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream mb-2">
-            Prayer Time Locator
+            SALAH LOCATOR
           </h1>
           <p className="text-islamic-gray dark:text-islamic-cream/70">
             Select a prayer to find mosques and prayer times
