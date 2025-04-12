@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PrayerProvider } from "@/contexts/PrayerContext";
+import { PrayerProvider } from "@/contexts/prayer";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import PrayerSelection from "./pages/PrayerSelection";
 import MosqueList from "./pages/MosqueList";
