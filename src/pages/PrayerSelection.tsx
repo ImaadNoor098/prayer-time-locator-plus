@@ -5,6 +5,7 @@ import { usePrayer } from '@/contexts/PrayerContext';
 import PrayerCard from '@/components/PrayerCard';
 import CurrentTime from '@/components/CurrentTime';
 import BottomBar from '@/components/BottomBar';
+import PrayerTimesButton from '@/components/PrayerTimesButton';
 
 const PrayerSelection: React.FC = () => {
   const { prayers, setSelectedPrayer } = usePrayer();
@@ -26,6 +27,10 @@ const PrayerSelection: React.FC = () => {
             Select a prayer to find mosques and prayer times
           </p>
         </header>
+        
+        <div className="flex justify-center mb-8">
+          <PrayerTimesButton />
+        </div>
         
         <CurrentTime />
         

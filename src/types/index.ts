@@ -33,3 +33,13 @@ export type SearchParams = {
   query: string;
   showFavorites: boolean;
 };
+
+export type SalahTime = {
+  fajr: string;
+  sunrise: string;
+  dhuhr: string;
+  asr: string;
+  maghrib: string;
+  isha: string;
+  date: Date;
+};

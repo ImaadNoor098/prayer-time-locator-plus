@@ -10,6 +10,7 @@ import PrayerSelection from "./pages/PrayerSelection";
 import MosqueList from "./pages/MosqueList";
 import Favorites from "./pages/Favorites";
 import MosqueDetailPage from "./pages/MosqueDetailPage";
+import SalahTimes from "./pages/SalahTimes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/mosques" element={<MosqueList />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/mosque/:id" element={<MosqueDetailPage />} />
+              <Route path="/salah-times" element={<SalahTimes />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

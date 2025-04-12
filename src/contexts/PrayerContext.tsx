@@ -18,6 +18,7 @@ interface PrayerContextType {
   setSearchParams: (params: Partial<SearchParams>) => void;
   getFilteredMosques: () => Mosque[];
   isPrayerPassed: (time: string) => boolean;
+  isPrayerActive: (time: string) => boolean;
   toggleFavorite: (mosqueId: string) => void;
   isFavorite: (mosqueId: string) => boolean;
   formatTimeToAmPm: (time: string) => string;
@@ -65,6 +66,20 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  // Check if prayer is currently active (within 5 minutes of start time)
+  const isPrayerActive = (time: string): boolean => {
+    if (!time) return false;
+    
+    const [hours, minutes] = time.split(':').map(Number);
+    const prayerDate = new Date();
+    prayerDate.setHours(hours, minutes, 0);
+    
+    // Prayer is active during the 5 minute period after it starts
+    const activePeriodEnd = addMinutes(prayerDate, 5);
+    
+    return currentTime >= prayerDate && currentTime <= activePeriodEnd;
+  };
+
   const isPrayerPassed = (time: string): boolean => {
     if (!time) return false;
     
@@ -72,11 +87,11 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     const prayerDate = new Date();
     prayerDate.setHours(hours, minutes, 0);
     
-    // Add 5 minutes grace period to the prayer time
-    const graceEndTime = addMinutes(prayerDate, 5);
+    // Add 5 minutes grace period to the prayer time for the active status
+    const activePeriodEnd = addMinutes(prayerDate, 5);
     
-    // Prayer is considered passed only after the grace period
-    return graceEndTime < currentTime;
+    // Prayer is considered passed only after the active period
+    return activePeriodEnd < currentTime;
   };
 
   const toggleFavorite = (mosqueId: string) => {
@@ -124,15 +139,21 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
           const timeA = a.prayerTimes[prayerName];
           const timeB = b.prayerTimes[prayerName];
           
-          // Separate passed and upcoming prayers
+          // Separate active, upcoming and passed prayers
+          const aActive = isPrayerActive(timeA);
+          const bActive = isPrayerActive(timeB);
           const aPassed = isPrayerPassed(timeA);
           const bPassed = isPrayerPassed(timeB);
           
-          // If one is passed and one isn't, prioritize upcoming prayers
-          if (aPassed && !bPassed) return 1;
-          if (!aPassed && bPassed) return -1;
+          // Active prayers come first
+          if (aActive && !bActive) return -1;
+          if (!aActive && bActive) return 1;
           
-          // For either both passed or both upcoming, sort by time
+          // Then upcoming prayers
+          if (!aPassed && bPassed) return -1;
+          if (aPassed && !bPassed) return 1;
+          
+          // For either both active, passed or upcoming, sort by time
           return timeA.localeCompare(timeB);
         });
         
@@ -169,6 +190,7 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setSearchParams: updateSearchParams,
         getFilteredMosques,
         isPrayerPassed,
+        isPrayerActive,
         toggleFavorite,
         isFavorite,
         formatTimeToAmPm

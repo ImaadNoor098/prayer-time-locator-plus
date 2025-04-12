@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePrayer } from '@/contexts/PrayerContext';
@@ -10,7 +11,7 @@ import { cn } from '@/lib/utils';
 const MosqueDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { mosques, selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
+  const { mosques, selectedPrayer, isPrayerPassed, isPrayerActive, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
   
   const mosque = mosques.find(m => m.id === id);
   
@@ -28,6 +29,7 @@ const MosqueDetail: React.FC = () => {
   const prayerName = selectedPrayer.name.toLowerCase();
   const prayerTime = mosque.prayerTimes[prayerName];
   const isPassed = isPrayerPassed(prayerTime);
+  const isActive = isPrayerActive(prayerTime);
   const favorite = isFavorite(mosque.id);
   
   const handleFavoriteToggle = () => {
@@ -107,6 +109,7 @@ const MosqueDetail: React.FC = () => {
                   {Object.entries(mosque.prayerTimes).map(([prayer, time]) => {
                     const isCurrentPrayer = prayer === prayerName;
                     const isPrayerTimeOver = isPrayerPassed(time);
+                    const isPrayerTimeActive = isPrayerActive(time);
                     const formattedTime = formatTimeToAmPm(time);
                     
                     return (
@@ -114,19 +117,33 @@ const MosqueDetail: React.FC = () => {
                         key={prayer}
                         className={cn(
                           "flex items-center justify-between p-2 rounded-md relative overflow-hidden",
+                          isCurrentPrayer && isPrayerTimeActive ? "bg-islamic-green/20 border border-islamic-green" :
                           isCurrentPrayer ? "bg-islamic-green/10" : "",
-                          isPrayerTimeOver ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
+                          isPrayerTimeOver && !isPrayerTimeActive ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
                         )}
                       >
-                        {isPrayerTimeOver && (
+                        {isPrayerTimeOver && !isPrayerTimeActive && (
                           <div className="absolute inset-0 overflow-hidden pointer-events-none">
                             <div className="absolute top-0 left-0 w-[200%] h-[1px] bg-islamic-gray/80 dark:bg-islamic-cream/80 rotate-[-35deg] transform origin-top-left translate-x-[-20%] translate-y-[50%] border-t border-islamic-gray/80 dark:border-islamic-cream/80"></div>
                           </div>
                         )}
                         <span className="capitalize">{prayer}</span>
-                        <Badge variant={isPrayerTimeOver ? "outline" : "default"}>
-                          {formattedTime}
-                        </Badge>
+                        <div className="flex flex-col items-end">
+                          <Badge variant={isPrayerTimeOver && !isPrayerTimeActive ? "outline" : "default"} className={cn(
+                            isPrayerTimeActive ? "bg-islamic-green animate-pulse" : 
+                            isPrayerTimeOver ? "border-red-500 text-red-500" : "bg-islamic-blue"
+                          )}>
+                            {formattedTime}
+                          </Badge>
+                          
+                          {isPrayerTimeActive && (
+                            <span className="text-xs text-islamic-green font-medium mt-1">SALAH STARTED</span>
+                          )}
+                          
+                          {isPrayerTimeOver && !isPrayerTimeActive && (
+                            <span className="text-xs text-red-500 font-medium mt-1">SALAH DONE</span>
+                          )}
+                        </div>
                       </div>
                     );
                   })}

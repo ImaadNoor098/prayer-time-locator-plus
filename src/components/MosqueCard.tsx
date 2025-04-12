@@ -14,7 +14,7 @@ interface MosqueCardProps {
 }
 
 const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
-  const { selectedPrayer, isPrayerPassed, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
+  const { selectedPrayer, isPrayerPassed, isPrayerActive, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
   const navigate = useNavigate();
   
   if (!selectedPrayer) return null;
@@ -23,6 +23,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const prayerTime = mosque.prayerTimes[prayerName];
   const formattedPrayerTime = formatTimeToAmPm(prayerTime);
   const isPassed = isPrayerPassed(prayerTime);
+  const isActive = isPrayerActive(prayerTime);
   const favorite = isFavorite(mosque.id);
   
   const handleDirections = (e: React.MouseEvent) => {
@@ -49,11 +50,12 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     <Card 
       className={cn(
         "islamic-card transition-all relative overflow-hidden cursor-pointer",
+        isActive ? "border-2 border-islamic-green" : 
         isPassed ? "bg-gray-200 dark:bg-gray-800/70 opacity-80" : ""
       )}
       onClick={handleDetails}
     >
-      {isPassed && (
+      {isPassed && !isActive && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-0 w-[200%] h-[1px] bg-islamic-gray/80 dark:bg-islamic-cream/80 rotate-[-35deg] transform origin-top-left translate-x-[-20%] translate-y-[50%] border-t border-islamic-gray/80 dark:border-islamic-cream/80"></div>
         </div>
@@ -63,12 +65,14 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         <div className="flex justify-between items-start mb-2">
           <h3 className={cn(
             "text-lg font-semibold",
+            isActive ? "text-islamic-green" :
             isPassed ? "text-islamic-gray dark:text-islamic-cream/60" : "text-islamic-blue"
           )}>
             {mosque.name}
           </h3>
-          <Badge variant={isPassed ? "outline" : "default"} className={cn(
-            isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-green"
+          <Badge variant={isPassed && !isActive ? "outline" : "default"} className={cn(
+            isActive ? "bg-islamic-green animate-pulse" :
+            isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-blue"
           )}>
             {formattedPrayerTime}
           </Badge>
@@ -80,10 +84,26 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         </div>
         
         <div className="flex items-center text-sm mb-3">
-          <Clock size={16} className="mr-1 text-islamic-green" />
-          <span className={isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue"}>
+          <Clock size={16} className={cn(
+            "mr-1",
+            isActive ? "text-islamic-green" : 
+            isPassed ? "text-islamic-gray/70" : "text-islamic-green"
+          )} />
+          <span className={cn(
+            isActive ? "text-islamic-green font-medium" :
+            isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue"
+          )}>
             {selectedPrayer.name}: {formattedPrayerTime}
-            {isPassed && " (Passed)"}
+            {isActive && (
+              <Badge className="ml-2 bg-islamic-green animate-pulse">
+                SALAH STARTED
+              </Badge>
+            )}
+            {isPassed && !isActive && (
+              <Badge variant="outline" className="ml-2 border-red-500 text-red-500">
+                SALAH DONE
+              </Badge>
+            )}
           </span>
         </div>
         
