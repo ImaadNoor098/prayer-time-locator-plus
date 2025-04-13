@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { format, addDays, subDays } from 'date-fns';
 import { ArrowLeft, ArrowRight, CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -19,12 +19,21 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
   selectedDate, 
   onDateChange 
 }) => {
+  const [open, setOpen] = useState(false);
+
   const handlePreviousDay = () => {
     onDateChange(subDays(selectedDate, 1));
   };
 
   const handleNextDay = () => {
     onDateChange(addDays(selectedDate, 1));
+  };
+
+  const handleSelectDate = (date: Date | undefined) => {
+    if (date) {
+      onDateChange(date);
+      setOpen(false); // Close the popover after selecting a date
+    }
   };
 
   return (
@@ -39,7 +48,7 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
         <span className="sr-only">Previous Day</span>
       </Button>
       
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -53,7 +62,7 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
           <Calendar
             mode="single"
             selected={selectedDate}
-            onSelect={(date) => date && onDateChange(date)}
+            onSelect={handleSelectDate}
             initialFocus
             className="p-3 pointer-events-auto"
           />
