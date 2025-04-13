@@ -38,7 +38,7 @@ const SalahTimes: React.FC = () => {
         
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => window.open('https://www.muslimpro.com/Prayer-times', '_blank')}
+            onClick={() => window.open('https://prayer-times.muslimpro.com/en/find?country_code=IN&country_name=India&city_name=Bareilly&coordinates=28.3670355,79.4304381', '_blank')}
             variant="outline"
             className="text-islamic-gray"
           >

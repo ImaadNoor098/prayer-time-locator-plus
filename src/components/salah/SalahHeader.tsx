@@ -29,7 +29,7 @@ const SalahHeader: React.FC<SalahHeaderProps> = ({ currentTime }) => {
         SALAH TIMES
       </h1>
       <p className="text-islamic-gray dark:text-islamic-cream/70 text-center mb-2">
-        Prayer times for Bareilly according to Hanafi School of Thought
+        Prayer times for Bareilly
       </p>
       <p className="text-xs text-islamic-gray dark:text-islamic-cream/50 text-center mb-6">
         Data source: <a href="https://prayer-times.muslimpro.com/en/find?country_code=IN&country_name=India&city_name=Bareilly&coordinates=28.3670355,79.4304381" className="underline" target="_blank" rel="noopener noreferrer">Muslim Pro</a>

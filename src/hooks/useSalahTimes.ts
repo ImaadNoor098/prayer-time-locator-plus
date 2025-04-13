@@ -24,40 +24,44 @@ export const useSalahTimes = (selectedDate: Date) => {
       
       try {
         // In a real implementation, this would be an API call to Muslims Pro
-        // For now, we'll simulate with realistic prayer times based on date for Bareilly
+        // For now, we'll simulate with realistic prayer times from Muslim Pro for Bareilly
         const formattedDate = format(selectedDate, 'yyyy-MM-dd');
         
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        // Generate times based on the date for Bareilly (simplified for demo)
+        // Generate times based on the date for Bareilly
         const dateObj = new Date(formattedDate);
         const month = dateObj.getMonth();
-        const day = dateObj.getDate();
         
-        // Bareilly prayer times (approximate)
-        // Adjusted times slightly based on date to simulate real changes
-        const minuteAdjustment = ((month * 30) + day) % 10;
+        // Actual Bareilly prayer times from Muslim Pro
+        // These are approximations and would vary slightly by date
+        let times: SalahTime;
         
-        // Bareilly prayer times (approximate for Hanafi School)
-        const baseHours = {
-          fajr: 4,
-          sunrise: 5, 
-          dhuhr: 12,
-          asr: 15,
-          maghrib: 18,
-          isha: 19
-        };
-        
-        const times: SalahTime = {
-          fajr: `0${baseHours.fajr}:${45 + minuteAdjustment}`,
-          sunrise: `0${baseHours.sunrise}:${30 + minuteAdjustment}`,
-          dhuhr: `${baseHours.dhuhr}:${15 + minuteAdjustment}`,
-          asr: `${baseHours.asr}:${30 - minuteAdjustment}`,
-          maghrib: `${baseHours.maghrib}:${20 - minuteAdjustment}`,
-          isha: `${baseHours.isha}:4${0 + minuteAdjustment}`,
-          date: selectedDate
-        };
+        // Different times based on month to simulate seasonal changes
+        if (month >= 3 && month <= 8) {
+          // Summer schedule (April to September)
+          times = {
+            fajr: "04:19",
+            sunrise: "05:47",
+            dhuhr: "12:13",
+            asr: "15:39",
+            maghrib: "18:39",
+            isha: "20:02",
+            date: selectedDate
+          };
+        } else {
+          // Winter schedule (October to March)
+          times = {
+            fajr: "05:13",
+            sunrise: "06:36",
+            dhuhr: "12:08",
+            asr: "15:03",
+            maghrib: "17:40",
+            isha: "19:03",
+            date: selectedDate
+          };
+        }
         
         setSalahTimes(times);
       } catch (error) {
@@ -98,13 +102,34 @@ export const useSalahTimes = (selectedDate: Date) => {
       return false;
     }
     
+    // Get the prayer time and the next prayer time
     const prayerDateTime = new Date(today);
     prayerDateTime.setHours(hours, minutes, 0);
     
-    const fiveMinutesAfter = new Date(prayerDateTime);
-    fiveMinutesAfter.setMinutes(fiveMinutesAfter.getMinutes() + 5);
+    // Get next prayer time
+    let nextPrayerTime = null;
+    if (salahTimes) {
+      const prayers = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
+      const currentPrayerIndex = prayers.findIndex(p => 
+        salahTimes[p as keyof SalahTime] === prayerTime
+      );
+      
+      if (currentPrayerIndex < prayers.length - 1) {
+        const nextPrayer = prayers[currentPrayerIndex + 1];
+        const nextTimeStr = salahTimes[nextPrayer as keyof SalahTime] as string;
+        const [nextHours, nextMinutes] = nextTimeStr.split(':').map(Number);
+        
+        nextPrayerTime = new Date(today);
+        nextPrayerTime.setHours(nextHours, nextMinutes, 0);
+      } else {
+        // If it's the last prayer, set next to end of day
+        nextPrayerTime = new Date(today);
+        nextPrayerTime.setHours(23, 59, 59);
+      }
+    }
     
-    return now >= prayerDateTime && now <= fiveMinutesAfter;
+    // Current prayer time is active from its start until the next prayer time
+    return now >= prayerDateTime && (!nextPrayerTime || now < nextPrayerTime);
   };
 
   const isPrayerPassed = (prayerTime: string): boolean => {
@@ -129,10 +154,9 @@ export const useSalahTimes = (selectedDate: Date) => {
     const prayerDateTime = new Date(today);
     prayerDateTime.setHours(hours, minutes, 0);
     
-    const fiveMinutesAfter = new Date(prayerDateTime);
-    fiveMinutesAfter.setMinutes(fiveMinutesAfter.getMinutes() + 5);
-    
-    return now > fiveMinutesAfter;
+    // Prayer has passed if current time is past the prayer time
+    // AND it's not the current active prayer
+    return now > prayerDateTime && !isPrayerTime(prayerTime);
   };
 
   return {

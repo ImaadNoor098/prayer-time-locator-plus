@@ -38,7 +38,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
       className={cn(
         "flex items-center justify-between p-4",
         isCurrentPrayer 
-          ? "bg-islamic-green/20 border-l-4 border-islamic-green" 
+          ? "bg-islamic-green border-l-4 border-islamic-green" 
           : isPassed 
             ? "bg-gray-200 dark:bg-gray-800/50 opacity-80" 
             : "bg-white dark:bg-card"
@@ -48,7 +48,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
         <div className={cn(
           "w-10 h-10 rounded-full flex items-center justify-center mr-4",
           isCurrentPrayer 
-            ? "bg-islamic-green text-white" 
+            ? "bg-white text-islamic-green" 
             : isPassed 
               ? "bg-gray-300 dark:bg-gray-700" 
               : "bg-islamic-blue/10 text-islamic-blue"
@@ -59,14 +59,17 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
           <h3 className={cn(
             "font-medium capitalize",
             isCurrentPrayer 
-              ? "text-islamic-green" 
+              ? "text-white" 
               : isPassed 
                 ? "text-islamic-gray/70" 
                 : "text-islamic-blue"
           )}>
             {prayer}
           </h3>
-          <p className="text-sm text-islamic-gray">
+          <p className={cn(
+            "text-sm",
+            isCurrentPrayer ? "text-white/80" : "text-islamic-gray"
+          )}>
             {format(date, 'EEEE, MMMM d')}
           </p>
         </div>
@@ -76,7 +79,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
         <span className={cn(
           "text-lg font-bold",
           isCurrentPrayer 
-            ? "text-islamic-green" 
+            ? "text-white" 
             : isPassed 
               ? "text-islamic-gray/70" 
               : "text-islamic-blue"
@@ -85,7 +88,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
         </span>
         
         {isCurrentPrayer && (
-          <Badge className="bg-islamic-green animate-pulse mt-1">
+          <Badge className="bg-white text-islamic-green animate-pulse mt-1">
             SALAH STARTED
           </Badge>
         )}
