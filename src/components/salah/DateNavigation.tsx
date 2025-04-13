@@ -28,21 +28,22 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-2 mb-6">
+    <div className="flex flex-wrap justify-center gap-4 mb-6">
       <Button
         onClick={handlePreviousDay}
         variant="outline"
-        className="border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10"
+        size="icon"
+        className="rounded-full border-2 border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10 h-12 w-12 shadow-md"
       >
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Previous Day
+        <ArrowLeft className="h-6 w-6" />
+        <span className="sr-only">Previous Day</span>
       </Button>
       
       <Popover>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="border-islamic-gold bg-islamic-gold/10 text-islamic-blue hover:bg-islamic-gold/20 font-medium"
+            className="border-islamic-gold bg-islamic-gold/10 text-islamic-blue hover:bg-islamic-gold/20 font-medium px-6"
           >
             <CalendarIcon className="h-4 w-4 mr-2" />
             {format(selectedDate, 'MMMM d, yyyy')}
@@ -62,10 +63,11 @@ const DateNavigation: React.FC<DateNavigationProps> = ({
       <Button
         onClick={handleNextDay}
         variant="outline"
-        className="border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10"
+        size="icon"
+        className="rounded-full border-2 border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10 h-12 w-12 shadow-md"
       >
-        Next Day
-        <ArrowRight className="h-4 w-4 ml-2" />
+        <ArrowRight className="h-6 w-6" />
+        <span className="sr-only">Next Day</span>
       </Button>
     </div>
   );

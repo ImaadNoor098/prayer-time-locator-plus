@@ -21,11 +21,7 @@ const PrayerTimesButton: React.FC<PrayerTimesButtonProps> = ({ className }) => {
       )}
     >
       <div className="flex items-center">
-        <div className="mr-2 relative">
-          <div className="w-6 h-6 flex items-center justify-center">
-            <span className="text-lg" role="img" aria-label="Prayer">🧎‍♂️</span>
-          </div>
-        </div>
+        <Clock className="h-5 w-5 mr-2" />
         <span>Prayer Times</span>
       </div>
     </Button>

@@ -56,9 +56,10 @@ const BottomBar: React.FC = () => {
         )}
         onClick={() => navigate('/salah-times')}
       >
-        <div className="relative">
-          <span className="text-xl" role="img" aria-label="Prayer">🧎‍♂️</span>
-        </div>
+        <Clock className={cn(
+          "h-5 w-5",
+          isActive('/salah-times') ? "text-islamic-green" : ""
+        )} />
         <span className="text-xs">Prayer Times</span>
       </Button>
       
