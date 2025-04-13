@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
 import SearchBar from '@/components/SearchBar';
 import CurrentTime from '@/components/CurrentTime';

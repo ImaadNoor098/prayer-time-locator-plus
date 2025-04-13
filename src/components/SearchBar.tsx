@@ -2,7 +2,7 @@
 import React from 'react';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 
 const SearchBar: React.FC = () => {
   const { searchParams, setSearchParams } = usePrayer();

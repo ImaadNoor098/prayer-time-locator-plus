@@ -2,7 +2,7 @@
 import React from 'react';
 import { FilterOption } from '@/types';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 import { Clock, ArrowUpNarrowWide, ArrowDownNarrowWide, MapPin } from 'lucide-react';
 
 const FilterBar: React.FC = () => {

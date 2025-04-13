@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MapPin, Clock, Heart, ArrowLeft } from 'lucide-react';

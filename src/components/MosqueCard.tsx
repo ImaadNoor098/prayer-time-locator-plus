@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { MapPin, Clock, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 

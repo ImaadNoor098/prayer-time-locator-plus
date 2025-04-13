@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePrayer } from '@/contexts/PrayerContext';
+import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
 import FilterBar from '@/components/FilterBar';
 import CurrentTime from '@/components/CurrentTime';
