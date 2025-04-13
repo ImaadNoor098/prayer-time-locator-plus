@@ -8,7 +8,11 @@ export const mosques: Mosque[] = [
     name: 'Masjid Al-Noor',
     address: '123 Islamic Way, Muslim District',
     distance: 1.2,
-    // You can either provide coordinates, a Google Maps link, or both
+    // Added coordinates for distance calculation
+    coordinates: {
+      latitude: 28.366,
+      longitude: 79.428
+    },
     googleMapsLink: 'https://goo.gl/maps/exampleLink1',
     prayerTimes: {
       fajr: '05:30',
@@ -29,6 +33,10 @@ export const mosques: Mosque[] = [
     name: 'Islamic Center of Peace',
     address: '456 Faith Street, Harmony Heights',
     distance: 2.5,
+    coordinates: {
+      latitude: 28.376,
+      longitude: 79.432
+    },
     googleMapsLink: 'https://goo.gl/maps/exampleLink2',
     prayerTimes: {
       fajr: '05:15',
@@ -49,6 +57,10 @@ export const mosques: Mosque[] = [
     name: 'Masjid Al-Rahman',
     address: '789 Mercy Road, Blessing Hills',
     distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
     googleMapsLink: 'https://goo.gl/maps/exampleLink3',
     prayerTimes: {
       fajr: '05:45',
@@ -69,6 +81,10 @@ export const mosques: Mosque[] = [
     name: 'Tawhid Mosque',
     address: '101 Unity Plaza, Faith Valley',
     distance: 3.7,
+    coordinates: {
+      latitude: 28.395,
+      longitude: 79.445
+    },
     googleMapsLink: 'https://goo.gl/maps/exampleLink4',
     prayerTimes: {
       fajr: '05:00',
@@ -89,6 +105,10 @@ export const mosques: Mosque[] = [
     name: 'Masjid Al-Taqwa',
     address: '202 Piety Lane, Devotion Square',
     distance: 1.9,
+    coordinates: {
+      latitude: 28.374,
+      longitude: 79.422
+    },
     googleMapsLink: 'https://goo.gl/maps/exampleLink5',
     prayerTimes: {
       fajr: '05:20',

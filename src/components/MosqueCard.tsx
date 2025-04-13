@@ -14,7 +14,7 @@ interface MosqueCardProps {
 }
 
 const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
-  const { selectedPrayer, isPrayerPassed, isPrayerActive, toggleFavorite, isFavorite, formatTimeToAmPm } = usePrayer();
+  const { selectedPrayer, isPrayerPassed, isPrayerActive, toggleFavorite, isFavorite, formatTimeToAmPm, userLocation } = usePrayer();
   const navigate = useNavigate();
   
   if (!selectedPrayer) return null;
@@ -25,6 +25,21 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const isPassed = isPrayerPassed(prayerTime);
   const isActive = isPrayerActive(prayerTime);
   const favorite = isFavorite(mosque.id);
+  
+  // Calculate actual distance if user location is available
+  let distanceText = `${mosque.distance.toFixed(1)} km away`;
+  
+  if (userLocation && userLocation.latitude && userLocation.longitude && mosque.coordinates) {
+    // Calculate real distance using Haversine formula
+    const calculatedDistance = calculateDistance(
+      userLocation.latitude,
+      userLocation.longitude,
+      mosque.coordinates.latitude,
+      mosque.coordinates.longitude
+    );
+    
+    distanceText = `${calculatedDistance.toFixed(1)} km away`;
+  }
   
   const handleDirections = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
@@ -45,6 +60,20 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const handleDetails = () => {
     navigate(`/mosque/${mosque.id}`);
   };
+  
+  // Function to calculate distance using Haversine formula (great-circle distance)
+  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c; // Distance in kilometers
+    return distance;
+  }
   
   return (
     <Card 
@@ -96,7 +125,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
             {selectedPrayer.name}: {formattedPrayerTime}
             {isActive && (
               <Badge className="ml-2 bg-islamic-green animate-pulse">
-                SALAH STARTED
+                ACTIVE
               </Badge>
             )}
             {isPassed && !isActive && (
@@ -107,8 +136,11 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
           </span>
         </div>
         
-        <div className="text-sm text-islamic-gray">
-          <span>{mosque.distance.toFixed(1)} km away</span>
+        <div className="text-sm text-islamic-gray flex items-center">
+          <span className="flex items-center">
+            <MapPin size={14} className="mr-1 text-islamic-blue" />
+            {distanceText}
+          </span>
         </div>
       </CardContent>
       
