@@ -87,13 +87,13 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
           {formattedTime}
         </span>
         
-        {isCurrentPrayer && (
-          <Badge className="bg-white text-islamic-green animate-pulse mt-1">
-            SALAH STARTED
+        {isCurrentPrayer && prayer !== "sunrise" && (
+          <Badge className="bg-white text-islamic-green mt-1">
+            ACTIVE
           </Badge>
         )}
         
-        {isPassed && !isCurrentPrayer && (
+        {isPassed && !isCurrentPrayer && prayer !== "sunrise" && (
           <Badge variant="outline" className="border-red-500 text-red-500 mt-1">
             SALAH DONE
           </Badge>
