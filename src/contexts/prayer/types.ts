@@ -21,3 +21,6 @@ export interface PrayerContextType {
   isFavorite: (mosqueId: string) => boolean;
   formatTimeToAmPm: (time: string) => string;
 }
+
+// Add MosqueData type for the refactored mosque components
+export type MosqueData = Mosque;
