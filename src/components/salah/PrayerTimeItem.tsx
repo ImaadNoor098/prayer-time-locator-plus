@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import CountdownTimer from './CountdownTimer';
 
 interface PrayerTimeItemProps {
   prayer: string;
@@ -32,6 +33,26 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
       default: return '🕌';
     }
   };
+
+  // Calculate the prayer end time (for countdown)
+  const getPrayerEndTime = () => {
+    const now = new Date();
+    const [hours, minutes] = time.split(':').map(Number);
+    
+    const prayerDate = new Date(date);
+    prayerDate.setHours(hours, minutes, 0);
+    
+    // For active prayer, end time is 5 minutes after start
+    if (isCurrentPrayer) {
+      return new Date(prayerDate.getTime() + 5 * 60 * 1000);
+    }
+    
+    // For upcoming prayer, end time is the prayer time itself
+    return prayerDate;
+  };
+  
+  const endTime = getPrayerEndTime();
+  const shouldShowTimer = isCurrentPrayer || (!isPassed && prayer !== 'sunrise');
 
   return (
     <div 
@@ -86,6 +107,13 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
         )}>
           {formattedTime}
         </span>
+        
+        {shouldShowTimer && (
+          <CountdownTimer 
+            endTime={endTime} 
+            type={isCurrentPrayer ? 'active' : 'upcoming'} 
+          />
+        )}
         
         {isCurrentPrayer && prayer !== "sunrise" && (
           <Badge className="bg-white text-islamic-green mt-1">

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { MapPin, Clock, Heart, ArrowLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import CountdownTimer from './salah/CountdownTimer';
 
 const MosqueDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +47,21 @@ const MosqueDetail: React.FC = () => {
       const searchQuery = encodeURIComponent(`${mosque.name} ${mosque.address}`);
       window.open(`https://www.google.com/maps/search/?api=1&query=${searchQuery}`, '_blank');
     }
+  };
+
+  // Function to get the countdown end time
+  const getCountdownEndTime = (time: string, isPrayerActive: boolean) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const endTime = new Date();
+    endTime.setHours(hours, minutes, 0);
+    
+    // If prayer is active, countdown ends 5 minutes after prayer time
+    if (isPrayerActive) {
+      return new Date(endTime.getTime() + 5 * 60 * 1000);
+    }
+    
+    // For upcoming prayers, countdown ends at prayer time
+    return endTime;
   };
   
   return (
@@ -114,6 +130,10 @@ const MosqueDetail: React.FC = () => {
                     const formattedTime = formatTimeToAmPm(time);
                     const isLastItem = index === Object.entries(mosque.prayerTimes).length - 1;
                     
+                    // Calculate if we should show a countdown
+                    const shouldShowCountdown = isPrayerTimeActive || 
+                      (!isPrayerTimeOver && prayer !== "sunrise");
+                    
                     return (
                       <div 
                         key={prayer}
@@ -160,6 +180,13 @@ const MosqueDetail: React.FC = () => {
                           )}>
                             {formattedTime}
                           </span>
+                          
+                          {shouldShowCountdown && (
+                            <CountdownTimer 
+                              endTime={getCountdownEndTime(time, isPrayerTimeActive)}
+                              type={isPrayerTimeActive ? 'active' : 'upcoming'}
+                            />
+                          )}
                           
                           {isPrayerTimeActive && prayer !== "sunrise" && (
                             <Badge className="bg-islamic-green text-white text-xs mt-1">
