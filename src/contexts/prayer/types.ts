@@ -9,6 +9,8 @@ export interface PrayerContextType {
   currentTime: Date;
   searchParams: SearchParams;
   favorites: string[]; // Array of mosque IDs
+  userLocation: {latitude: number; longitude: number} | null;
+  locationError: string | null;
   setSelectedPrayer: (prayer: PrayerTime | null) => void;
   setCurrentFilter: (filter: FilterOption) => void;
   setSearchParams: (params: Partial<SearchParams>) => void;

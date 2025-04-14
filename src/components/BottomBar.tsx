@@ -1,34 +1,30 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Heart, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useNavigation } from '@/contexts/NavigationContext';
 
 const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { previousPath, setPreviousPath } = useNavigation();
-  
-  useEffect(() => {
-    if (location.pathname !== '/favorites' && location.pathname !== '/') {
-      setPreviousPath(location.pathname);
-    }
-  }, [location.pathname, setPreviousPath]);
   
   const isActive = (path: string) => {
     return location.pathname === path || 
-           (path === '/mosques' && location.pathname.startsWith('/mosque/')) ||
-           (path === '/salah-times' && location.pathname === '/salah-times');
+           (path === '/' && location.pathname.startsWith('/mosque/'));
   };
   
+  // Updated navigation handlers to go directly to the desired page
   const handleHomeClick = () => {
-    if (location.pathname === '/favorites') {
-      navigate(previousPath);
-    } else {
-      navigate('/');
-    }
+    navigate('/');
+  };
+  
+  const handlePrayerTimesClick = () => {
+    navigate('/salah-times');
+  };
+  
+  const handleFavoritesClick = () => {
+    navigate('/favorites');
   };
   
   return (
@@ -37,13 +33,13 @@ const BottomBar: React.FC = () => {
         variant="ghost"
         className={cn(
           "flex flex-col items-center gap-1 h-14 w-full",
-          isActive('/') || isActive('/mosques') ? "text-islamic-green" : "text-islamic-gray"
+          isActive('/') ? "text-islamic-green" : "text-islamic-gray"
         )}
         onClick={handleHomeClick}
       >
         <Home className={cn(
           "h-5 w-5",
-          isActive('/') || isActive('/mosques') ? "text-islamic-green" : ""
+          isActive('/') ? "text-islamic-green" : ""
         )} />
         <span className="text-xs">Home</span>
       </Button>
@@ -54,7 +50,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/salah-times') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={() => navigate('/salah-times')}
+        onClick={handlePrayerTimesClick}
       >
         <Clock className={cn(
           "h-5 w-5",
@@ -69,7 +65,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/favorites') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={() => navigate('/favorites')}
+        onClick={handleFavoritesClick}
       >
         <Heart className={cn(
           "h-5 w-5",

@@ -148,9 +148,10 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
         <Button
           variant="outline"
           size="sm"
-          className="w-1/2 border-islamic-blue text-islamic-blue"
+          className="w-1/2 bg-islamic-gold hover:bg-islamic-gold/90 text-black border-islamic-gold"
           onClick={handleDirections}
         >
+          <MapPin className="mr-1 h-4 w-4" />
           Directions
         </Button>
         <Button

@@ -1,82 +1,96 @@
 
 import React, { useState } from 'react';
-import { format, addDays, subDays } from 'date-fns';
-import { ArrowLeft, ArrowRight, CalendarIcon } from 'lucide-react';
+import { format, addDays, subDays, isSameDay } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { 
-  Popover,
-  PopoverContent,
-  PopoverTrigger 
-} from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface DateNavigationProps {
   selectedDate: Date;
   onDateChange: (date: Date) => void;
 }
 
-const DateNavigation: React.FC<DateNavigationProps> = ({ 
-  selectedDate, 
-  onDateChange 
-}) => {
-  const [open, setOpen] = useState(false);
-
+const DateNavigation: React.FC<DateNavigationProps> = ({ selectedDate, onDateChange }) => {
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  
+  const today = new Date();
+  const isToday = isSameDay(selectedDate, today);
+  
   const handlePreviousDay = () => {
     onDateChange(subDays(selectedDate, 1));
   };
-
+  
   const handleNextDay = () => {
     onDateChange(addDays(selectedDate, 1));
   };
-
-  const handleSelectDate = (date: Date | undefined) => {
-    if (date) {
-      onDateChange(date);
-      setOpen(false); // Close the popover after selecting a date
+  
+  const handleToday = () => {
+    if (!isToday) {
+      onDateChange(today);
     }
   };
-
+  
+  const handleCalendarSelect = (date: Date | undefined) => {
+    if (date) {
+      onDateChange(date);
+      setCalendarOpen(false); // Close calendar after selection
+    }
+  };
+  
   return (
-    <div className="flex flex-wrap justify-center gap-4 mb-6">
+    <div className="flex justify-between items-center my-4 bg-white dark:bg-card shadow-sm rounded-lg p-2">
       <Button
-        onClick={handlePreviousDay}
         variant="outline"
         size="icon"
-        className="rounded-full border-2 border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10 h-12 w-12 shadow-md"
+        onClick={handlePreviousDay}
+        className="text-islamic-blue dark:text-islamic-cream"
       >
-        <ArrowLeft className="h-6 w-6" />
-        <span className="sr-only">Previous Day</span>
+        <ChevronLeft className="h-4 w-4" />
       </Button>
       
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="border-islamic-gold bg-islamic-gold/10 text-islamic-blue hover:bg-islamic-gold/20 font-medium px-6"
-          >
-            <CalendarIcon className="h-4 w-4 mr-2" />
-            {format(selectedDate, 'MMMM d, yyyy')}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleSelectDate}
-            initialFocus
-            className="p-3 pointer-events-auto"
-          />
-        </PopoverContent>
-      </Popover>
+      <div className="flex gap-2 items-center">
+        <Button
+          variant={isToday ? "default" : "outline"}
+          size="sm"
+          onClick={handleToday}
+          className={cn(
+            isToday ? "bg-islamic-green hover:bg-islamic-green/90" : "text-islamic-blue dark:text-islamic-cream"
+          )}
+        >
+          Today
+        </Button>
+        
+        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              size="sm"
+              className="min-w-[150px] flex justify-between items-center text-islamic-blue dark:text-islamic-cream"
+            >
+              <span>{format(selectedDate, 'MMMM dd, yyyy')}</span>
+              <CalendarIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="center">
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={handleCalendarSelect}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
       
       <Button
-        onClick={handleNextDay}
         variant="outline"
         size="icon"
-        className="rounded-full border-2 border-islamic-blue text-islamic-blue hover:bg-islamic-blue/10 h-12 w-12 shadow-md"
+        onClick={handleNextDay}
+        className="text-islamic-blue dark:text-islamic-cream"
       >
-        <ArrowRight className="h-6 w-6" />
-        <span className="sr-only">Next Day</span>
+        <ChevronRight className="h-4 w-4" />
       </Button>
     </div>
   );

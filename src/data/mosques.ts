@@ -8,12 +8,13 @@ export const mosques: Mosque[] = [
     name: 'Masjid Al-Noor',
     address: '123 Islamic Way, Muslim District',
     distance: 1.2,
-    // Added coordinates for distance calculation
+    // Coordinates used for distance calculation
     coordinates: {
       latitude: 28.366,
       longitude: 79.428
     },
-    googleMapsLink: 'https://goo.gl/maps/exampleLink1',
+    // Added direct Google Maps link
+    googleMapsLink: 'https://www.google.com/maps?q=28.366,79.428',
     prayerTimes: {
       fajr: '05:30',
       dhuhr: '13:15',
@@ -23,8 +24,8 @@ export const mosques: Mosque[] = [
       jummah: '13:30'
     },
     images: [
-      'https://images.unsplash.com/photo-1584551246679-ac93133d14dc',
-      'https://images.unsplash.com/photo-1584551246679-ac93133d14dc'
+      '/mosques/mosque1.jpg',  // These can be local images
+      '/mosques/mosque1-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
@@ -37,7 +38,7 @@ export const mosques: Mosque[] = [
       latitude: 28.376,
       longitude: 79.432
     },
-    googleMapsLink: 'https://goo.gl/maps/exampleLink2',
+    googleMapsLink: 'https://www.google.com/maps?q=28.376,79.432',
     prayerTimes: {
       fajr: '05:15',
       dhuhr: '13:00',
@@ -47,8 +48,8 @@ export const mosques: Mosque[] = [
       jummah: '13:15'
     },
     images: [
-      'https://images.unsplash.com/photo-1542377575-1a78e9f2befa',
-      'https://images.unsplash.com/photo-1542377575-1a78e9f2befa'
+      '/mosques/mosque2.jpg',
+      '/mosques/mosque2-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Library', 'Conference Room', 'Educational Classes']
   },
@@ -61,7 +62,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://goo.gl/maps/exampleLink3',
+    googleMapsLink: 'https://www.google.com/maps?q=28.368,79.427',
     prayerTimes: {
       fajr: '05:45',
       dhuhr: '13:30',
@@ -71,8 +72,8 @@ export const mosques: Mosque[] = [
       jummah: '13:45'
     },
     images: [
-      'https://images.unsplash.com/photo-1564769625688-78e0ff96661a',
-      'https://images.unsplash.com/photo-1564769625688-78e0ff96661a'
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
@@ -85,7 +86,7 @@ export const mosques: Mosque[] = [
       latitude: 28.395,
       longitude: 79.445
     },
-    googleMapsLink: 'https://goo.gl/maps/exampleLink4',
+    googleMapsLink: 'https://www.google.com/maps?q=28.395,79.445',
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '12:45',
@@ -95,8 +96,8 @@ export const mosques: Mosque[] = [
       jummah: '13:00'
     },
     images: [
-      'https://images.unsplash.com/photo-1585129918930-d358629058ec',
-      'https://images.unsplash.com/photo-1585129918930-d358629058ec'
+      '/mosques/mosque4.jpg',
+      '/mosques/mosque4-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Islamic Shop', 'Funeral Services', 'Marriage Services']
   },
@@ -109,7 +110,7 @@ export const mosques: Mosque[] = [
       latitude: 28.374,
       longitude: 79.422
     },
-    googleMapsLink: 'https://goo.gl/maps/exampleLink5',
+    googleMapsLink: 'https://www.google.com/maps?q=28.374,79.422',
     prayerTimes: {
       fajr: '05:20',
       dhuhr: '13:10',
@@ -119,8 +120,8 @@ export const mosques: Mosque[] = [
       jummah: '13:20'
     },
     images: [
-      'https://images.unsplash.com/photo-1585129918930-d358629058ec',
-      'https://images.unsplash.com/photo-1585129918930-d358629058ec'
+      '/mosques/mosque5.jpg',
+      '/mosques/mosque5-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Food Bank', 'Madrasah', 'Multilingual Sermons']
   }
