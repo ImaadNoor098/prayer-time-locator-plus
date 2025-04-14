@@ -42,6 +42,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
     return null;
   }
 
+  // Format the time to include a minus symbol
+  const formattedTime = `-${timeLeft.minutes.toString().padStart(2, '0')}:${timeLeft.seconds.toString().padStart(2, '0')}`;
+
   return (
     <div className={cn(
       "px-2 py-1 rounded-md text-sm font-medium flex items-center",
@@ -50,7 +53,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
         : "bg-islamic-blue/20 text-islamic-blue"
     )}>
       <span className="inline-block">
-        {timeLeft.minutes.toString().padStart(2, '0')}:{timeLeft.seconds.toString().padStart(2, '0')}
+        {formattedTime}
       </span>
     </div>
   );
