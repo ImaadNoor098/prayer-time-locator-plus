@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 import { prayerTimes } from '@/data/prayers';
 import { mosques } from '@/data/mosques';
@@ -22,6 +22,13 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [locationError, setLocationError] = useState<string | null>(null);
   const [pageScrollPositions, setPageScrollPositions] = useState<Record<string, number>>({});
   const [lastVisitedPages, setLastVisitedPages] = useState<string[]>([]);
+  const [unfavoriteDialogState, setUnfavoriteDialogState] = useState<{
+    isOpen: boolean;
+    mosque: Mosque | null;
+  }>({
+    isOpen: false,
+    mosque: null
+  });
   
   const currentTime = useCurrentTime();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
@@ -163,6 +170,22 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     });
   };
 
+  // Show unfavorite confirmation dialog
+  const showUnfavoriteConfirmation = (mosque: Mosque) => {
+    setUnfavoriteDialogState({
+      isOpen: true,
+      mosque: mosque
+    });
+  };
+
+  // Hide unfavorite confirmation dialog
+  const hideUnfavoriteConfirmation = () => {
+    setUnfavoriteDialogState({
+      isOpen: false,
+      mosque: null
+    });
+  };
+
   return (
     <PrayerContext.Provider
       value={{
@@ -186,7 +209,10 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         formatTimeToAmPm,
         saveScrollPosition,
         getSavedScrollPosition,
-        trackPageVisit
+        trackPageVisit,
+        showUnfavoriteConfirmation,
+        hideUnfavoriteConfirmation,
+        unfavoriteDialogState
       }}
     >
       {children}
