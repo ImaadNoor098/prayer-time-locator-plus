@@ -5,6 +5,8 @@ import { ArrowLeft, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { MosqueData } from '@/contexts/prayer/types';
+import { usePrayer } from '@/contexts/prayer';
+import UnfavoriteConfirmation from './UnfavoriteConfirmation';
 
 interface MosqueHeaderProps {
   mosque: MosqueData;
@@ -14,6 +16,26 @@ interface MosqueHeaderProps {
 
 const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavoriteToggle }) => {
   const navigate = useNavigate();
+  const { showUnfavoriteConfirmation, unfavoriteDialogState, hideUnfavoriteConfirmation } = usePrayer();
+
+  const handleFavoriteClick = () => {
+    if (favorite) {
+      // Show confirmation dialog if removing from favorites
+      showUnfavoriteConfirmation(mosque);
+    } else {
+      // Add to favorites directly
+      onFavoriteToggle();
+    }
+  };
+
+  // Handle confirmation of unfavoriting
+  const handleConfirmUnfavorite = () => {
+    onFavoriteToggle();
+    hideUnfavoriteConfirmation();
+  };
+
+  // Check if this mosque is the one in the unfavorite dialog
+  const isCurrentMosqueInDialog = unfavoriteDialogState.mosque?.id === mosque.id;
 
   return (
     <>
@@ -30,7 +52,7 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
         <Button
           variant="ghost"
           size="icon"
-          onClick={onFavoriteToggle}
+          onClick={handleFavoriteClick}
           className={cn(
             "text-2xl",
             favorite ? "text-islamic-green" : "text-islamic-gray"
@@ -39,6 +61,16 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
           <Heart className={cn("h-6 w-6", favorite ? "fill-islamic-green" : "")} />
         </Button>
       </div>
+
+      {/* Only render the confirmation dialog if this mosque is the one being unfavorited */}
+      {isCurrentMosqueInDialog && (
+        <UnfavoriteConfirmation
+          isOpen={unfavoriteDialogState.isOpen}
+          onClose={hideUnfavoriteConfirmation}
+          onConfirm={handleConfirmUnfavorite}
+          mosqueName={mosque.name}
+        />
+      )}
     </>
   );
 };

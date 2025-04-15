@@ -25,4 +25,10 @@ export interface PrayerContextType {
   saveScrollPosition: (page: string, position: number) => void;
   getSavedScrollPosition: (page: string) => number;
   trackPageVisit: (page: string) => void;
+  showUnfavoriteConfirmation: (mosque: Mosque) => void;
+  hideUnfavoriteConfirmation: () => void;
+  unfavoriteDialogState: {
+    isOpen: boolean;
+    mosque: Mosque | null;
+  };
 }
