@@ -4,27 +4,25 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Heart, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePrayer } from '@/contexts/prayer';
 
 const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { trackPageVisit } = usePrayer();
   
   const isActive = (path: string) => {
     return location.pathname === path || 
            (path === '/' && location.pathname.startsWith('/mosque/'));
   };
   
-  // Updated navigation handlers to go directly to the desired page
-  const handleHomeClick = () => {
-    navigate('/');
-  };
-  
-  const handlePrayerTimesClick = () => {
-    navigate('/salah-times');
-  };
-  
-  const handleFavoritesClick = () => {
-    navigate('/favorites');
+  // Updated navigation handlers with navigation state
+  const handleNavigate = (path: string) => {
+    // Track the visit attempt (for double-tap detection)
+    trackPageVisit(path);
+    
+    // Navigate with state to indicate this came from bottom bar
+    navigate(path, { state: { fromBottomBar: true } });
   };
   
   return (
@@ -35,7 +33,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={handleHomeClick}
+        onClick={() => handleNavigate('/')}
       >
         <Home className={cn(
           "h-5 w-5",
@@ -50,7 +48,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/salah-times') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={handlePrayerTimesClick}
+        onClick={() => handleNavigate('/salah-times')}
       >
         <Clock className={cn(
           "h-5 w-5",
@@ -65,7 +63,7 @@ const BottomBar: React.FC = () => {
           "flex flex-col items-center gap-1 h-14 w-full",
           isActive('/favorites') ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={handleFavoritesClick}
+        onClick={() => handleNavigate('/favorites')}
       >
         <Heart className={cn(
           "h-5 w-5",

@@ -61,6 +61,11 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     navigate(`/mosque/${mosque.id}`);
   };
   
+  const handleFavoriteToggle = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click
+    toggleFavorite(mosque.id);
+  };
+  
   // Function to calculate distance using Haversine formula (great-circle distance)
   function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Radius of the Earth in kilometers
@@ -99,12 +104,27 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
           )}>
             {mosque.name}
           </h3>
-          <Badge variant={isPassed && !isActive ? "outline" : "default"} className={cn(
-            isActive ? "bg-islamic-green animate-pulse" :
-            isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-blue"
-          )}>
-            {formattedPrayerTime}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 p-0"
+              onClick={handleFavoriteToggle}
+            >
+              <Heart 
+                className={cn(
+                  "h-5 w-5 transition-colors",
+                  favorite ? "fill-islamic-green text-islamic-green" : "text-islamic-gray"
+                )} 
+              />
+            </Button>
+            <Badge variant={isPassed && !isActive ? "outline" : "default"} className={cn(
+              isActive ? "bg-islamic-green animate-pulse" :
+              isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-blue"
+            )}>
+              {formattedPrayerTime}
+            </Badge>
+          </div>
         </div>
         
         <div className="flex items-center text-sm text-islamic-gray mb-2">

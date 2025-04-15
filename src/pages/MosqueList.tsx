@@ -1,6 +1,5 @@
-
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
 import FilterBar from '@/components/FilterBar';
@@ -11,15 +10,54 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 const MosqueList: React.FC = () => {
-  const { selectedPrayer, getFilteredMosques } = usePrayer();
+  const { selectedPrayer, getFilteredMosques, saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePrayer();
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageRef = useRef<HTMLDivElement>(null);
+  const firstRenderRef = useRef(true);
   
-  // Use useEffect to handle navigation
+  // Use useEffect to handle navigation and scrolling behavior
   useEffect(() => {
     if (!selectedPrayer) {
       navigate('/');
+      return;
     }
-  }, [selectedPrayer, navigate]);
+    
+    const path = location.pathname;
+    
+    // Track this page visit for double-tap detection
+    trackPageVisit(path);
+    
+    // On first render, decide whether to restore position or start at top
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      
+      // Get saved position for this page
+      const savedPosition = getSavedScrollPosition(path);
+      
+      // If this is direct navigation (not from bottom bar), start from top
+      // Otherwise restore previous position if available
+      if (savedPosition > 0 && location.state?.fromBottomBar) {
+        setTimeout(() => {
+          window.scrollTo({
+            top: savedPosition,
+            behavior: 'auto'
+          });
+        }, 100);
+      } else {
+        // Scroll to top for first visit or non-bottom-bar navigation
+        window.scrollTo({
+          top: 0,
+          behavior: 'auto'
+        });
+      }
+    }
+    
+    // Save scroll position when leaving the page
+    return () => {
+      saveScrollPosition(path, window.scrollY);
+    };
+  }, [selectedPrayer, navigate, location.pathname, getSavedScrollPosition, saveScrollPosition, trackPageVisit, location.state]);
   
   // If no prayer is selected, render nothing while redirecting
   if (!selectedPrayer) {
@@ -29,7 +67,7 @@ const MosqueList: React.FC = () => {
   const mosques = getFilteredMosques();
   
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20">
+    <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
           <div className="flex justify-between items-center mb-2">

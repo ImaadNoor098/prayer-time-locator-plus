@@ -1,6 +1,8 @@
 
 import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 
+export type MosqueData = Mosque;
+
 export interface PrayerContextType {
   prayers: PrayerTime[];
   mosques: Mosque[];
@@ -8,7 +10,7 @@ export interface PrayerContextType {
   currentFilter: FilterOption;
   currentTime: Date;
   searchParams: SearchParams;
-  favorites: string[]; // Array of mosque IDs
+  favorites: string[];
   userLocation: {latitude: number; longitude: number} | null;
   locationError: string | null;
   setSelectedPrayer: (prayer: PrayerTime | null) => void;
@@ -20,7 +22,7 @@ export interface PrayerContextType {
   toggleFavorite: (mosqueId: string) => void;
   isFavorite: (mosqueId: string) => boolean;
   formatTimeToAmPm: (time: string) => string;
+  saveScrollPosition: (page: string, position: number) => void;
+  getSavedScrollPosition: (page: string) => number;
+  trackPageVisit: (page: string) => void;
 }
-
-// Add MosqueData type for the refactored mosque components
-export type MosqueData = Mosque;
