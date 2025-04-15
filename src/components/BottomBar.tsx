@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Heart, Clock } from 'lucide-react';
@@ -9,19 +8,53 @@ import { usePrayer } from '@/contexts/prayer';
 const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { trackPageVisit } = usePrayer();
+  const { trackPageVisit, selectedPrayer } = usePrayer();
+  const lastHomeClickRef = useRef<number | null>(null);
+  const doubleTapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+  useEffect(() => {
+    return () => {
+      if (doubleTapTimeoutRef.current) {
+        clearTimeout(doubleTapTimeoutRef.current);
+      }
+    };
+  }, []);
   
   const isActive = (path: string) => {
     return location.pathname === path || 
            (path === '/' && location.pathname.startsWith('/mosque/'));
   };
   
-  // Updated navigation handlers with navigation state
-  const handleNavigate = (path: string) => {
-    // Track the visit attempt (for double-tap detection)
-    trackPageVisit(path);
+  const handleHomeNavigate = () => {
+    const now = Date.now();
     
-    // Navigate with state to indicate this came from bottom bar
+    if (lastHomeClickRef.current && now - lastHomeClickRef.current < 500) {
+      trackPageVisit('/');
+      navigate('/', { state: { fromBottomBar: true } });
+      lastHomeClickRef.current = null;
+      
+      if (doubleTapTimeoutRef.current) {
+        clearTimeout(doubleTapTimeoutRef.current);
+        doubleTapTimeoutRef.current = null;
+      }
+    } else {
+      lastHomeClickRef.current = now;
+      
+      doubleTapTimeoutRef.current = setTimeout(() => {
+        if (selectedPrayer) {
+          trackPageVisit('/mosques');
+          navigate('/mosques', { state: { fromBottomBar: true } });
+        } else {
+          trackPageVisit('/');
+          navigate('/', { state: { fromBottomBar: true } });
+        }
+        lastHomeClickRef.current = null;
+      }, 250);
+    }
+  };
+  
+  const handleNavigate = (path: string) => {
+    trackPageVisit(path);
     navigate(path, { state: { fromBottomBar: true } });
   };
   
@@ -31,13 +64,13 @@ const BottomBar: React.FC = () => {
         variant="ghost"
         className={cn(
           "flex flex-col items-center gap-1 h-14 w-full",
-          isActive('/') ? "text-islamic-green" : "text-islamic-gray"
+          (isActive('/') || isActive('/mosques')) ? "text-islamic-green" : "text-islamic-gray"
         )}
-        onClick={() => handleNavigate('/')}
+        onClick={handleHomeNavigate}
       >
         <Home className={cn(
           "h-5 w-5",
-          isActive('/') ? "text-islamic-green" : ""
+          (isActive('/') || isActive('/mosques')) ? "text-islamic-green" : ""
         )} />
         <span className="text-xs">Home</span>
       </Button>
