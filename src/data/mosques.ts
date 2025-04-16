@@ -10,8 +10,8 @@ export const mosques: Mosque[] = [
     distance: 1.2,
     // Coordinates used for distance calculation
     coordinates: {
-      latitude: 28.366,
-      longitude: 79.428
+      latitude: 28.366167,
+      longitude: 79.407535
     },
     // Added direct Google Maps link
     googleMapsLink: 'https://maps.app.goo.gl/S6KCoKG7Jz4KFa7NA?g_st=aw',
