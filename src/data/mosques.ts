@@ -24,7 +24,7 @@ export const mosques: Mosque[] = [
       jummah: '01:00'
     },
     images: [
-      '/mosques/mosque1.jpg',  // These can be local images
+      '/mosques/mosque1.png',  // These can be local images
       '/mosques/mosque1-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Ablution Area', 'Women\'s Section', 'Parking']
