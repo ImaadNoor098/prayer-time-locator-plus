@@ -5,8 +5,8 @@ import { Mosque } from '@/types';
 export const mosques: Mosque[] = [
   {
     id: 'm1',
-    name: 'Masjid Al-Noor',
-    address: '123 Islamic Way, Muslim District',
+    name: 'Masjid Pul Qazi',
+    address: 'Sahukara, Bara Bazar, Bareilly',
     distance: 1.2,
     // Coordinates used for distance calculation
     coordinates: {
@@ -14,14 +14,14 @@ export const mosques: Mosque[] = [
       longitude: 79.428
     },
     // Added direct Google Maps link
-    googleMapsLink: 'https://www.google.com/maps?q=28.366,79.428',
+    googleMapsLink: 'https://maps.app.goo.gl/S6KCoKG7Jz4KFa7NA?g_st=aw',
     prayerTimes: {
       fajr: '05:30',
-      dhuhr: '13:15',
-      asr: '16:45',
+      dhuhr: '14:15',
+      asr: '17:45',
       maghrib: '19:30',
-      isha: '21:00',
-      jummah: '13:30'
+      isha: '21:15',
+      jummah: '01:00'
     },
     images: [
       '/mosques/mosque1.jpg',  // These can be local images
