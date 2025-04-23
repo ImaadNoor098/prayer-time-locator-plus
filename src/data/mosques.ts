@@ -7,7 +7,7 @@ export const mosques: Mosque[] = [
     id: 'm1',
     name: 'Masjid Pul Qazi',
     address: 'Sahukara, Bara Bazar, Bareilly',
-    distance: 1.2,
+    distance: Loading.....,
     // Coordinates used for distance calculation
     coordinates: {
       latitude: 28.366167,
@@ -18,7 +18,7 @@ export const mosques: Mosque[] = [
     prayerTimes: {
       fajr: '05:30',
       dhuhr: '14:15',
-      asr: '17:45',
+      asr: '18:00',
       maghrib: '19:30',
       isha: '21:15',
       jummah: '01:00'
