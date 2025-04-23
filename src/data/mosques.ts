@@ -7,7 +7,7 @@ export const mosques: Mosque[] = [
     id: 'm1',
     name: 'Masjid Pul Qazi',
     address: 'Sahukara, Bara Bazar, Bareilly',
-    distance: Loading.....,
+    distance: Loading(Plz Wait),
     // Coordinates used for distance calculation
     coordinates: {
       latitude: 28.366167,
