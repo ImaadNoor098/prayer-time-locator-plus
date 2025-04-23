@@ -7,7 +7,7 @@ export const mosques: Mosque[] = [
     id: 'm1',
     name: 'Masjid Pul Qazi',
     address: 'Sahukara, Bara Bazar, Bareilly',
-    distance: Loading(Plz Wait),
+    distance: Loading,
     // Coordinates used for distance calculation
     coordinates: {
       latitude: 28.366167,
@@ -27,7 +27,7 @@ export const mosques: Mosque[] = [
       '/mosques/mosque1.png',  // These can be local images
       '/mosques/mosque1-interior.jpg'
     ],
-    facilities: ['Prayer Hall', 'Ablution Area', 'Women\'s Section', 'Parking']
+    facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
   {
     id: 'm2',
