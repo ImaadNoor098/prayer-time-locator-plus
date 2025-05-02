@@ -3,6 +3,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
 import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
 import MosqueHeader from './mosque/MosqueHeader';
 import MosqueImage from './mosque/MosqueImage';
 import MosqueInformation from './mosque/MosqueInformation';
@@ -48,6 +50,11 @@ const MosqueDetail: React.FC = () => {
       window.open(`https://www.google.com/maps/search/?api=1&query=${searchQuery}`, '_blank');
     }
   };
+
+  // This would typically come from backend/API - for demo purposes we're simulating some mosques having updated prayer times
+  const hasUpdatedPrayerTime = ['m1', 'm3'].includes(mosque.id);
+  const updatedPrayer = hasUpdatedPrayerTime ? (mosque.id === 'm1' ? 'Asr' : 'Maghrib') : null;
+  const updateTime = hasUpdatedPrayerTime ? (mosque.id === 'm1' ? '03:15 PM' : '04:30 PM') : null;
   
   return (
     <div className="container mx-auto max-w-4xl px-4 pb-8">
@@ -58,6 +65,24 @@ const MosqueDetail: React.FC = () => {
       />
       
       <MosqueImage mosque={mosque} />
+
+      {/* Display prayer time update alert if applicable */}
+      {hasUpdatedPrayerTime && (
+        <Alert className="mb-4 bg-islamic-blue/10 border-islamic-blue">
+          <Info className="h-4 w-4 text-islamic-blue" />
+          <AlertDescription className="text-islamic-blue text-sm">
+            <strong>Prayer Time Update:</strong> The {updatedPrayer} prayer time for this mosque has been recently updated at {updateTime}.
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      {/* General prayer times disclaimer */}
+      <Alert className="mb-4 bg-islamic-gold/10 border-islamic-gold">
+        <Info className="h-4 w-4 text-islamic-gray" />
+        <AlertDescription className="text-islamic-gray text-sm">
+          Prayer times are being verified for accuracy. Please confirm with the mosque directly for the most current times.
+        </AlertDescription>
+      </Alert>
       
       <Card className="mb-6">
         <CardContent className="p-4">
