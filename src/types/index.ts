@@ -2,10 +2,12 @@
 import { User, PasswordRequirement } from './auth';
 
 export interface PrayerTime {
+  id: string;  // Adding id property
   name: string;
   icon: string;
   time?: string; // Optional because some prayer times might not be available
   timeAMPM?: string; // Formatted in AM/PM
+  description: string; // Adding description property
 }
 
 export interface Coordinates {
@@ -34,6 +36,16 @@ export interface Mosque {
   facilities: string[];
 }
 
+export interface SalahTime {
+  date: Date;
+  fajr: string;
+  sunrise: string;
+  dhuhr: string;
+  asr: string;
+  maghrib: string;
+  isha: string;
+}
+
 export interface SalahDay {
   date: string;
   day: string;
@@ -55,7 +67,8 @@ export interface SalahDay {
   };
 }
 
-export type FilterOption = 'earliest' | 'nearest' | 'alphabetical';
+// Extending FilterOption to include latest and farthest
+export type FilterOption = 'earliest' | 'nearest' | 'alphabetical' | 'latest' | 'farthest';
 
 export interface SearchParams {
   query: string;
