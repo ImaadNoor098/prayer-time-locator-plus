@@ -54,13 +54,10 @@ const BottomBar: React.FC = () => {
   ];
 
   const handleNavigation = (item: NavItem) => {
-    // Special handling for home button - navigate to last visited page
+    // Special handling for home button - always navigate to home page
     if (item.path === '/') {
-      const lastVisitedPage = getLastVisitedPage();
-      if (lastVisitedPage !== '/') {
-        navigate(lastVisitedPage, { state: { fromBottomBar: true } });
-        return;
-      }
+      navigate('/', { state: { fromBottomBar: true } });
+      return;
     }
     
     // Handle double tap on favorites

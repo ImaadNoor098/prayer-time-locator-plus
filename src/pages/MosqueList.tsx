@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -10,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
 const MosqueList: React.FC = () => {
-  const { selectedPrayer, getFilteredMosques, saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePrayer();
+  const { selectedPrayer, getFilteredMosques, saveScrollPosition, getSavedScrollPosition, trackPageVisit, setSelectedPrayer } = usePrayer();
   const navigate = useNavigate();
   const location = useLocation();
   const pageRef = useRef<HTMLDivElement>(null);
@@ -59,6 +60,12 @@ const MosqueList: React.FC = () => {
     };
   }, [selectedPrayer, navigate, location.pathname, getSavedScrollPosition, saveScrollPosition, trackPageVisit, location.state]);
   
+  // Handle Select Prayer button click
+  const handleSelectPrayerClick = () => {
+    // Navigate to home page to select a new prayer
+    navigate('/', { state: { selectingNewPrayer: true } });
+  };
+  
   // If no prayer is selected, render nothing while redirecting
   if (!selectedPrayer) {
     return null;
@@ -81,7 +88,7 @@ const MosqueList: React.FC = () => {
             </Button>
             
             <Button
-              onClick={() => navigate('/')}
+              onClick={handleSelectPrayerClick}
               className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md transform transition-transform hover:scale-105"
             >
               Select Prayer
