@@ -68,12 +68,12 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
           variant="ghost"
           size="icon"
           onClick={handleFavoriteClick}
-          className={cn(
-            "text-2xl",
-            favorite && isAuthenticated ? "text-islamic-green" : "text-islamic-gray"
-          )}
+          className="text-2xl text-islamic-gray"
         >
-          <Heart className={cn("h-6 w-6", favorite && isAuthenticated ? "fill-islamic-green" : "")} />
+          <Heart className={cn(
+            "h-6 w-6", 
+            favorite && isAuthenticated ? "fill-islamic-green text-islamic-green" : ""
+          )} />
         </Button>
       </div>
 

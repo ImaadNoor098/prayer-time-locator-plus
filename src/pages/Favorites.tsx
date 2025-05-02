@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+
+import React, { useEffect, useRef, useState } from 'react';
 import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
 import SearchBar from '@/components/SearchBar';
@@ -6,11 +7,15 @@ import CurrentTime from '@/components/CurrentTime';
 import BottomBar from '@/components/BottomBar';
 import { Heart } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import FavoriteAuthCheck from '@/components/FavoriteAuthCheck';
 
 const Favorites: React.FC = () => {
   const { mosques, favorites, selectedPrayer, setSearchParams, saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePrayer();
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const firstRenderRef = useRef(true);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   
   // Set showFavorites to true when component mounts
   useEffect(() => {
@@ -60,8 +65,32 @@ const Favorites: React.FC = () => {
     };
   }, [location.pathname, getSavedScrollPosition, saveScrollPosition, trackPageVisit, location.state]);
   
-  // Get all favorited mosques
-  const favoritedMosques = mosques.filter(mosque => favorites.includes(mosque.id));
+  // Handle double-tap on favorites page to show login dialog
+  useEffect(() => {
+    if (!isAuthenticated) {
+      // Check if this is a second visit to favorites page in quick succession
+      const recentVisits = localStorage.getItem('recent-page-visits');
+      if (recentVisits) {
+        try {
+          const visits = JSON.parse(recentVisits);
+          const favoritesVisits = visits.filter((v: any) => 
+            v.path === '/favorites' && 
+            (Date.now() - v.timestamp) < 1000
+          );
+          
+          if (favoritesVisits.length > 1) {
+            setShowAuthDialog(true);
+          }
+        } catch (e) {
+          console.error('Error parsing recent visits:', e);
+        }
+      }
+    }
+  }, [isAuthenticated]);
+  
+  // Get all favorited mosques if authenticated
+  const favoritedMosques = isAuthenticated ? 
+    mosques.filter(mosque => favorites.includes(mosque.id)) : [];
   
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">
@@ -81,21 +110,44 @@ const Favorites: React.FC = () => {
         <CurrentTime />
         
         <div className="pt-4 space-y-4">
-          {favoritedMosques.length > 0 ? (
-            favoritedMosques.map((mosque) => (
-              <MosqueCard key={mosque.id} mosque={mosque} />
-            ))
+          {isAuthenticated ? (
+            favoritedMosques.length > 0 ? (
+              favoritedMosques.map((mosque) => (
+                <MosqueCard key={mosque.id} mosque={mosque} />
+              ))
+            ) : (
+              <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card">
+                <p className="text-islamic-gray dark:text-islamic-cream/70">
+                  No favorite mosques yet. Add some by tapping the heart icon.
+                </p>
+              </div>
+            )
           ) : (
             <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card">
-              <p className="text-islamic-gray dark:text-islamic-cream/70">
-                No favorite mosques yet. Add some by tapping the heart icon.
+              <p className="text-islamic-gray dark:text-islamic-cream/70 mb-4">
+                Please sign in to view and manage your favorite mosques.
               </p>
+              <div className="flex justify-center space-x-2">
+                <button 
+                  onClick={() => setShowAuthDialog(true)}
+                  className="px-4 py-2 bg-islamic-blue text-white rounded-md hover:bg-islamic-blue/90"
+                >
+                  Sign In / Sign Up
+                </button>
+              </div>
             </div>
           )}
         </div>
       </div>
       
       <BottomBar />
+      
+      {/* Auth check dialog */}
+      <FavoriteAuthCheck 
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        onAuthenticated={() => {}}
+      />
     </div>
   );
 };

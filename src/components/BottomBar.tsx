@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
@@ -33,8 +33,6 @@ const BottomBar: React.FC = () => {
       icon: <Heart className="h-6 w-6" />,
       label: 'Favorites',
       path: '/favorites',
-      requireAuth: true,
-      authRedirect: '/login',
     },
     {
       icon: <MapPin className="h-6 w-6" />,
@@ -75,22 +73,16 @@ const BottomBar: React.FC = () => {
           lastTap.item === 'favorites' && 
           now - lastTap.time < 500) { // Double tap within 500ms
         
-        // Show auth dialog to add favorites
-        setShowAuthDialog(true);
-        setLastTap(null);
-        return;
+        // Show auth dialog if not authenticated
+        if (!isAuthenticated) {
+          setShowAuthDialog(true);
+          setLastTap(null);
+          return;
+        }
       }
       
       // Record the tap
       setLastTap({ item: 'favorites', time: now });
-      
-      // If the item requires authentication and user is not authenticated, redirect
-      if (item.requireAuth && !isAuthenticated && item.authRedirect) {
-        // Store the target path for redirect after auth
-        sessionStorage.setItem('auth-redirect', item.path);
-        navigate(item.authRedirect, { state: { fromBottomBar: true } });
-        return;
-      }
     }
     
     // If the item requires authentication and user is not authenticated, redirect
