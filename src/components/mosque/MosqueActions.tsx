@@ -68,16 +68,16 @@ const MosqueActions: React.FC<MosqueActionsProps> = ({
         </Button>
         <Button 
           onClick={handleFavoriteClick}
-          variant={favorite ? "default" : "outline"}
+          variant={favorite && isAuthenticated ? "default" : "outline"}
           className={cn(
             "flex-1",
-            favorite 
+            favorite && isAuthenticated
               ? "bg-islamic-green hover:bg-islamic-green/80" 
               : "border-islamic-green text-islamic-green hover:bg-islamic-green/10"
           )}
         >
-          <Heart className={cn("mr-2 h-4 w-4", favorite ? "fill-current" : "")} />
-          {favorite ? "Favorited" : "Add to Favorites"}
+          <Heart className={cn("mr-2 h-4 w-4", favorite && isAuthenticated ? "fill-current" : "")} />
+          {favorite && isAuthenticated ? "Favorited" : "Add to Favorites"}
         </Button>
       </div>
 

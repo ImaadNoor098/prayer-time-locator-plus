@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { PrayerProvider } from "@/contexts/prayer";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -21,45 +21,66 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
-        <PrayerProvider>
-          <NavigationProvider>
-            <Toaster />
-            <Sonner />
+const App = () => {
+  // Function to determine home page route
+  const HomeRoute = () => {
+    // Check if we have a last visited page in localStorage
+    const lastVisitedPage = localStorage.getItem('last-visited-page');
+    const selectedPrayer = localStorage.getItem('selected-prayer');
+    
+    // If there's a selected prayer and last visited page, go there
+    if (selectedPrayer && lastVisitedPage && 
+        lastVisitedPage !== '/' && 
+        lastVisitedPage !== '/login' && 
+        lastVisitedPage !== '/register' && 
+        lastVisitedPage !== '/verify-otp') {
+      return <Navigate to={lastVisitedPage} replace />;
+    }
+    
+    // Default to prayer selection
+    return <PrayerSelection />;
+  };
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <AuthProvider>
+          <PrayerProvider>
             <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<PrayerSelection />} />
-                <Route path="/mosques" element={<MosqueList />} />
-                <Route path="/favorites" element={
-                  <ProtectedRoute>
-                    <Favorites />
-                  </ProtectedRoute>
-                } />
-                <Route path="/mosque/:id" element={<MosqueDetailPage />} />
-                <Route path="/salah-times" element={<SalahTimes />} />
-                
-                {/* Auth routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/verify-otp" element={<VerifyOtp />} />
-                <Route path="/profile" element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                } />
-                
-                {/* Catch-all route */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <NavigationProvider>
+                <Toaster />
+                <Sonner />
+                <Routes>
+                  <Route path="/" element={<HomeRoute />} />
+                  <Route path="/mosques" element={<MosqueList />} />
+                  <Route path="/favorites" element={
+                    <ProtectedRoute>
+                      <Favorites />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/mosque/:id" element={<MosqueDetailPage />} />
+                  <Route path="/salah-times" element={<SalahTimes />} />
+                  
+                  {/* Auth routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/verify-otp" element={<VerifyOtp />} />
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  } />
+                  
+                  {/* Catch-all route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </NavigationProvider>
             </BrowserRouter>
-          </NavigationProvider>
-        </PrayerProvider>
-      </AuthProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+          </PrayerProvider>
+        </AuthProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

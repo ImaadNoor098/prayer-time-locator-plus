@@ -1,12 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { MosqueData } from '@/contexts/prayer/types';
 import { usePrayer } from '@/contexts/prayer';
+import { useAuth } from '@/contexts/AuthContext';
 import UnfavoriteConfirmation from './UnfavoriteConfirmation';
+import FavoriteAuthCheck from '../FavoriteAuthCheck';
 
 interface MosqueHeaderProps {
   mosque: MosqueData;
@@ -17,8 +19,16 @@ interface MosqueHeaderProps {
 const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavoriteToggle }) => {
   const navigate = useNavigate();
   const { showUnfavoriteConfirmation, unfavoriteDialogState, hideUnfavoriteConfirmation } = usePrayer();
+  const { isAuthenticated } = useAuth();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const handleFavoriteClick = () => {
+    if (!isAuthenticated) {
+      // Show auth dialog if not logged in
+      setShowAuthDialog(true);
+      return;
+    }
+  
     if (favorite) {
       // Show confirmation dialog if removing from favorites
       showUnfavoriteConfirmation(mosque);
@@ -32,6 +42,11 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
   const handleConfirmUnfavorite = () => {
     onFavoriteToggle();
     hideUnfavoriteConfirmation();
+  };
+  
+  // Handle successful authentication
+  const handleAuthenticated = () => {
+    onFavoriteToggle();
   };
 
   // Check if this mosque is the one in the unfavorite dialog
@@ -55,10 +70,10 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
           onClick={handleFavoriteClick}
           className={cn(
             "text-2xl",
-            favorite ? "text-islamic-green" : "text-islamic-gray"
+            favorite && isAuthenticated ? "text-islamic-green" : "text-islamic-gray"
           )}
         >
-          <Heart className={cn("h-6 w-6", favorite ? "fill-islamic-green" : "")} />
+          <Heart className={cn("h-6 w-6", favorite && isAuthenticated ? "fill-islamic-green" : "")} />
         </Button>
       </div>
 
@@ -71,6 +86,13 @@ const MosqueHeader: React.FC<MosqueHeaderProps> = ({ mosque, favorite, onFavorit
           mosqueName={mosque.name}
         />
       )}
+      
+      {/* Auth check dialog */}
+      <FavoriteAuthCheck 
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        onAuthenticated={handleAuthenticated}
+      />
     </>
   );
 };

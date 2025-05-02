@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNavigation } from '@/contexts/NavigationContext';
+import FavoriteAuthCheck from './FavoriteAuthCheck';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -17,6 +19,9 @@ const BottomBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { getLastVisitedPage } = useNavigation();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [lastTap, setLastTap] = useState<{ item: string, time: number } | null>(null);
 
   const navItems: NavItem[] = [
     {
@@ -51,6 +56,43 @@ const BottomBar: React.FC = () => {
   ];
 
   const handleNavigation = (item: NavItem) => {
+    // Special handling for home button - navigate to last visited page
+    if (item.path === '/') {
+      const lastVisitedPage = getLastVisitedPage();
+      if (lastVisitedPage !== '/') {
+        navigate(lastVisitedPage, { state: { fromBottomBar: true } });
+        return;
+      }
+    }
+    
+    // Handle double tap on favorites
+    if (item.path === '/favorites') {
+      const now = Date.now();
+      
+      // Check if we're already on the favorites page and this is a tap
+      if (location.pathname === '/favorites' && 
+          lastTap && 
+          lastTap.item === 'favorites' && 
+          now - lastTap.time < 500) { // Double tap within 500ms
+        
+        // Show auth dialog to add favorites
+        setShowAuthDialog(true);
+        setLastTap(null);
+        return;
+      }
+      
+      // Record the tap
+      setLastTap({ item: 'favorites', time: now });
+      
+      // If the item requires authentication and user is not authenticated, redirect
+      if (item.requireAuth && !isAuthenticated && item.authRedirect) {
+        // Store the target path for redirect after auth
+        sessionStorage.setItem('auth-redirect', item.path);
+        navigate(item.authRedirect, { state: { fromBottomBar: true } });
+        return;
+      }
+    }
+    
     // If the item requires authentication and user is not authenticated, redirect
     if (item.requireAuth && !isAuthenticated && item.authRedirect) {
       // Store the target path for redirect after auth
@@ -64,25 +106,39 @@ const BottomBar: React.FC = () => {
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+  
+  // Handle authentication success
+  const handleAuthenticated = () => {
+    navigate('/favorites');
+  };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex justify-around items-center z-10">
-      {navItems.map((item, index) => (
-        <button
-          key={index}
-          className={cn(
-            "flex flex-col items-center justify-center w-full h-full",
-            isActive(item.path)
-              ? "text-islamic-blue dark:text-islamic-gold"
-              : "text-gray-500 dark:text-gray-400"
-          )}
-          onClick={() => handleNavigation(item)}
-        >
-          {item.icon}
-          <span className="text-xs mt-1">{item.label}</span>
-        </button>
-      ))}
-    </div>
+    <>
+      <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex justify-around items-center z-10">
+        {navItems.map((item, index) => (
+          <button
+            key={index}
+            className={cn(
+              "flex flex-col items-center justify-center w-full h-full",
+              isActive(item.path)
+                ? "text-islamic-blue dark:text-islamic-gold"
+                : "text-gray-500 dark:text-gray-400"
+            )}
+            onClick={() => handleNavigation(item)}
+          >
+            {item.icon}
+            <span className="text-xs mt-1">{item.label}</span>
+          </button>
+        ))}
+      </div>
+      
+      {/* Auth dialog for adding favorites */}
+      <FavoriteAuthCheck 
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        onAuthenticated={handleAuthenticated}
+      />
+    </>
   );
 };
 

@@ -5,12 +5,15 @@ import { useAuth } from '@/contexts/AuthContext';
 export const useFavorites = () => {
   const { user, isAuthenticated } = useAuth();
   const [favorites, setFavorites] = useState<string[]>(() => {
-    // If authenticated, get favorites from user object, otherwise from localStorage
+    // If authenticated, get favorites from user object, otherwise empty array
     if (user && user.favorites) {
       return user.favorites;
+    } else if (isAuthenticated) {
+      // User is authenticated but no favorites yet
+      return [];
     } else {
-      const savedFavorites = localStorage.getItem('mosque-favorites');
-      return savedFavorites ? JSON.parse(savedFavorites) : [];
+      // Not authenticated, don't show any favorites
+      return [];
     }
   });
 
@@ -36,13 +39,12 @@ export const useFavorites = () => {
         currentUser.favorites = favorites;
         localStorage.setItem('mosque-user', JSON.stringify(currentUser));
       }
-    } else {
-      // If not authenticated, just store in localStorage
-      localStorage.setItem('mosque-favorites', JSON.stringify(favorites));
     }
   }, [favorites, isAuthenticated, user]);
 
   const toggleFavorite = (mosqueId: string) => {
+    if (!isAuthenticated) return; // Don't toggle if not authenticated
+    
     setFavorites(prev => {
       if (prev.includes(mosqueId)) {
         return prev.filter(id => id !== mosqueId);
@@ -53,6 +55,7 @@ export const useFavorites = () => {
   };
 
   const isFavorite = (mosqueId: string): boolean => {
+    if (!isAuthenticated) return false; // Always return false if not authenticated
     return favorites.includes(mosqueId);
   };
 

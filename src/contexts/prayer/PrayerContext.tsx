@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PrayerTime, Mosque, FilterOption, SearchParams } from '@/types';
 import { prayerTimes } from '@/data/prayers';
 import { mosques } from '@/data/mosques';
@@ -18,7 +18,21 @@ const PrayerContext = createContext<PrayerContextType | undefined>(undefined);
 export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [prayers] = useState<PrayerTime[]>(prayerTimes);
   const [mosqueList] = useState<Mosque[]>(mosques);
-  const [selectedPrayer, setSelectedPrayer] = useState<PrayerTime | null>(null);
+  const [selectedPrayer, setSelectedPrayer] = useState<PrayerTime | null>(() => {
+    // Try to load selected prayer from localStorage
+    const savedPrayer = localStorage.getItem('selected-prayer');
+    if (savedPrayer) {
+      try {
+        const parsed = JSON.parse(savedPrayer);
+        const foundPrayer = prayers.find(p => p.id === parsed.id);
+        return foundPrayer || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
   const [currentFilter, setCurrentFilter] = useState<FilterOption>('earliest');
   const [searchParams, setSearchParams] = useState<SearchParams>({ query: '', showFavorites: false });
   
@@ -28,11 +42,27 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const { saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePageScrollTracking();
   const { unfavoriteDialogState, showUnfavoriteConfirmation, hideUnfavoriteConfirmation } = useUnfavoriteDialog();
   
+  // Save selected prayer to localStorage
+  useEffect(() => {
+    if (selectedPrayer) {
+      localStorage.setItem('selected-prayer', JSON.stringify(selectedPrayer));
+    } else {
+      localStorage.removeItem('selected-prayer');
+    }
+  }, [selectedPrayer]);
+  
   // Initialize notifications (this doesn't return anything, just sets up the effect)
   useNotifications(prayers, mosqueList, favorites, isFavorite, currentTime);
 
   const updateSearchParams = (params: Partial<SearchParams>) => {
     setSearchParams(prev => ({ ...prev, ...params }));
+  };
+
+  const setSelectedPrayerWrapper = (prayer: PrayerTime | null) => {
+    setSelectedPrayer(prayer);
+    if (!prayer) {
+      localStorage.removeItem('selected-prayer');
+    }
   };
 
   const getFilteredMosquesList = (): Mosque[] => {
@@ -69,7 +99,7 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         favorites,
         userLocation,
         locationError,
-        setSelectedPrayer,
+        setSelectedPrayer: setSelectedPrayerWrapper,
         setCurrentFilter,
         setSearchParams: updateSearchParams,
         getFilteredMosques: getFilteredMosquesList,

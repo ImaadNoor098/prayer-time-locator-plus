@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Mosque } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { MapPin, Clock, Heart } from 'lucide-react';
@@ -8,6 +9,8 @@ import { usePrayer } from '@/contexts/prayer';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import UnfavoriteConfirmation from './mosque/UnfavoriteConfirmation';
+import FavoriteAuthCheck from './FavoriteAuthCheck';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MosqueCardProps {
   mosque: Mosque;
@@ -26,7 +29,9 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     unfavoriteDialogState,
     hideUnfavoriteConfirmation
   } = usePrayer();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   
   if (!selectedPrayer) return null;
   
@@ -75,6 +80,12 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const handleFavoriteToggle = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
     
+    // If user is not authenticated, show login dialog
+    if (!isAuthenticated) {
+      setShowAuthDialog(true);
+      return;
+    }
+    
     // If it's already a favorite, show confirmation dialog
     if (favorite) {
       showUnfavoriteConfirmation(mosque);
@@ -88,6 +99,11 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const handleConfirmUnfavorite = () => {
     toggleFavorite(mosque.id);
     hideUnfavoriteConfirmation();
+  };
+  
+  // Handle successful authentication
+  const handleAuthenticated = () => {
+    toggleFavorite(mosque.id);
   };
   
   // Function to calculate distance using Haversine formula (great-circle distance)
@@ -142,7 +158,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
                 <Heart 
                   className={cn(
                     "h-5 w-5 transition-colors",
-                    favorite ? "fill-islamic-green text-islamic-green" : "text-islamic-gray"
+                    favorite && isAuthenticated ? "fill-islamic-green text-islamic-green" : "text-islamic-gray"
                   )} 
                 />
               </Button>
@@ -224,6 +240,13 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
           mosqueName={mosque.name}
         />
       )}
+      
+      {/* Auth check dialog */}
+      <FavoriteAuthCheck 
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        onAuthenticated={handleAuthenticated}
+      />
     </>
   );
 };
