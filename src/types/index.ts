@@ -1,45 +1,66 @@
 
-export type PrayerTime = {
-  id: string;
+import { User, PasswordRequirement } from './auth';
+
+export interface PrayerTime {
   name: string;
   icon: string;
-  description: string;
-};
+  time?: string; // Optional because some prayer times might not be available
+  timeAMPM?: string; // Formatted in AM/PM
+}
 
-export type Mosque = {
-  id: string;
-  name: string;
-  address: string;
-  distance: number; // in kilometers
-  coordinates?: {
-    latitude: number;
-    longitude: number;
-  };
-  googleMapsLink?: string; // New field for direct Google Maps link
-  prayerTimes: {
-    [key: string]: string; // prayer name -> time (HH:MM format)
-  };
-  images?: string[]; // URLs to mosque images
-  facilities?: string[]; // Available facilities
-};
+export interface Coordinates {
+  latitude: number;
+  longitude: number;
+}
 
-export type FilterOption = 
-  | 'earliest'
-  | 'latest'
-  | 'nearest'
-  | 'farthest';
-
-export type SearchParams = {
-  query: string;
-  showFavorites: boolean;
-};
-
-export type SalahTime = {
+export interface PrayerTimesData {
   fajr: string;
-  sunrise: string;
   dhuhr: string;
   asr: string;
   maghrib: string;
   isha: string;
-  date: Date;
-};
+  jummah: string;
+}
+
+export interface Mosque {
+  id: string;
+  name: string;
+  address: string;
+  distance: number;
+  coordinates?: Coordinates;
+  googleMapsLink?: string;
+  prayerTimes: PrayerTimesData;
+  images: string[];
+  facilities: string[];
+}
+
+export interface SalahDay {
+  date: string;
+  day: string;
+  month: string;
+  year: string;
+  hijri: {
+    date: string;
+    day: string;
+    month: string;
+    year: string;
+  };
+  prayers: {
+    fajr: string;
+    sunrise: string;
+    dhuhr: string;
+    asr: string;
+    maghrib: string;
+    isha: string;
+  };
+}
+
+export type FilterOption = 'earliest' | 'nearest' | 'alphabetical';
+
+export interface SearchParams {
+  query: string;
+  showFavorites: boolean;
+}
+
+// Export auth types
+export type { User, PasswordRequirement };

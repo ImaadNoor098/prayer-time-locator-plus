@@ -1,109 +1,87 @@
-import React, { useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Home, Heart, Clock } from 'lucide-react';
+
+import React from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { usePrayer } from '@/contexts/prayer';
+import { useAuth } from '@/contexts/AuthContext';
+
+interface NavItem {
+  icon: React.ReactNode;
+  label: string;
+  path: string;
+  requireAuth?: boolean;
+  authRedirect?: string;
+}
 
 const BottomBar: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
-  const { trackPageVisit, selectedPrayer } = usePrayer();
-  const lastHomeClickRef = useRef<number | null>(null);
-  const doubleTapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
-  useEffect(() => {
-    return () => {
-      if (doubleTapTimeoutRef.current) {
-        clearTimeout(doubleTapTimeoutRef.current);
-      }
-    };
-  }, []);
-  
-  const isActive = (path: string) => {
-    return location.pathname === path || 
-           (path === '/' && location.pathname.startsWith('/mosque/'));
-  };
-  
-  const handleHomeNavigate = () => {
-    const now = Date.now();
-    
-    if (lastHomeClickRef.current && now - lastHomeClickRef.current < 500) {
-      trackPageVisit('/');
-      navigate('/', { state: { fromBottomBar: true } });
-      lastHomeClickRef.current = null;
-      
-      if (doubleTapTimeoutRef.current) {
-        clearTimeout(doubleTapTimeoutRef.current);
-        doubleTapTimeoutRef.current = null;
-      }
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const navItems: NavItem[] = [
+    {
+      icon: <Home className="h-6 w-6" />,
+      label: 'Home',
+      path: '/',
+    },
+    {
+      icon: <Heart className="h-6 w-6" />,
+      label: 'Favorites',
+      path: '/favorites',
+      requireAuth: true,
+      authRedirect: '/login',
+    },
+    {
+      icon: <MapPin className="h-6 w-6" />,
+      label: 'Mosques',
+      path: '/mosques',
+    },
+    {
+      icon: <Clock className="h-6 w-6" />,
+      label: 'Prayer Times',
+      path: '/salah-times',
+    },
+    {
+      icon: <User className="h-6 w-6" />,
+      label: 'Profile',
+      path: '/profile',
+      requireAuth: true,
+      authRedirect: '/login',
+    },
+  ];
+
+  const handleNavigation = (item: NavItem) => {
+    // If the item requires authentication and user is not authenticated, redirect
+    if (item.requireAuth && !isAuthenticated && item.authRedirect) {
+      // Store the target path for redirect after auth
+      sessionStorage.setItem('auth-redirect', item.path);
+      navigate(item.authRedirect, { state: { fromBottomBar: true } });
     } else {
-      lastHomeClickRef.current = now;
-      
-      doubleTapTimeoutRef.current = setTimeout(() => {
-        if (selectedPrayer) {
-          trackPageVisit('/mosques');
-          navigate('/mosques', { state: { fromBottomBar: true } });
-        } else {
-          trackPageVisit('/');
-          navigate('/', { state: { fromBottomBar: true } });
-        }
-        lastHomeClickRef.current = null;
-      }, 250);
+      navigate(item.path, { state: { fromBottomBar: true } });
     }
   };
-  
-  const handleNavigate = (path: string) => {
-    trackPageVisit(path);
-    navigate(path, { state: { fromBottomBar: true } });
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
   };
-  
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-card border-t dark:border-islamic-blue/20 flex items-center justify-around z-50">
-      <Button
-        variant="ghost"
-        className={cn(
-          "flex flex-col items-center gap-1 h-14 w-full",
-          (isActive('/') || isActive('/mosques')) ? "text-islamic-green" : "text-islamic-gray"
-        )}
-        onClick={handleHomeNavigate}
-      >
-        <Home className={cn(
-          "h-5 w-5",
-          (isActive('/') || isActive('/mosques')) ? "text-islamic-green" : ""
-        )} />
-        <span className="text-xs">Home</span>
-      </Button>
-      
-      <Button
-        variant="ghost"
-        className={cn(
-          "flex flex-col items-center gap-1 h-14 w-full",
-          isActive('/salah-times') ? "text-islamic-green" : "text-islamic-gray"
-        )}
-        onClick={() => handleNavigate('/salah-times')}
-      >
-        <Clock className={cn(
-          "h-5 w-5",
-          isActive('/salah-times') ? "text-islamic-green" : ""
-        )} />
-        <span className="text-xs">Prayer Times</span>
-      </Button>
-      
-      <Button
-        variant="ghost"
-        className={cn(
-          "flex flex-col items-center gap-1 h-14 w-full",
-          isActive('/favorites') ? "text-islamic-green" : "text-islamic-gray"
-        )}
-        onClick={() => handleNavigate('/favorites')}
-      >
-        <Heart className={cn(
-          "h-5 w-5",
-          isActive('/favorites') ? "text-islamic-green fill-islamic-green" : ""
-        )} />
-        <span className="text-xs">Favorites</span>
-      </Button>
+    <div className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 flex justify-around items-center z-10">
+      {navItems.map((item, index) => (
+        <button
+          key={index}
+          className={cn(
+            "flex flex-col items-center justify-center w-full h-full",
+            isActive(item.path)
+              ? "text-islamic-blue dark:text-islamic-gold"
+              : "text-gray-500 dark:text-gray-400"
+          )}
+          onClick={() => handleNavigation(item)}
+        >
+          {item.icon}
+          <span className="text-xs mt-1">{item.label}</span>
+        </button>
+      ))}
     </div>
   );
 };

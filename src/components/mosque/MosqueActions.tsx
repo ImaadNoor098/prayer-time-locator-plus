@@ -1,11 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MosqueData } from '@/contexts/prayer/types';
 import { usePrayer } from '@/contexts/prayer';
+import { useAuth } from '@/contexts/AuthContext';
 import UnfavoriteConfirmation from './UnfavoriteConfirmation';
+import FavoriteAuthCheck from '../FavoriteAuthCheck';
 
 interface MosqueActionsProps {
   mosque: MosqueData;
@@ -21,8 +23,16 @@ const MosqueActions: React.FC<MosqueActionsProps> = ({
   onDirections 
 }) => {
   const { showUnfavoriteConfirmation, unfavoriteDialogState, hideUnfavoriteConfirmation } = usePrayer();
+  const { isAuthenticated } = useAuth();
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   const handleFavoriteClick = () => {
+    if (!isAuthenticated) {
+      // Show auth dialog if not logged in
+      setShowAuthDialog(true);
+      return;
+    }
+
     if (favorite) {
       // Show confirmation dialog if removing from favorites
       showUnfavoriteConfirmation(mosque);
@@ -36,6 +46,11 @@ const MosqueActions: React.FC<MosqueActionsProps> = ({
   const handleConfirmUnfavorite = () => {
     onFavoriteToggle();
     hideUnfavoriteConfirmation();
+  };
+
+  // Handle successful authentication
+  const handleAuthenticated = () => {
+    onFavoriteToggle();
   };
 
   // Check if this mosque is the one in the unfavorite dialog
@@ -75,6 +90,13 @@ const MosqueActions: React.FC<MosqueActionsProps> = ({
           mosqueName={mosque.name}
         />
       )}
+
+      {/* Auth check dialog */}
+      <FavoriteAuthCheck 
+        isOpen={showAuthDialog}
+        onClose={() => setShowAuthDialog(false)}
+        onAuthenticated={handleAuthenticated}
+      />
     </>
   );
 };
