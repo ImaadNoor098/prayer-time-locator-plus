@@ -58,7 +58,7 @@ const BottomBar: React.FC = () => {
   const handleNavigation = (item: NavItem) => {
     // Special handling for home button - always go to prayer selection page
     if (item.path === '/') {
-      navigate('/', { state: { fromBottomBar: true } });
+      navigate('/', { replace: true });
       return;
     }
     

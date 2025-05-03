@@ -22,22 +22,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Function to determine home page route
+  // Function to determine home page route - always use PrayerSelection for root path
   const HomeRoute = () => {
-    // Check if we have a last visited page in localStorage
-    const lastVisitedPage = localStorage.getItem('last-visited-page');
-    const selectedPrayer = localStorage.getItem('selected-prayer');
-    
-    // If there's a selected prayer and last visited page, go there
-    if (selectedPrayer && lastVisitedPage && 
-        lastVisitedPage !== '/' && 
-        lastVisitedPage !== '/login' && 
-        lastVisitedPage !== '/register' && 
-        lastVisitedPage !== '/verify-otp') {
-      return <Navigate to={lastVisitedPage} replace />;
-    }
-    
-    // Default to prayer selection
+    // Always return PrayerSelection for the root path
     return <PrayerSelection />;
   };
 
