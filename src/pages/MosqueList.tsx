@@ -1,5 +1,4 @@
-
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
@@ -9,13 +8,69 @@ import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import useSalahTimes from '@/hooks/useSalahTimes';
 
 const MosqueList: React.FC = () => {
-  const { selectedPrayer, getFilteredMosques, saveScrollPosition, getSavedScrollPosition, trackPageVisit, setSelectedPrayer } = usePrayer();
+  const { 
+    prayers, 
+    selectedPrayer, 
+    getFilteredMosques, 
+    saveScrollPosition, 
+    getSavedScrollPosition, 
+    trackPageVisit, 
+    setSelectedPrayer 
+  } = usePrayer();
   const navigate = useNavigate();
   const location = useLocation();
   const pageRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef(true);
+  
+  // Get current prayer based on prayer times
+  const { currentTime, isPrayerTime, salahTimes } = useSalahTimes(new Date());
+  const [currentActivePrayer, setCurrentActivePrayer] = useState<string | null>(null);
+  
+  // Determine the current active prayer
+  useEffect(() => {
+    if (!salahTimes) return;
+    
+    const prayerMap: Record<string, string> = {
+      "fajr": "Fajr",
+      "dhuhr": "Dhuhr",
+      "asr": "Asr",
+      "maghrib": "Maghrib",
+      "isha": "Isha"
+    };
+    
+    // Check which prayer is active now
+    for (const [key, name] of Object.entries(prayerMap)) {
+      if (isPrayerTime(key)) {
+        // If prayer is currently active, set it
+        const matchingPrayer = prayers.find(p => p.name === name);
+        if (matchingPrayer && !selectedPrayer) {
+          setSelectedPrayer(matchingPrayer);
+          setCurrentActivePrayer(name);
+        }
+        break;
+      }
+    }
+    
+    // If no prayer is active and no prayer is selected, default to next upcoming prayer
+    if (!selectedPrayer && !currentActivePrayer) {
+      // This is simplified logic - in a real app, you'd determine the next prayer more precisely
+      const now = new Date();
+      const currentHour = now.getHours();
+      
+      let defaultPrayer;
+      if (currentHour < 12) defaultPrayer = prayers.find(p => p.name === "Dhuhr");
+      else if (currentHour < 15) defaultPrayer = prayers.find(p => p.name === "Asr");
+      else if (currentHour < 18) defaultPrayer = prayers.find(p => p.name === "Maghrib");
+      else defaultPrayer = prayers.find(p => p.name === "Isha");
+      
+      if (defaultPrayer) {
+        setSelectedPrayer(defaultPrayer);
+      }
+    }
+  }, [salahTimes, isPrayerTime, prayers, selectedPrayer, setSelectedPrayer]);
   
   // Use useEffect to handle navigation and scrolling behavior
   useEffect(() => {
@@ -66,9 +121,32 @@ const MosqueList: React.FC = () => {
     navigate('/', { state: { selectingNewPrayer: true } });
   };
   
-  // If no prayer is selected, render nothing while redirecting
+  // If coming from mosque button with no prayer selected, show message
   if (!selectedPrayer) {
-    return null;
+    return (
+      <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <header className="mb-6">
+            <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream">
+              Mosque List
+            </h1>
+          </header>
+          
+          <div className="bg-white dark:bg-card p-6 rounded-lg shadow islamic-card mb-4">
+            <p className="text-center mb-4">Please select a prayer to see mosque timings</p>
+            <div className="flex justify-center">
+              <Button
+                onClick={handleSelectPrayerClick}
+                className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md"
+              >
+                Select Prayer
+              </Button>
+            </div>
+          </div>
+        </div>
+        <BottomBar />
+      </div>
+    );
   }
   
   const mosques = getFilteredMosques();

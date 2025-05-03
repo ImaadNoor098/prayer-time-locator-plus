@@ -56,14 +56,15 @@ const BottomBar: React.FC = () => {
   ];
 
   const handleNavigation = (item: NavItem) => {
-    // Special handling for home button
+    // Special handling for home button - always go to prayer selection page
     if (item.path === '/') {
-      // If a prayer is selected, go to mosque list, otherwise go to prayer selection
-      if (selectedPrayer) {
-        navigate('/mosques', { state: { fromBottomBar: true } });
-      } else {
-        navigate('/', { state: { fromBottomBar: true } });
-      }
+      navigate('/', { state: { fromBottomBar: true } });
+      return;
+    }
+    
+    // Special handling for mosques button - show current prayer's mosques
+    if (item.path === '/mosques') {
+      navigate('/mosques', { state: { fromBottomBar: true } });
       return;
     }
     
