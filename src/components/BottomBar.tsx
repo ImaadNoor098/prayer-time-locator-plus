@@ -5,6 +5,7 @@ import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigation } from '@/contexts/NavigationContext';
+import { usePrayer } from '@/contexts/prayer';
 import FavoriteAuthCheck from './FavoriteAuthCheck';
 
 interface NavItem {
@@ -20,6 +21,7 @@ const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { getLastVisitedPage } = useNavigation();
+  const { selectedPrayer } = usePrayer();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   const [lastTap, setLastTap] = useState<{ item: string, time: number } | null>(null);
 
@@ -54,9 +56,14 @@ const BottomBar: React.FC = () => {
   ];
 
   const handleNavigation = (item: NavItem) => {
-    // Special handling for home button - always navigate to home page
+    // Special handling for home button
     if (item.path === '/') {
-      navigate('/', { state: { fromBottomBar: true } });
+      // If a prayer is selected, go to mosque list, otherwise go to prayer selection
+      if (selectedPrayer) {
+        navigate('/mosques', { state: { fromBottomBar: true } });
+      } else {
+        navigate('/', { state: { fromBottomBar: true } });
+      }
       return;
     }
     
