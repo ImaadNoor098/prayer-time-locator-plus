@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -9,6 +10,7 @@ import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const MosqueList: React.FC = () => {
   const { 
@@ -126,11 +128,12 @@ const MosqueList: React.FC = () => {
     return (
       <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
         <div className="container mx-auto max-w-4xl px-4 py-8">
-          <header className="mb-6">
+          <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream">
               Mosque List
             </h1>
-          </header>
+            <ThemeToggle />
+          </div>
           
           <div className="bg-white dark:bg-card p-6 rounded-lg shadow islamic-card mb-4">
             <p className="text-center mb-4">Please select a prayer to see mosque timings</p>
@@ -165,12 +168,16 @@ const MosqueList: React.FC = () => {
               Back
             </Button>
             
-            <Button
-              onClick={handleSelectPrayerClick}
-              className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md transform transition-transform hover:scale-105"
-            >
-              Select Prayer
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleSelectPrayerClick}
+                className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md transform transition-transform hover:scale-105"
+              >
+                Select Prayer
+              </Button>
+              
+              <ThemeToggle variant="button" />
+            </div>
           </div>
           
           <header className="mb-2">

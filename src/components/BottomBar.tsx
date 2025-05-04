@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
@@ -7,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigation } from '@/contexts/NavigationContext';
 import { usePrayer } from '@/contexts/prayer';
 import FavoriteAuthCheck from './FavoriteAuthCheck';
+import { ThemeToggle } from './ThemeToggle';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -23,7 +23,6 @@ const BottomBar: React.FC = () => {
   const { getLastVisitedPage } = useNavigation();
   const { selectedPrayer } = usePrayer();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
-  const [lastTap, setLastTap] = useState<{ item: string, time: number } | null>(null);
 
   const navItems: NavItem[] = [
     {
@@ -39,7 +38,7 @@ const BottomBar: React.FC = () => {
     {
       icon: <MapPin className="h-6 w-6" />,
       label: 'Mosques',
-      path: '/mosques',
+      path: '/mosque-browser',
     },
     {
       icon: <Clock className="h-6 w-6" />,
@@ -56,15 +55,27 @@ const BottomBar: React.FC = () => {
   ];
 
   const handleNavigation = (item: NavItem) => {
-    // Special handling for home button - always go to prayer selection page
+    // Special handling for home button
     if (item.path === '/') {
-      navigate('/', { replace: true });
+      // Check if we have a last visited mosque list or detail page
+      const lastPage = getLastVisitedPage();
+      
+      // If the last page was mosque-related and we have a selected prayer,
+      // go to that page instead of the home page
+      if ((lastPage.includes('/mosques') || lastPage.includes('/mosque/')) && 
+          selectedPrayer && 
+          lastPage !== '/mosque-browser') {
+        navigate(lastPage, { state: { fromBottomBar: true } });
+      } else {
+        // Otherwise, go to the prayer selection page
+        navigate('/', { replace: true });
+      }
       return;
     }
     
-    // Special handling for mosques button - show current prayer's mosques
-    if (item.path === '/mosques') {
-      navigate('/mosques', { state: { fromBottomBar: true } });
+    // Special handling for mosque button - show simple mosque cards view
+    if (item.path === '/mosque-browser') {
+      navigate('/mosque-browser', { state: { fromBottomBar: true } });
       return;
     }
     
@@ -89,7 +100,14 @@ const BottomBar: React.FC = () => {
   };
 
   const isActive = (path: string) => {
-    return location.pathname === path;
+    if (path === '/' && location.pathname === '/') return true;
+    if (path === '/mosque-browser' && location.pathname === '/mosque-browser') return true;
+    if (path === '/mosques' && location.pathname === '/mosques') return true;
+    if (path === '/favorites' && location.pathname === '/favorites') return true;
+    if (path === '/salah-times' && location.pathname === '/salah-times') return true;
+    if (path === '/profile' && location.pathname === '/profile') return true;
+    
+    return false;
   };
   
   // Handle authentication success

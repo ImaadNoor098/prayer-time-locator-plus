@@ -7,6 +7,7 @@ interface NavigationState {
   lastMosqueListState: any;
   lastMosqueDetailState: any;
   lastPrayerSelectionState: any;
+  lastMosquePage: string;
 }
 
 type NavigationContextType = {
@@ -16,6 +17,7 @@ type NavigationContextType = {
   setLastMosqueDetailState: (state: any) => void;
   setLastPrayerSelectionState: (state: any) => void;
   getLastVisitedPage: () => string;
+  getLastMosquePage: () => string;
 };
 
 const initialState: NavigationState = {
@@ -23,6 +25,7 @@ const initialState: NavigationState = {
   lastMosqueListState: null,
   lastMosqueDetailState: null,
   lastPrayerSelectionState: null,
+  lastMosquePage: '/mosques',
 };
 
 const NavigationContext = createContext<NavigationContextType>({
@@ -32,10 +35,22 @@ const NavigationContext = createContext<NavigationContextType>({
   setLastMosqueDetailState: () => {},
   setLastPrayerSelectionState: () => {},
   getLastVisitedPage: () => '/',
+  getLastMosquePage: () => '/mosques',
 });
 
 export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [navigationState, setNavigationState] = useState<NavigationState>(initialState);
+  const [navigationState, setNavigationState] = useState<NavigationState>(() => {
+    // Initialize with values from localStorage if available
+    const savedState = localStorage.getItem('navigation-state');
+    if (savedState) {
+      try {
+        return JSON.parse(savedState);
+      } catch (e) {
+        return initialState;
+      }
+    }
+    return initialState;
+  });
   const location = useLocation();
 
   // Track page navigation
@@ -48,14 +63,30 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
     
     // Update navigation state
-    setNavigationState(prev => ({
-      ...prev,
-      previousPath: currentPath,
-    }));
+    setNavigationState(prev => {
+      const newState = {
+        ...prev,
+        previousPath: currentPath,
+      };
+      
+      // Update lastMosquePage if this is a mosque-related page
+      if (currentPath === '/mosques' || 
+          currentPath.startsWith('/mosque/') || 
+          currentPath === '/mosque-browser') {
+        newState.lastMosquePage = currentPath;
+      }
+      
+      return newState;
+    });
     
     // Store last visited page in local storage
     localStorage.setItem('last-visited-page', currentPath);
   }, [location.pathname]);
+  
+  // Save navigation state to localStorage
+  useEffect(() => {
+    localStorage.setItem('navigation-state', JSON.stringify(navigationState));
+  }, [navigationState]);
 
   const setPreviousPath = (path: string) => {
     setNavigationState(prev => ({ ...prev, previousPath: path }));
@@ -85,6 +116,10 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     
     return lastPage;
   };
+  
+  const getLastMosquePage = (): string => {
+    return navigationState.lastMosquePage || '/mosques';
+  };
 
   return (
     <NavigationContext.Provider 
@@ -94,7 +129,8 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setLastMosqueListState,
         setLastMosqueDetailState,
         setLastPrayerSelectionState,
-        getLastVisitedPage
+        getLastVisitedPage,
+        getLastMosquePage
       }}
     >
       {children}
