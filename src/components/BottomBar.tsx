@@ -68,26 +68,14 @@ const BottomBar: React.FC = () => {
       return;
     }
     
-    // Handle double tap on favorites
+    // Special handling for favorites - show auth dialog if not authenticated
     if (item.path === '/favorites') {
-      const now = Date.now();
-      
-      // Check if we're already on the favorites page and this is a tap
-      if (location.pathname === '/favorites' && 
-          lastTap && 
-          lastTap.item === 'favorites' && 
-          now - lastTap.time < 500) { // Double tap within 500ms
-        
-        // Show auth dialog if not authenticated
-        if (!isAuthenticated) {
-          setShowAuthDialog(true);
-          setLastTap(null);
-          return;
-        }
+      if (!isAuthenticated) {
+        // Store the target path for redirect after auth
+        sessionStorage.setItem('auth-redirect', '/favorites');
+        setShowAuthDialog(true);
+        return;
       }
-      
-      // Record the tap
-      setLastTap({ item: 'favorites', time: now });
     }
     
     // If the item requires authentication and user is not authenticated, redirect
@@ -129,7 +117,7 @@ const BottomBar: React.FC = () => {
         ))}
       </div>
       
-      {/* Auth dialog for adding favorites */}
+      {/* Auth dialog for favorites */}
       <FavoriteAuthCheck 
         isOpen={showAuthDialog}
         onClose={() => setShowAuthDialog(false)}

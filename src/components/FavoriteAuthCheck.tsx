@@ -23,15 +23,17 @@ const FavoriteAuthCheck: React.FC<FavoriteAuthCheckProps> = ({ onAuthenticated, 
   const navigate = useNavigate();
   
   const handleLogin = () => {
-    // Store the current URL to return after login
-    sessionStorage.setItem('auth-redirect', window.location.pathname);
+    // Store the redirect path (favorites page)
+    sessionStorage.setItem('auth-redirect', '/favorites');
     navigate('/login');
+    onClose();
   };
   
   const handleRegister = () => {
-    // Store the current URL to return after registration
-    sessionStorage.setItem('auth-redirect', window.location.pathname);
+    // Store the redirect path (favorites page)
+    sessionStorage.setItem('auth-redirect', '/favorites');
     navigate('/register');
+    onClose();
   };
   
   // If already authenticated, just call the callback
@@ -50,9 +52,9 @@ const FavoriteAuthCheck: React.FC<FavoriteAuthCheckProps> = ({ onAuthenticated, 
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Sign In to Save Favorites</DialogTitle>
+          <DialogTitle>Sign In to View Favorites</DialogTitle>
           <DialogDescription>
-            Create an account or sign in to save your favorite mosques. Your favorites will be available on all your devices.
+            Create an account or sign in to view and manage your favorite mosques. Your favorites will be available on all your devices.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
