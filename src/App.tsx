@@ -50,11 +50,7 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/verify-otp" element={<VerifyOtp />} />
-                    <Route path="/profile" element={
-                      <ProtectedRoute>
-                        <UserProfile />
-                      </ProtectedRoute>
-                    } />
+                    <Route path="/profile" element={<UserProfile />} />
                     
                     {/* Catch-all route */}
                     <Route path="*" element={<NotFound />} />

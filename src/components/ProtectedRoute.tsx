@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from "@/hooks/use-toast";
+import BottomBar from './BottomBar';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -26,10 +27,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [isAuthenticated, isLoading, toast]);
   
   if (isLoading) {
-    // Show loading state
+    // Show loading state with bottom bar
     return (
-      <div className="min-h-screen islamic-pattern-bg flex items-center justify-center">
+      <div className="min-h-screen islamic-pattern-bg flex items-center justify-center pb-16">
         <p>Loading...</p>
+        <BottomBar />
       </div>
     );
   }

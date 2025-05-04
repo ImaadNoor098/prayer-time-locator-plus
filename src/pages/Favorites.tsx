@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { usePrayer } from '@/contexts/prayer';
 import MosqueCard from '@/components/MosqueCard';
@@ -83,23 +84,23 @@ const Favorites: React.FC = () => {
   const favoritedMosques = isAuthenticated ? 
     mosques.filter(mosque => favorites.includes(mosque.id)) : [];
   
-  // If not authenticated, redirect to login
+  // If not authenticated, show auth prompt but still show bottom bar
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen islamic-pattern-bg pb-20">
         <div className="container mx-auto max-w-4xl px-4">
           <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
-            <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream flex items-center mb-2">
+            <h1 className="text-2xl font-bold text-islamic-blue flex items-center mb-2">
               <Heart className="h-5 w-5 mr-2 fill-islamic-green text-islamic-green" />
               Favorite Mosques
             </h1>
-            <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 mb-4">
+            <p className="text-sm text-islamic-gray mb-4">
               Please sign in to see your favorite mosques
             </p>
           </header>
           
-          <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card mt-8">
-            <p className="text-islamic-gray dark:text-islamic-cream/70 mb-4">
+          <div className="text-center p-8 bg-white rounded-lg shadow islamic-card mt-8">
+            <p className="text-islamic-gray mb-4">
               Please sign in to view and manage your favorite mosques.
             </p>
             <div className="flex justify-center space-x-2">
@@ -129,11 +130,11 @@ const Favorites: React.FC = () => {
     <div className="min-h-screen islamic-pattern-bg pb-20">
       <div className="container mx-auto max-w-4xl px-4">
         <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
-          <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream flex items-center mb-2">
+          <h1 className="text-2xl font-bold text-islamic-blue flex items-center mb-2">
             <Heart className="h-5 w-5 mr-2 fill-islamic-green text-islamic-green" />
             Favorite Mosques
           </h1>
-          <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 mb-4">
+          <p className="text-sm text-islamic-gray mb-4">
             Mosques you've added to favorites
           </p>
           
@@ -148,8 +149,8 @@ const Favorites: React.FC = () => {
               <MosqueCard key={mosque.id} mosque={mosque} />
             ))
           ) : (
-            <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card">
-              <p className="text-islamic-gray dark:text-islamic-cream/70">
+            <div className="text-center p-8 bg-white rounded-lg shadow islamic-card">
+              <p className="text-islamic-gray">
                 No favorite mosques yet. Add some by tapping the heart icon on a mosque.
               </p>
             </div>

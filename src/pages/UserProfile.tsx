@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,26 +16,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import FavoriteAuthCheck from '@/components/FavoriteAuthCheck';
 
 const UserProfile: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const [logoutDialogOpen, setLogoutDialogOpen] = React.useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
   
-  // Redirect if not authenticated
-  React.useEffect(() => {
+  // Show auth dialog if not authenticated
+  useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      setShowAuthDialog(true);
     }
-  }, [isAuthenticated, navigate]);
-  
-  if (!user) {
-    return (
-      <div className="min-h-screen islamic-pattern-bg flex items-center justify-center">
-        <p>Loading profile...</p>
-      </div>
-    );
-  }
+  }, [isAuthenticated]);
   
   const handleLogout = () => {
     setLogoutDialogOpen(true);
@@ -45,6 +39,61 @@ const UserProfile: React.FC = () => {
     logout();
     navigate('/');
   };
+  
+  // Handle successful authentication
+  const handleAuthenticated = () => {
+    // Just refresh the page
+    window.location.reload();
+  };
+  
+  // Show authentication prompt if not logged in
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen islamic-pattern-bg pb-20">
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <h1 className="text-2xl font-bold text-islamic-blue mb-6">Account Profile</h1>
+          
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold flex items-center">
+                <User className="h-5 w-5 mr-2 text-islamic-green" />
+                Sign In Required
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p>Please sign in to view your profile information.</p>
+              <Button 
+                onClick={() => setShowAuthDialog(true)}
+                className="bg-islamic-blue hover:bg-islamic-blue/90"
+              >
+                Sign In / Sign Up
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+        
+        <BottomBar />
+        
+        {/* Auth check dialog */}
+        <FavoriteAuthCheck 
+          isOpen={showAuthDialog}
+          onClose={() => navigate('/')} // Go home if they close without auth
+          onAuthenticated={handleAuthenticated}
+        />
+      </div>
+    );
+  }
+  
+  if (!user) {
+    return (
+      <div className="min-h-screen islamic-pattern-bg pb-20">
+        <div className="container mx-auto max-w-4xl px-4">
+          <p>Loading profile...</p>
+        </div>
+        <BottomBar />
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Eye, EyeOff } from 'lucide-react';
+import BottomBar from '@/components/BottomBar';
 
 const Login: React.FC = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen islamic-pattern-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen islamic-pattern-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pb-20">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center text-islamic-blue">Sign in to your account</CardTitle>
@@ -119,6 +120,9 @@ const Login: React.FC = () => {
           </p>
         </CardFooter>
       </Card>
+      
+      {/* Always show bottom bar */}
+      <BottomBar />
     </div>
   );
 };
