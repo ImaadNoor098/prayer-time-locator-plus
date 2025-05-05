@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -6,7 +6,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigation } from '@/contexts/NavigationContext';
 import { usePrayer } from '@/contexts/prayer';
 import FavoriteAuthCheck from './FavoriteAuthCheck';
-import { ThemeToggle } from './ThemeToggle';
 
 interface NavItem {
   icon: React.ReactNode;
@@ -20,7 +19,7 @@ const BottomBar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { getLastVisitedPage } = useNavigation();
+  const { getLastVisitedPage, getLastDetailedMosqueId } = useNavigation();
   const { selectedPrayer } = usePrayer();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
 
@@ -57,19 +56,27 @@ const BottomBar: React.FC = () => {
   const handleNavigation = (item: NavItem) => {
     // Special handling for home button
     if (item.path === '/') {
-      // Check if we have a last visited mosque list or detail page
-      const lastPage = getLastVisitedPage();
-      
-      // If the last page was mosque-related and we have a selected prayer,
-      // go to that page instead of the home page
-      if ((lastPage.includes('/mosques') || lastPage.includes('/mosque/')) && 
-          selectedPrayer && 
-          lastPage !== '/mosque-browser') {
-        navigate(lastPage, { state: { fromBottomBar: true } });
-      } else {
-        // Otherwise, go to the prayer selection page
-        navigate('/', { replace: true });
+      // Check if we have a selected prayer
+      if (selectedPrayer) {
+        // Get the last visited page
+        const lastPage = getLastVisitedPage();
+        
+        // If the last page was a mosque detail page and we have the ID, go to that page
+        const lastDetailedMosqueId = getLastDetailedMosqueId();
+        if (lastDetailedMosqueId && (lastPage.includes('/mosque/') || lastPage === '/mosques')) {
+          navigate(`/mosque/${lastDetailedMosqueId}`, { state: { fromBottomBar: true } });
+          return;
+        }
+        
+        // If the last page was mosque-related, go to that page
+        if ((lastPage.includes('/mosques') || lastPage.includes('/mosque/'))) {
+          navigate(lastPage, { state: { fromBottomBar: true } });
+          return;
+        }
       }
+      
+      // Otherwise, go to the prayer selection page
+      navigate('/', { replace: true });
       return;
     }
     

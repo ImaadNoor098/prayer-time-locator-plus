@@ -1,14 +1,26 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { usePrayer } from '@/contexts/prayer';
+import { useNavigation } from '@/contexts/NavigationContext';
 
 const SearchBar: React.FC = () => {
   const { searchParams, setSearchParams } = usePrayer();
+  const { getLastSearchQuery, setLastSearchQuery } = useNavigation();
+  
+  // On component mount, get the last search query from navigation context
+  useEffect(() => {
+    const lastQuery = getLastSearchQuery();
+    if (lastQuery && lastQuery !== searchParams.query) {
+      setSearchParams({ query: lastQuery });
+    }
+  }, [getLastSearchQuery, searchParams.query, setSearchParams]);
   
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchParams({ query: e.target.value });
+    const query = e.target.value;
+    setSearchParams({ query });
+    setLastSearchQuery(query);
   };
   
   return (

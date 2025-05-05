@@ -37,8 +37,20 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
   
   if (!isAuthenticated) {
-    // Redirect to login page if not authenticated
-    return <Navigate to="/login" replace />;
+    // Instead of navigating directly, wrap the redirect in a component that shows the BottomBar
+    return (
+      <div className="min-h-screen islamic-pattern-bg">
+        <div className="container mx-auto max-w-4xl px-4 py-8">
+          <div className="bg-white p-6 rounded-lg shadow islamic-card mb-4">
+            <p className="text-center mb-4">Please login to access this feature</p>
+            <div className="flex justify-center">
+              <Navigate to="/login" replace />
+            </div>
+          </div>
+        </div>
+        <BottomBar />
+      </div>
+    );
   }
   
   return <>{children}</>;

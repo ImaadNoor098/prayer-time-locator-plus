@@ -8,6 +8,8 @@ interface NavigationState {
   lastMosqueDetailState: any;
   lastPrayerSelectionState: any;
   lastMosquePage: string;
+  lastDetailedMosqueId: string | null;
+  lastSearchQuery: string;
 }
 
 type NavigationContextType = {
@@ -18,6 +20,10 @@ type NavigationContextType = {
   setLastPrayerSelectionState: (state: any) => void;
   getLastVisitedPage: () => string;
   getLastMosquePage: () => string;
+  getLastDetailedMosqueId: () => string | null;
+  setLastDetailedMosqueId: (id: string | null) => void;
+  getLastSearchQuery: () => string;
+  setLastSearchQuery: (query: string) => void;
 };
 
 const initialState: NavigationState = {
@@ -26,6 +32,8 @@ const initialState: NavigationState = {
   lastMosqueDetailState: null,
   lastPrayerSelectionState: null,
   lastMosquePage: '/mosques',
+  lastDetailedMosqueId: null,
+  lastSearchQuery: '',
 };
 
 const NavigationContext = createContext<NavigationContextType>({
@@ -36,6 +44,10 @@ const NavigationContext = createContext<NavigationContextType>({
   setLastPrayerSelectionState: () => {},
   getLastVisitedPage: () => '/',
   getLastMosquePage: () => '/mosques',
+  getLastDetailedMosqueId: () => null,
+  setLastDetailedMosqueId: () => {},
+  getLastSearchQuery: () => '',
+  setLastSearchQuery: () => {},
 });
 
 export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -60,6 +72,15 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     // Don't track auth and verification pages in navigation history
     if (currentPath === '/login' || currentPath === '/register' || currentPath === '/verify-otp') {
       return;
+    }
+    
+    // Track detailed mosque page
+    if (currentPath.startsWith('/mosque/')) {
+      const mosqueId = currentPath.split('/')[2];
+      setNavigationState(prev => ({
+        ...prev,
+        lastDetailedMosqueId: mosqueId
+      }));
     }
     
     // Update navigation state
@@ -103,6 +124,14 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const setLastPrayerSelectionState = (state: any) => {
     setNavigationState(prev => ({ ...prev, lastPrayerSelectionState: state }));
   };
+  
+  const setLastDetailedMosqueId = (id: string | null) => {
+    setNavigationState(prev => ({ ...prev, lastDetailedMosqueId: id }));
+  };
+  
+  const setLastSearchQuery = (query: string) => {
+    setNavigationState(prev => ({ ...prev, lastSearchQuery: query }));
+  };
 
   const getLastVisitedPage = (): string => {
     // Get the most recent non-auth page from local storage
@@ -114,11 +143,24 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       return '/';
     }
     
+    // If last page was a detail page, go directly to that mosque
+    if (navigationState.lastDetailedMosqueId && lastPage.includes('/mosque/')) {
+      return `/mosque/${navigationState.lastDetailedMosqueId}`;
+    }
+    
     return lastPage;
   };
   
   const getLastMosquePage = (): string => {
     return navigationState.lastMosquePage || '/mosques';
+  };
+  
+  const getLastDetailedMosqueId = (): string | null => {
+    return navigationState.lastDetailedMosqueId;
+  };
+  
+  const getLastSearchQuery = (): string => {
+    return navigationState.lastSearchQuery || '';
   };
 
   return (
@@ -130,7 +172,11 @@ export const NavigationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setLastMosqueDetailState,
         setLastPrayerSelectionState,
         getLastVisitedPage,
-        getLastMosquePage
+        getLastMosquePage,
+        getLastDetailedMosqueId,
+        setLastDetailedMosqueId,
+        getLastSearchQuery,
+        setLastSearchQuery
       }}
     >
       {children}

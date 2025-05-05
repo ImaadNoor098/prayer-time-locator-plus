@@ -25,10 +25,11 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
   const handleCall = (e: React.MouseEvent) => {
     e.stopPropagation();
     
-    if (mosque.phone) {
-      window.location.href = `tel:${mosque.phone}`;
+    // Check if phone property exists in the mosque object
+    if (mosque.contact?.phone) {
+      window.location.href = `tel:${mosque.contact.phone}`;
     } else {
-      // If no phone number is available, you could show a message
+      // If no phone number is available, show a message
       alert('No phone number available for this mosque');
     }
   };
@@ -51,6 +52,8 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
   const handleAuthenticated = () => {
     toggleFavorite(mosque.id);
   };
+  
+  const hasPhone = mosque.contact?.phone !== undefined && mosque.contact.phone !== '';
   
   return (
     <>
@@ -89,8 +92,8 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
                 size="icon"
                 className="h-8 w-8 p-0 text-islamic-blue dark:text-islamic-cream/70"
                 onClick={handleCall}
-                disabled={!mosque.phone}
-                title={mosque.phone ? "Call mosque" : "No phone number available"}
+                disabled={!hasPhone}
+                title={hasPhone ? "Call mosque" : "No phone number available"}
               >
                 <Phone className="h-5 w-5" />
               </Button>
