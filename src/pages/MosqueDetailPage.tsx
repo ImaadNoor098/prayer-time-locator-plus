@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import MosqueDetail from '@/components/MosqueDetail';
 import BottomBar from '@/components/BottomBar';
 import { useNavigation } from '@/contexts/NavigationContext';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const MosqueDetailPage: React.FC = () => {
   const { setLastMosqueDetailState } = useNavigation();
@@ -19,8 +20,12 @@ const MosqueDetailPage: React.FC = () => {
   }, [setLastMosqueDetailState]);
 
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20 pt-4">
-      <MosqueDetail />
+    <div className="flex flex-col h-screen islamic-pattern-bg">
+      <ScrollArea className="flex-grow overflow-y-auto pb-16">
+        <div className="container mx-auto max-w-4xl px-4 py-4">
+          <MosqueDetail />
+        </div>
+      </ScrollArea>
       <BottomBar />
     </div>
   );
