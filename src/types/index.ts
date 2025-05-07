@@ -1,4 +1,3 @@
-
 import { User, PasswordRequirement } from './auth';
 
 export interface PrayerTime {
@@ -34,6 +33,11 @@ export interface Mosque {
   prayerTimes: PrayerTimesData;
   images: string[];
   facilities: string[];
+  contact?: {
+    phone?: string;
+    email?: string;
+    website?: string;
+  };
 }
 
 export interface SalahTime {
