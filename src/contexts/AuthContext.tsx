@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { User } from '@/types';
@@ -41,13 +40,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [pendingPhone, setPendingPhone] = useState<string>('');
   const { toast } = useToast();
   
-  // Check for existing session on component mount
+  // Check for existing session on component mount and sync with latest user data
   useEffect(() => {
     const checkAuth = () => {
       const storedUser = localStorage.getItem('mosque-user');
       if (storedUser) {
         try {
-          setUser(JSON.parse(storedUser));
+          const parsedUser = JSON.parse(storedUser);
+          
+          // Also check if the user exists in the users list and get the latest data
+          const users = JSON.parse(localStorage.getItem('mosque-users') || '[]');
+          const fullUserData = users.find((u: any) => u.id === parsedUser.id);
+          
+          if (fullUserData) {
+            // Use the full user data from the users list (includes latest favorites)
+            const { password: _, ...userWithoutPassword } = fullUserData;
+            setUser(userWithoutPassword);
+            
+            // Update the current user storage with latest data
+            localStorage.setItem('mosque-user', JSON.stringify(userWithoutPassword));
+          } else {
+            // User not found in users list, keep the stored user
+            setUser(parsedUser);
+          }
         } catch (e) {
           localStorage.removeItem('mosque-user');
         }

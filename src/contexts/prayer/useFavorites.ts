@@ -4,27 +4,27 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export const useFavorites = () => {
   const { user, isAuthenticated } = useAuth();
-  const [favorites, setFavorites] = useState<string[]>(() => {
-    // If authenticated, get favorites from user object, otherwise empty array
-    if (user && user.favorites) {
-      return user.favorites;
-    } else if (isAuthenticated) {
-      // User is authenticated but no favorites yet
-      return [];
-    } else {
-      // Not authenticated, don't show any favorites
-      return [];
-    }
-  });
+  const [favorites, setFavorites] = useState<string[]>([]);
 
+  // Initialize favorites when auth state changes
   useEffect(() => {
-    // If authenticated, update the favorites in user data
     if (isAuthenticated && user) {
-      // Save to local storage for current session
-      localStorage.setItem('mosque-favorites', JSON.stringify(favorites));
-      
-      // In a real app, this would update the user's favorites in the backend
-      // For this demo, we'll update the user in localStorage
+      // Load favorites from user object (which comes from localStorage)
+      if (user.favorites && Array.isArray(user.favorites)) {
+        setFavorites(user.favorites);
+      } else {
+        setFavorites([]);
+      }
+    } else {
+      // Clear favorites if not authenticated
+      setFavorites([]);
+    }
+  }, [isAuthenticated, user]);
+
+  // Save favorites to user data whenever favorites change
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Update the users list in localStorage
       const users = JSON.parse(localStorage.getItem('mosque-users') || '[]');
       const userIndex = users.findIndex((u: any) => u.id === user.id);
       
@@ -33,7 +33,7 @@ export const useFavorites = () => {
         localStorage.setItem('mosque-users', JSON.stringify(users));
       }
       
-      // Update user in current session
+      // Update current user in localStorage
       const currentUser = JSON.parse(localStorage.getItem('mosque-user') || '{}');
       if (currentUser.id === user.id) {
         currentUser.favorites = favorites;
