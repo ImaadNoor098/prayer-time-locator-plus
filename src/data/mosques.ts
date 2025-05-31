@@ -124,9 +124,8 @@ export const mosques: Mosque[] = [
       '/mosques/mosque5-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Food Bank', 'Madrasah', 'Multilingual Sermons']
-  }
-];
-{
+  },
+  {
     id: 'm6',
     name: 'Razvi Masjid',
     address: 'Zakhira, Kila, Bareilly',
@@ -148,7 +147,8 @@ export const mosques: Mosque[] = [
     },
     images: [
       '/mosques/razvimasjid.jpg',  // These can be local images
-    
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
+
+];
