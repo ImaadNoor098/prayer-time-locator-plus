@@ -126,3 +126,29 @@ export const mosques: Mosque[] = [
     facilities: ['Prayer Hall', 'Food Bank', 'Madrasah', 'Multilingual Sermons']
   }
 ];
+{
+    id: 'm6',
+    name: 'Razvi Masjid',
+    address: 'Zakhira, Kila, Bareilly',
+    distance: 0.5, // Changed from Loading to a numeric value
+    // Coordinates used for distance calculation
+    coordinates: {
+      latitude: 28.366167,
+      longitude: 79.407535
+    },
+    // Added direct Google Maps link
+    googleMapsLink: 'https://maps.app.goo.gl/S6KCoKG7Jz4KFa7NA?g_st=aw',
+    prayerTimes: {
+      fajr: '04:45',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:06',
+      isha: '21:00',
+      jummah: '13:00'
+    },
+    images: [
+      '/mosques/razvimasjid.jpg',  // These can be local images
+    
+    ],
+    facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
+  },
