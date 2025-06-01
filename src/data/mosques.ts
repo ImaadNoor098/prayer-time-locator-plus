@@ -128,7 +128,7 @@ export const mosques: Mosque[] = [
   {
     id: 'm6',
     name: 'Razvi Masjid',
-    address: 'Zakhira, Kila, Bareilly',
+    address: 'Zakhira, Qila, Bareilly',
     distance: 0.5, // Changed from Loading to a numeric value
     // Coordinates used for distance calculation
     coordinates: {
@@ -136,7 +136,7 @@ export const mosques: Mosque[] = [
       longitude: 79.407535
     },
     // Added direct Google Maps link
-    googleMapsLink: 'https://maps.app.goo.gl/S6KCoKG7Jz4KFa7NA?g_st=aw',
+    googleMapsLink: 'https://maps.app.goo.gl/xsZFNgqqSqr8m3yR6?g_st=aw',
     prayerTimes: {
       fajr: '04:45',
       dhuhr: '14:00',
