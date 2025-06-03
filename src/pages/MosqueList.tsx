@@ -200,7 +200,9 @@ const MosqueList: React.FC = () => {
           <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
           <AlertDescription className="text-orange-800 dark:text-orange-200">
             <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development. 
-            We apologize for any inconvenience and are working to improve this feature.
+            We apologize for any inconvenience and are working to improve this feature. 
+            In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button 
+            on each mosque card to find the accurate way to the mosque.
           </AlertDescription>
         </Alert>
         
