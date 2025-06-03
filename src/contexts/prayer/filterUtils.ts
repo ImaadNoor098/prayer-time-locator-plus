@@ -13,10 +13,26 @@ export const getFilteredMosques = (
 ): Mosque[] => {
   if (!selectedPrayerName) return [];
   
-  const prayerName = selectedPrayerName.toLowerCase();
+  // Map prayer names to their corresponding keys in mosque data
+  const getPrayerKey = (prayerName: string): string => {
+    const prayerKeyMap: Record<string, string> = {
+      'Fajr': 'fajr',
+      'Dhuhr': 'dhuhr', 
+      'Asr': 'asr',
+      'Maghrib': 'maghrib',
+      'Isha': 'isha',
+      'Jummah': 'jummah',
+      'Eid ul-Adha': 'eidUlAdha',
+      'Eid ul-Fitr': 'eidUlFitr'
+    };
+    
+    return prayerKeyMap[prayerName] || prayerName.toLowerCase();
+  };
+  
+  const prayerKey = getPrayerKey(selectedPrayerName);
   
   let filtered = mosques.filter(mosque => 
-    mosque.prayerTimes[prayerName] !== undefined
+    mosque.prayerTimes[prayerKey] !== undefined
   );
   
   if (searchQuery.trim()) {
@@ -34,8 +50,8 @@ export const getFilteredMosques = (
   switch (currentFilter) {
     case 'earliest':
       return [...filtered].sort((a, b) => {
-        const timeA = a.prayerTimes[prayerName];
-        const timeB = b.prayerTimes[prayerName];
+        const timeA = a.prayerTimes[prayerKey];
+        const timeB = b.prayerTimes[prayerKey];
         
         // Separate active, upcoming and passed prayers
         const aActive = isPrayerActive(timeA, currentTime);
@@ -57,8 +73,8 @@ export const getFilteredMosques = (
       
     case 'latest':
       return [...filtered].sort((a, b) => {
-        const timeA = a.prayerTimes[prayerName];
-        const timeB = b.prayerTimes[prayerName];
+        const timeA = a.prayerTimes[prayerKey];
+        const timeB = b.prayerTimes[prayerKey];
         return timeB.localeCompare(timeA);
       });
       

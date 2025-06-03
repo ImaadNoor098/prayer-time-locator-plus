@@ -36,7 +36,23 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
     return endTime;
   };
 
-  const prayerName = selectedPrayer.name.toLowerCase();
+  // Map prayer names to their corresponding keys in mosque data
+  const getPrayerKey = (prayerName: string): string => {
+    const prayerKeyMap: Record<string, string> = {
+      'Fajr': 'fajr',
+      'Dhuhr': 'dhuhr', 
+      'Asr': 'asr',
+      'Maghrib': 'maghrib',
+      'Isha': 'isha',
+      'Jummah': 'jummah',
+      'Eid ul-Adha': 'eidUlAdha',
+      'Eid ul-Fitr': 'eidUlFitr'
+    };
+    
+    return prayerKeyMap[prayerName] || prayerName.toLowerCase();
+  };
+
+  const prayerKey = getPrayerKey(selectedPrayer.name);
 
   return (
     <div className="flex items-start">
@@ -46,9 +62,7 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
         
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-islamic-green/20">
           {Object.entries(mosque.prayerTimes).map(([prayer, time], index) => {
-            const isCurrentPrayer = prayer === prayerName || 
-              (prayerName === 'eid ul-adha' && prayer === 'eidUlAdha') ||
-              (prayerName === 'eid ul-fitr' && prayer === 'eidUlFitr');
+            const isCurrentPrayer = prayer === prayerKey;
             const isPrayerTimeOver = isPrayerPassed(time);
             const isPrayerTimeActive = isPrayerActive(time);
             const formattedTime = formatTimeToAmPm(time);
@@ -96,6 +110,7 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
                      prayer === 'asr' ? '🌇' : 
                      prayer === 'maghrib' ? '🌆' : 
                      prayer === 'isha' ? '🌙' : 
+                     prayer === 'jummah' ? '🕌' :
                      prayer === 'eidUlAdha' ? '🕌' :
                      prayer === 'eidUlFitr' ? '🌙' : '🕌'}
                   </div>
