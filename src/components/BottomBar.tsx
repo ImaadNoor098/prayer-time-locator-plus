@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
@@ -56,27 +57,14 @@ const BottomBar: React.FC = () => {
   const handleNavigation = (item: NavItem) => {
     // Special handling for home button
     if (item.path === '/') {
-      // Check if we have a selected prayer
-      if (selectedPrayer) {
-        // Get the last visited page
-        const lastPage = getLastVisitedPage();
-        
-        // If the last page was a mosque detail page and we have the ID, go to that page
-        const lastDetailedMosqueId = getLastDetailedMosqueId();
-        if (lastDetailedMosqueId && (lastPage.includes('/mosque/') || lastPage === '/mosques')) {
-          navigate(`/mosque/${lastDetailedMosqueId}`, { state: { fromBottomBar: true } });
-          return;
-        }
-        
-        // If the last page was mosque-related, go to that page
-        if ((lastPage.includes('/mosques') || lastPage.includes('/mosque/'))) {
-          navigate(lastPage, { state: { fromBottomBar: true } });
-          return;
-        }
+      // If no prayer is selected, go to prayer selection page
+      if (!selectedPrayer) {
+        navigate('/', { replace: true });
+        return;
       }
       
-      // Otherwise, go to the prayer selection page
-      navigate('/', { replace: true });
+      // If a prayer is selected, show the mosque list for that prayer
+      navigate('/mosques', { state: { fromBottomBar: true } });
       return;
     }
     
@@ -107,7 +95,7 @@ const BottomBar: React.FC = () => {
   };
 
   const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
+    if (path === '/' && (location.pathname === '/' || (location.pathname === '/mosques' && selectedPrayer))) return true;
     if (path === '/mosque-browser' && location.pathname === '/mosque-browser') return true;
     if (path === '/mosques' && location.pathname === '/mosques') return true;
     if (path === '/favorites' && location.pathname === '/favorites') return true;

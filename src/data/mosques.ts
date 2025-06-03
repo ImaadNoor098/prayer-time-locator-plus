@@ -21,7 +21,9 @@ export const mosques: Mosque[] = [
       asr: '18:00',
       maghrib: '19:30',
       isha: '21:15',
-      jummah: '01:00'
+      jummah: '01:00',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
     },
     images: [
       '/mosques/pulqazidemo.jpg',  // These can be local images
@@ -45,7 +47,9 @@ export const mosques: Mosque[] = [
       asr: '16:30',
       maghrib: '19:45',
       isha: '21:15',
-      jummah: '13:15'
+      jummah: '13:15',
+      eidUlAdha: '07:15',
+      eidUlFitr: '07:15'
     },
     images: [
       '/mosques/mosque2.jpg',
@@ -69,7 +73,9 @@ export const mosques: Mosque[] = [
       asr: '17:00',
       maghrib: '19:15',
       isha: '20:45',
-      jummah: '13:45'
+      jummah: '13:45',
+      eidUlAdha: '07:30',
+      eidUlFitr: '07:30'
     },
     images: [
       '/mosques/mosque3.jpg',
@@ -93,7 +99,9 @@ export const mosques: Mosque[] = [
       asr: '16:15',
       maghrib: '19:00',
       isha: '20:30',
-      jummah: '13:00'
+      jummah: '13:00',
+      eidUlAdha: '06:45',
+      eidUlFitr: '06:45'
     },
     images: [
       '/mosques/mosque4.jpg',
@@ -117,7 +125,9 @@ export const mosques: Mosque[] = [
       asr: '16:40',
       maghrib: '19:20',
       isha: '20:50',
-      jummah: '13:20'
+      jummah: '13:20',
+      eidUlAdha: '07:10',
+      eidUlFitr: '07:10'
     },
     images: [
       '/mosques/mosque5.jpg',
@@ -143,7 +153,9 @@ export const mosques: Mosque[] = [
       asr: '17:45',
       maghrib: '19:06',
       isha: '21:00',
-      jummah: '13:00'
+      jummah: '13:00',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
     },
     images: [
       '/mosques/razvimasjid.jpg',  // These can be local images

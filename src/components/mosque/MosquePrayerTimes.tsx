@@ -46,7 +46,9 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
         
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-islamic-green/20">
           {Object.entries(mosque.prayerTimes).map(([prayer, time], index) => {
-            const isCurrentPrayer = prayer === prayerName;
+            const isCurrentPrayer = prayer === prayerName || 
+              (prayerName === 'eid ul-adha' && prayer === 'eidUlAdha') ||
+              (prayerName === 'eid ul-fitr' && prayer === 'eidUlFitr');
             const isPrayerTimeOver = isPrayerPassed(time);
             const isPrayerTimeActive = isPrayerActive(time);
             const formattedTime = formatTimeToAmPm(time);
@@ -55,6 +57,15 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
             // Calculate if we should show a countdown
             const shouldShowCountdown = isPrayerTimeActive || 
               (!isPrayerTimeOver && prayer !== "sunrise");
+            
+            // Get display name for prayer
+            const getDisplayName = (prayer: string) => {
+              switch(prayer) {
+                case 'eidUlAdha': return 'Eid ul-Adha';
+                case 'eidUlFitr': return 'Eid ul-Fitr';
+                default: return prayer.charAt(0).toUpperCase() + prayer.slice(1);
+              }
+            };
             
             return (
               <div 
@@ -84,10 +95,12 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
                      prayer === 'dhuhr' ? '🕌' : 
                      prayer === 'asr' ? '🌇' : 
                      prayer === 'maghrib' ? '🌆' : 
-                     prayer === 'isha' ? '🌙' : '🕌'}
+                     prayer === 'isha' ? '🌙' : 
+                     prayer === 'eidUlAdha' ? '🕌' :
+                     prayer === 'eidUlFitr' ? '🌙' : '🕌'}
                   </div>
                   <div>
-                    <p className="font-medium capitalize">{prayer}</p>
+                    <p className="font-medium">{getDisplayName(prayer)}</p>
                   </div>
                 </div>
                 

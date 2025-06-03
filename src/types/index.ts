@@ -1,3 +1,4 @@
+
 import { User, PasswordRequirement } from './auth';
 
 export interface PrayerTime {
@@ -21,6 +22,8 @@ export interface PrayerTimesData {
   maghrib: string;
   isha: string;
   jummah: string;
+  eidUlAdha: string;
+  eidUlFitr: string;
 }
 
 export interface Mosque {
