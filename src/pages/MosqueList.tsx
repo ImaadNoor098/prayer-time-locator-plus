@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -8,7 +7,8 @@ import CurrentTime from '@/components/CurrentTime';
 import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -194,6 +194,15 @@ const MosqueList: React.FC = () => {
         </div>
         
         <CurrentTime />
+        
+        {/* Distance Calculation Notice */}
+        <Alert className="mb-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-800">
+          <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+          <AlertDescription className="text-orange-800 dark:text-orange-200">
+            <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development. 
+            We apologize for any inconvenience and are working to improve this feature.
+          </AlertDescription>
+        </Alert>
         
         <FilterBar />
         
