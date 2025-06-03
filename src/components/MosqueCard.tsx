@@ -35,8 +35,24 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   
   if (!selectedPrayer) return null;
   
-  const prayerName = selectedPrayer.name.toLowerCase();
-  const prayerTime = mosque.prayerTimes[prayerName];
+  // Map prayer names to their corresponding keys in mosque data
+  const getPrayerKey = (prayerName: string): string => {
+    const prayerKeyMap: Record<string, string> = {
+      'Fajr': 'fajr',
+      'Dhuhr': 'dhuhr', 
+      'Asr': 'asr',
+      'Maghrib': 'maghrib',
+      'Isha': 'isha',
+      'Jummah': 'jummah',
+      'Eid ul-Adha': 'eidUlAdha',
+      'Eid ul-Fitr': 'eidUlFitr'
+    };
+    
+    return prayerKeyMap[prayerName] || prayerName.toLowerCase();
+  };
+  
+  const prayerKey = getPrayerKey(selectedPrayer.name);
+  const prayerTime = mosque.prayerTimes[prayerKey];
   const formattedPrayerTime = formatTimeToAmPm(prayerTime);
   const isPassed = isPrayerPassed(prayerTime);
   const isActive = isPrayerActive(prayerTime);
