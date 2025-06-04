@@ -39,13 +39,13 @@ export const prayerTimes: PrayerTime[] = [
     description: 'Friday congregational prayer'
   },
   {
-    id: 'eid-ul-adha',
+    id: 'eidUlAdha',
     name: 'Eid ul-Adha',
-    icon: '🕌',
+    icon: '🐑',
     description: 'Festival of Sacrifice prayer'
   },
   {
-    id: 'eid-ul-fitr',
+    id: 'eidUlFitr',
     name: 'Eid ul-Fitr',
     icon: '🌙',
     description: 'Festival of Breaking the Fast prayer'

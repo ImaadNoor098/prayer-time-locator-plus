@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { ArrowLeftCircle, ExternalLink, Calendar } from 'lucide-react';
+import { ArrowLeftCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -26,32 +26,11 @@ const SalahHeader: React.FC<SalahHeaderProps> = ({ currentTime }) => {
         </Button>
       </div>
       
-      {/* Eid Information Banner */}
-      <Alert className="mb-6 bg-islamic-gold/20 border-islamic-gold border-2">
-        <Calendar className="h-5 w-5 text-islamic-blue" />
-        <AlertDescription className="text-black">
-          <div className="font-bold text-lg mb-2 text-islamic-blue">🌙 EID PRAYER DATES 2025 🌙</div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-islamic-blue">Eid ul-Adha:</span>
-              <span className="bg-islamic-green text-white px-3 py-1 rounded-full font-bold">7th June 2025</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-islamic-blue">Eid ul-Fitr:</span>
-              <span className="bg-islamic-blue text-white px-3 py-1 rounded-full font-bold">Based on Moon Sighting</span>
-            </div>
-          </div>
-        </AlertDescription>
-      </Alert>
-      
       <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream text-center mb-2">
         SALAH TIMES
       </h1>
       <p className="text-islamic-gray dark:text-islamic-cream/70 text-center mb-2">
         Prayer times for Bareilly
-      </p>
-      <p className="text-sm text-islamic-blue dark:text-islamic-cream text-center mb-2 font-semibold">
-        📅 Timings for the year 2025
       </p>
       
       {/* Highlighted Data Source */}
