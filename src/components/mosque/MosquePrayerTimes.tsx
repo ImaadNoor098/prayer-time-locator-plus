@@ -52,6 +52,44 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
     return prayerKeyMap[prayerName] || prayerName.toLowerCase();
   };
 
+  // Special logic for Eid prayers to determine their status
+  const getEidPrayerStatus = (prayer: string, time: string) => {
+    const currentDate = new Date();
+    
+    if (prayer === 'eidUlAdha') {
+      // Eid ul-Adha is on 7th June 2025
+      const eidDate = new Date('2025-06-07');
+      
+      // If current date is before Eid date, don't mark as done
+      if (currentDate < eidDate) {
+        return { isPassed: false, isCurrentPrayer: false };
+      }
+      
+      // If it's Eid date, use normal logic for prayer times
+      if (currentDate.toDateString() === eidDate.toDateString()) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const prayerDateTime = new Date(eidDate);
+        prayerDateTime.setHours(hours, minutes, 0);
+        
+        const isActive = currentDate >= prayerDateTime && currentDate <= new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
+        const hasPassed = currentDate > new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
+        
+        return { isPassed: hasPassed, isCurrentPrayer: isActive };
+      }
+      
+      // If after Eid date, mark as passed
+      return { isPassed: true, isCurrentPrayer: false };
+    }
+    
+    if (prayer === 'eidUlFitr') {
+      // Since date is not known (based on moon sighting), don't mark as done
+      return { isPassed: false, isCurrentPrayer: false };
+    }
+    
+    // For regular prayers, use the passed props
+    return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
+  };
+
   const prayerKey = getPrayerKey(selectedPrayer.name);
 
   return (
@@ -63,8 +101,12 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-islamic-green/20">
           {Object.entries(mosque.prayerTimes).map(([prayer, time], index) => {
             const isCurrentPrayer = prayer === prayerKey;
-            const isPrayerTimeOver = isPrayerPassed(time);
-            const isPrayerTimeActive = isPrayerActive(time);
+            
+            // Use Eid logic for Eid prayers, otherwise use normal logic
+            const eidStatus = getEidPrayerStatus(prayer, time);
+            const isPrayerTimeOver = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isPassed : isPrayerPassed(time);
+            const isPrayerTimeActive = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isCurrentPrayer : isPrayerActive(time);
+            
             const formattedTime = formatTimeToAmPm(time);
             const isLastItem = index === Object.entries(mosque.prayerTimes).length - 1;
             
@@ -73,7 +115,7 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
             
             // Calculate if we should show a countdown
             const shouldShowCountdown = isPrayerTimeActive || 
-              (!isPrayerTimeOver && prayer !== "sunrise" && 
+              (!isPrayerTimeOver && prayer !== "sunrise" && prayer !== 'eidUlFitr' &&
                !(prayer === 'jummah' && !isFriday)); // Don't show timer for Jummah unless it's Friday
             
             // Get display name for prayer
