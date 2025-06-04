@@ -10,8 +10,11 @@ import SearchBar from '@/components/SearchBar';
 import { ArrowLeft } from 'lucide-react';
 
 const MosqueBrowser: React.FC = () => {
-  const { mosques, trackPageVisit, saveScrollPosition, getSavedScrollPosition } = usePrayer();
+  const { getFilteredMosques, trackPageVisit, saveScrollPosition, getSavedScrollPosition } = usePrayer();
   const navigate = useNavigate();
+  
+  // Get filtered mosques based on search query
+  const mosques = getFilteredMosques();
   
   // Handle navigation and scrolling behavior
   useEffect(() => {

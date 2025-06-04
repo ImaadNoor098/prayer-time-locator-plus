@@ -68,9 +68,13 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
             const formattedTime = formatTimeToAmPm(time);
             const isLastItem = index === Object.entries(mosque.prayerTimes).length - 1;
             
+            // Check if today is Friday for Jummah prayer timer logic
+            const isFriday = new Date().getDay() === 5;
+            
             // Calculate if we should show a countdown
             const shouldShowCountdown = isPrayerTimeActive || 
-              (!isPrayerTimeOver && prayer !== "sunrise");
+              (!isPrayerTimeOver && prayer !== "sunrise" && 
+               !(prayer === 'jummah' && !isFriday)); // Don't show timer for Jummah unless it's Friday
             
             // Get display name for prayer
             const getDisplayName = (prayer: string) => {

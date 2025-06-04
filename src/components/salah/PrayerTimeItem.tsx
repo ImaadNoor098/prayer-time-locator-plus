@@ -32,6 +32,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
       case 'asr': return '🌇';
       case 'maghrib': return '🌆';
       case 'isha': return '🌙';
+      case 'jummah': return '🕌';
       case 'eidUlAdha': return '🐑';
       case 'eidUlFitr': return '🌙';
       default: return '🕌';
@@ -98,7 +99,14 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
   };
   
   const endTime = getPrayerEndTime();
-  const shouldShowTimer = finalIsCurrentPrayer || (!finalIsPassed && prayer !== 'sunrise' && prayer !== 'eidUlFitr');
+  
+  // Check if today is Friday for Jummah prayer timer logic
+  const isFriday = new Date().getDay() === 5;
+  
+  // Updated logic for showing timer
+  const shouldShowTimer = finalIsCurrentPrayer || 
+    (!finalIsPassed && prayer !== 'sunrise' && prayer !== 'eidUlFitr' && 
+     !(prayer === 'jummah' && !isFriday)); // Don't show timer for Jummah unless it's Friday
 
   // Special display for Eid prayers
   const getEidDisplayInfo = () => {
