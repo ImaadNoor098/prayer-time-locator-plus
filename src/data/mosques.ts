@@ -22,7 +22,7 @@ export const mosques: Mosque[] = [
       maghrib: '19:30',
       isha: '21:15',
       jummah: '01:00',
-      eidUlAdha: '07:00',
+      eidUlAdha: '09:00',
       eidUlFitr: '07:00'
     },
     images: [
