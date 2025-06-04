@@ -88,14 +88,39 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
   };
   
+  // Special logic for Jummah prayer to check if it's Friday
+  const getJummahPrayerStatus = (time: string) => {
+    const currentDate = new Date();
+    const isFriday = currentDate.getDay() === 5;
+    
+    // If it's not Friday, Jummah prayer is not applicable
+    if (!isFriday) {
+      return { isPassed: false, isCurrentPrayer: false };
+    }
+    
+    // If it's Friday, use normal prayer logic
+    return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
+  };
+  
   const prayerKey = getPrayerKey(selectedPrayer.name);
   const prayerTime = mosque.prayerTimes[prayerKey];
   const formattedPrayerTime = formatTimeToAmPm(prayerTime);
   
-  // Use Eid logic for Eid prayers, otherwise use normal logic
-  const eidStatus = getEidPrayerStatus(prayerKey, prayerTime);
-  const isPassed = (prayerKey === 'eidUlAdha' || prayerKey === 'eidUlFitr') ? eidStatus.isPassed : isPrayerPassed(prayerTime);
-  const isActive = (prayerKey === 'eidUlAdha' || prayerKey === 'eidUlFitr') ? eidStatus.isCurrentPrayer : isPrayerActive(prayerTime);
+  // Determine prayer status based on prayer type
+  let isPassed, isActive;
+  
+  if (prayerKey === 'eidUlAdha' || prayerKey === 'eidUlFitr') {
+    const eidStatus = getEidPrayerStatus(prayerKey, prayerTime);
+    isPassed = eidStatus.isPassed;
+    isActive = eidStatus.isCurrentPrayer;
+  } else if (prayerKey === 'jummah') {
+    const jummahStatus = getJummahPrayerStatus(prayerTime);
+    isPassed = jummahStatus.isPassed;
+    isActive = jummahStatus.isCurrentPrayer;
+  } else {
+    isPassed = isPrayerPassed(prayerTime);
+    isActive = isPrayerActive(prayerTime);
+  }
   
   const favorite = isFavorite(mosque.id);
   
@@ -249,7 +274,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
                   ACTIVE
                 </Badge>
               )}
-              {isPassed && !isActive && (
+              {isPassed && !isActive && prayerKey !== "sunrise" && (
                 <Badge variant="outline" className="ml-2 border-red-500 text-red-500">
                   SALAH DONE
                 </Badge>

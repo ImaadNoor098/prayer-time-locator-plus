@@ -8,7 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Calendar } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -194,6 +194,29 @@ const MosqueList: React.FC = () => {
         </div>
         
         <CurrentTime />
+        
+        {/* Eid ul-Adha Date Banner - Only show when Eid ul-Adha prayer is selected */}
+        {selectedPrayer.name === 'Eid ul-Adha' && (
+          <Alert className="mb-4 bg-islamic-gold/20 border-islamic-gold border-2">
+            <Calendar className="h-5 w-5 text-islamic-blue" />
+            <AlertDescription className="text-black">
+              <div className="font-bold text-lg mb-2 text-islamic-blue">
+                🌙 EID UL-ADHA 🌙
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-islamic-blue">This Year:</span>
+                  <span className="px-3 py-1 rounded-full font-bold text-white bg-islamic-green">
+                    7th June 2025
+                  </span>
+                </div>
+                <div className="text-sm text-islamic-gray">
+                  Festival of Sacrifice - Find mosques offering Eid prayers
+                </div>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
         
         {/* Distance Calculation Notice */}
         <Alert className="mb-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-800">

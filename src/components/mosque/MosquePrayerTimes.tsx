@@ -90,6 +90,20 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
     return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
   };
 
+  // Special logic for Jummah prayer to check if it's Friday
+  const getJummahPrayerStatus = (time: string) => {
+    const currentDate = new Date();
+    const isFriday = currentDate.getDay() === 5;
+    
+    // If it's not Friday, Jummah prayer is not applicable
+    if (!isFriday) {
+      return { isPassed: false, isCurrentPrayer: false };
+    }
+    
+    // If it's Friday, use normal prayer logic
+    return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
+  };
+
   const prayerKey = getPrayerKey(selectedPrayer.name);
 
   return (
@@ -102,10 +116,21 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
           {Object.entries(mosque.prayerTimes).map(([prayer, time], index) => {
             const isCurrentPrayer = prayer === prayerKey;
             
-            // Use Eid logic for Eid prayers, otherwise use normal logic
-            const eidStatus = getEidPrayerStatus(prayer, time);
-            const isPrayerTimeOver = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isPassed : isPrayerPassed(time);
-            const isPrayerTimeActive = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isCurrentPrayer : isPrayerActive(time);
+            // Determine prayer status based on prayer type
+            let isPrayerTimeOver, isPrayerTimeActive;
+            
+            if (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') {
+              const eidStatus = getEidPrayerStatus(prayer, time);
+              isPrayerTimeOver = eidStatus.isPassed;
+              isPrayerTimeActive = eidStatus.isCurrentPrayer;
+            } else if (prayer === 'jummah') {
+              const jummahStatus = getJummahPrayerStatus(time);
+              isPrayerTimeOver = jummahStatus.isPassed;
+              isPrayerTimeActive = jummahStatus.isCurrentPrayer;
+            } else {
+              isPrayerTimeOver = isPrayerPassed(time);
+              isPrayerTimeActive = isPrayerActive(time);
+            }
             
             const formattedTime = formatTimeToAmPm(time);
             const isLastItem = index === Object.entries(mosque.prayerTimes).length - 1;
