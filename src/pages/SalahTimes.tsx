@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
@@ -31,7 +30,7 @@ const SalahTimes: React.FC = () => {
           </AlertTitle>
           <AlertDescription className="text-islamic-gray">
             Our prayer times page is currently being refined for greater accuracy. 
-            Please refer to the data source website linked below for the most current information. 
+            Please refer to the data source website linked above for the most current information. 
             We'll be back soon with more precise prayer times!
           </AlertDescription>
         </Alert>
@@ -50,16 +49,6 @@ const SalahTimes: React.FC = () => {
           isPrayerPassed={isPrayerPassed}
           formatTimeToAmPm={formatTimeToAmPm}
         />
-        
-        <div className="flex justify-center mt-8">
-          <Button
-            onClick={() => window.open('https://prayer-times.muslimpro.com/en/find?country_code=IN&country_name=India&city_name=Bareilly&coordinates=28.3670355,79.4304381', '_blank')}
-            variant="outline"
-            className="text-islamic-gray"
-          >
-            Data source: MuslimPro.com
-          </Button>
-        </div>
       </div>
       
       <BottomBar />
