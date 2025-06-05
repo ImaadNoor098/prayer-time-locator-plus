@@ -33,23 +33,23 @@ export const mosques: Mosque[] = [
   },
   {
     id: 'm2',
-    name: 'Islamic Center of Peace',
-    address: '456 Faith Street, Harmony Heights',
+    name: 'Masjid Anar Wali',
+    address: 'Sahukara, Bara Bazar, Bareilly',
     distance: 2.5,
     coordinates: {
       latitude: 28.376,
       longitude: 79.432
     },
-    googleMapsLink: 'https://www.google.com/maps?q=28.376,79.432',
+    googleMapsLink: 'https://maps.app.goo.gl/tr5Q7c4WMgkw5Mg17',
     prayerTimes: {
-      fajr: '05:15',
-      dhuhr: '13:00',
-      asr: '16:30',
-      maghrib: '19:45',
-      isha: '21:15',
-      jummah: '13:15',
-      eidUlAdha: '07:15',
-      eidUlFitr: '07:15'
+      fajr: '05:00',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '12:35',
+      eidUlAdha: '05:45',
+      eidUlFitr: '05:45'
     },
     images: [
       '/mosques/mosque2.jpg',
