@@ -8,7 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, AlertTriangle, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Calendar } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -154,8 +154,6 @@ const MosqueList: React.FC = () => {
   
   const mosques = getFilteredMosques();
   
-  const [isDistanceNoticeExpanded, setIsDistanceNoticeExpanded] = useState(false);
-  
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
@@ -243,47 +241,19 @@ const MosqueList: React.FC = () => {
           </Alert>
         )}
         
-        {/* Improved Distance Calculation Notice */}
-        <Alert className="mb-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-800">
-          <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-          <AlertDescription className="text-orange-800 dark:text-orange-200">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <div className="mb-2">
-                  <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development. We apologize for any inconvenience and are working to improve this feature.
-                </div>
-                {isDistanceNoticeExpanded && (
-                  <div className="space-y-2">
-                    <div>
-                      In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button on each mosque card to find the accurate way to the mosque.
-                    </div>
-                    <div>
-                      Our team is actively working on implementing GPS-based distance calculations for more precise results. We appreciate your patience as we enhance this functionality.
-                    </div>
-                  </div>
-                )}
+        {/* Distance Notice - Shortened and Rectangular */}
+        <div className="mb-4 bg-orange-50 border border-orange-200 rounded-md p-3 dark:bg-orange-950/20 dark:border-orange-800">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+            <div className="text-orange-800 dark:text-orange-200 text-sm leading-relaxed">
+              <div className="font-medium mb-1">Distance Notice:</div>
+              <div className="space-y-1">
+                <div>Distance calculations are currently under development and may be inaccurate.</div>
+                <div>Use the <span className="bg-islamic-blue text-white px-2 py-0.5 rounded text-xs font-medium">Directions</span> button on each mosque card for accurate navigation.</div>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="ml-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300"
-                onClick={() => setIsDistanceNoticeExpanded(!isDistanceNoticeExpanded)}
-              >
-                {isDistanceNoticeExpanded ? (
-                  <>
-                    <ChevronUp className="h-4 w-4 mr-1" />
-                    Read Less
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown className="h-4 w-4 mr-1" />
-                    Read More
-                  </>
-                )}
-              </Button>
             </div>
-          </AlertDescription>
-        </Alert>
+          </div>
+        </div>
         
         <FilterBar />
         
