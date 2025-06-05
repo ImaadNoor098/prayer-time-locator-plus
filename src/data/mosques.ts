@@ -85,58 +85,6 @@ export const mosques: Mosque[] = [
   },
   {
     id: 'm4',
-    name: 'Tawhid Mosque',
-    address: '101 Unity Plaza, Faith Valley',
-    distance: 3.7,
-    coordinates: {
-      latitude: 28.395,
-      longitude: 79.445
-    },
-    googleMapsLink: 'https://www.google.com/maps?q=28.395,79.445',
-    prayerTimes: {
-      fajr: '05:00',
-      dhuhr: '12:45',
-      asr: '16:15',
-      maghrib: '19:00',
-      isha: '20:30',
-      jummah: '13:00',
-      eidUlAdha: '06:45',
-      eidUlFitr: '06:45'
-    },
-    images: [
-      '/mosques/mosque4.jpg',
-      '/mosques/mosque4-interior.jpg'
-    ],
-    facilities: ['Prayer Hall', 'Islamic Shop', 'Funeral Services', 'Marriage Services']
-  },
-  {
-    id: 'm5',
-    name: 'Masjid Al-Taqwa',
-    address: '202 Piety Lane, Devotion Square',
-    distance: 1.9,
-    coordinates: {
-      latitude: 28.374,
-      longitude: 79.422
-    },
-    googleMapsLink: 'https://www.google.com/maps?q=28.374,79.422',
-    prayerTimes: {
-      fajr: '05:20',
-      dhuhr: '13:10',
-      asr: '16:40',
-      maghrib: '19:20',
-      isha: '20:50',
-      jummah: '13:20',
-      eidUlAdha: '07:10',
-      eidUlFitr: '07:10'
-    },
-    images: [
-      '/mosques/mosque5.jpg',
-      '/mosques/mosque5-interior.jpg'
-    ],
-    facilities: ['Prayer Hall', 'Food Bank', 'Madrasah', 'Multilingual Sermons']
-  },
-  {
-    id: 'm6',
     name: 'Razvi Masjid',
     address: 'Zakhira, Qila, Bareilly',
     distance: 0.5, // Changed from Loading to a numeric value
