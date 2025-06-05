@@ -9,6 +9,13 @@ export interface User {
   favorites?: string[];
 }
 
+export interface RegisterFormData {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
 export interface PasswordRequirement {
   id: string;
   description: string;
