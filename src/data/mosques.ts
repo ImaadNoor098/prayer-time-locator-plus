@@ -158,7 +158,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:00'
     },
     images: [
-      '/mosques/razvimasjid.jpg',  // These can be local images
+      '/mosques/razvi_masjid.jpg',  // These can be local images
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
