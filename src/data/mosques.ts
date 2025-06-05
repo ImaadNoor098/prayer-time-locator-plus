@@ -59,21 +59,21 @@ export const mosques: Mosque[] = [
   },
   {
     id: 'm3',
-    name: 'Masjid Al-Rahman',
-    address: '789 Mercy Road, Blessing Hills',
+    name: 'Raza Masjid',
+    address: 'Raza Colony, Near Mini Bypass, Bareilly',
     distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://www.google.com/maps?q=28.368,79.427',
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
     prayerTimes: {
-      fajr: '05:45',
-      dhuhr: '13:30',
-      asr: '17:00',
-      maghrib: '19:15',
-      isha: '20:45',
-      jummah: '13:45',
+      fajr: '04:50',
+      dhuhr: '13:15',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:15',
+      jummah: '13:05',
       eidUlAdha: '07:30',
       eidUlFitr: '07:30'
     },
