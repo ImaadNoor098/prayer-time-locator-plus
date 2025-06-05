@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Mosque } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -22,8 +23,7 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     isPrayerActive, 
     toggleFavorite, 
     isFavorite, 
-    formatTimeToAmPm, 
-    userLocation,
+    formatTimeToAmPm,
     showUnfavoriteConfirmation,
     unfavoriteDialogState,
     hideUnfavoriteConfirmation
@@ -124,21 +124,6 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   
   const favorite = isFavorite(mosque.id);
   
-  // Calculate actual distance if user location is available
-  let distanceText = `${mosque.distance.toFixed(1)} km away`;
-  
-  if (userLocation && userLocation.latitude && userLocation.longitude && mosque.coordinates) {
-    // Calculate real distance using Haversine formula
-    const calculatedDistance = calculateDistance(
-      userLocation.latitude,
-      userLocation.longitude,
-      mosque.coordinates.latitude,
-      mosque.coordinates.longitude
-    );
-    
-    distanceText = `${calculatedDistance.toFixed(1)} km away`;
-  }
-  
   const handleDirections = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
     
@@ -188,20 +173,6 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     toggleFavorite(mosque.id);
   };
   
-  // Function to calculate distance using Haversine formula (great-circle distance)
-  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    const distance = R * c; // Distance in kilometers
-    return distance;
-  }
-  
   // Check if this mosque is the one in the unfavorite dialog
   const isCurrentMosqueInDialog = unfavoriteDialogState.mosque?.id === mosque.id;
   
@@ -244,49 +215,52 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
                   )} 
                 />
               </Button>
-              <Badge variant={isPassed && !isActive ? "outline" : "default"} className={cn(
-                isActive ? "bg-islamic-green animate-pulse" :
-                isPassed ? "bg-muted text-muted-foreground" : "bg-islamic-blue"
-              )}>
-                {formattedPrayerTime}
-              </Badge>
             </div>
           </div>
           
-          <div className="flex items-center text-sm text-islamic-gray mb-2">
+          <div className="flex items-center text-sm text-islamic-gray mb-3">
             <MapPin size={16} className="mr-1" />
             <span className="truncate">{mosque.address}</span>
           </div>
           
-          <div className="flex items-center text-sm mb-3">
-            <Clock size={16} className={cn(
-              "mr-1",
-              isActive ? "text-islamic-green" : 
-              isPassed ? "text-islamic-gray/70" : "text-islamic-green"
-            )} />
-            <span className={cn(
-              isActive ? "text-islamic-green font-medium" :
-              isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue"
-            )}>
-              {selectedPrayer.name}: {formattedPrayerTime}
-              {isActive && (
-                <Badge className="ml-2 bg-islamic-green animate-pulse">
-                  ACTIVE
-                </Badge>
-              )}
-              {isPassed && !isActive && prayerKey !== "sunrise" && (
-                <Badge variant="outline" className="ml-2 border-red-500 text-red-500">
-                  SALAH DONE
-                </Badge>
-              )}
-            </span>
-          </div>
-          
-          <div className="text-sm text-islamic-gray flex items-center">
-            <span className="flex items-center">
-              <MapPin size={14} className="mr-1 text-islamic-blue" />
-              {distanceText}
-            </span>
+          {/* Enhanced Prayer Time Display */}
+          <div className="bg-gradient-to-r from-islamic-blue/10 to-islamic-green/10 rounded-lg p-4 mb-3 border border-islamic-gold/30">
+            <div className="flex items-center justify-center">
+              <Clock size={20} className={cn(
+                "mr-2",
+                isActive ? "text-islamic-green" : 
+                isPassed ? "text-islamic-gray/70" : "text-islamic-blue"
+              )} />
+              <div className="text-center">
+                <p className="text-sm font-medium text-islamic-gray dark:text-islamic-cream/70 mb-1">
+                  {selectedPrayer.name} Prayer
+                </p>
+                <div className={cn(
+                  "text-4xl font-bold tracking-wider transition-all duration-300",
+                  isActive ? "text-islamic-green animate-pulse-gentle drop-shadow-lg" :
+                  isPassed ? "text-islamic-gray/70 dark:text-islamic-cream/50" : "text-islamic-blue drop-shadow-md"
+                )}>
+                  <span className={cn(
+                    "inline-block",
+                    isActive && "animate-pulse bg-gradient-to-r from-islamic-green to-islamic-light-green bg-clip-text text-transparent"
+                  )}>
+                    {formattedPrayerTime}
+                  </span>
+                </div>
+                <div className="flex justify-center mt-2">
+                  {isActive && (
+                    <Badge className="bg-islamic-green animate-pulse text-white font-medium">
+                      ACTIVE
+                    </Badge>
+                  )}
+                  {isPassed && !isActive && prayerKey !== "sunrise" && (
+                    <Badge variant="outline" className="border-red-500 text-red-500 font-medium">
+                      SALAH DONE
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
         

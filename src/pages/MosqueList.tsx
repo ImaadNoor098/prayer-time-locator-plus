@@ -243,20 +243,24 @@ const MosqueList: React.FC = () => {
           </Alert>
         )}
         
-        {/* Distance Calculation Notice with Read More/Less */}
+        {/* Improved Distance Calculation Notice */}
         <Alert className="mb-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-800">
           <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
           <AlertDescription className="text-orange-800 dark:text-orange-200">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development.
+                <div className="mb-2">
+                  <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development. We apologize for any inconvenience and are working to improve this feature.
+                </div>
                 {isDistanceNoticeExpanded && (
-                  <span className="block mt-2">
-                    We apologize for any inconvenience and are working to improve this feature. 
-                    In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button 
-                    on each mosque card to find the accurate way to the mosque. Our team is actively working on implementing 
-                    GPS-based distance calculations for more precise results.
-                  </span>
+                  <div className="space-y-2">
+                    <div>
+                      In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button on each mosque card to find the accurate way to the mosque.
+                    </div>
+                    <div>
+                      Our team is actively working on implementing GPS-based distance calculations for more precise results. We appreciate your patience as we enhance this functionality.
+                    </div>
+                  </div>
                 )}
               </div>
               <Button
