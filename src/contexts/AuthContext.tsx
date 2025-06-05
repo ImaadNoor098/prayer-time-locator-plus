@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { User } from '@/types';
@@ -137,16 +136,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const result = await AuthService.verifyOtp(otp);
       
-      if (result.success && result.user) {
+      if (result.success && result.user && result.newUserData) {
         // Update users list in localStorage
         const users = getUsers();
-        users.push(result.user.newUser);
+        users.push(result.newUserData);
         setUsers(users);
         
         // Set current user
-        const { newUser, ...userWithoutNewUser } = result.user;
-        setUser(userWithoutNewUser);
-        setCurrentUser(userWithoutNewUser);
+        setUser(result.user);
+        setCurrentUser(result.user);
         
         completeVerification();
         

@@ -50,7 +50,7 @@ export class AuthService {
     return { success: true };
   }
 
-  static async verifyOtp(otp: string): Promise<{ success: boolean; user?: User; error?: string }> {
+  static async verifyOtp(otp: string): Promise<{ success: boolean; user?: User; newUserData?: any; error?: string }> {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
     
@@ -80,7 +80,7 @@ export class AuthService {
       // Clean up
       sessionStorage.removeItem('pending-user');
       
-      return { success: true, user: { ...userWithoutPassword, newUser } };
+      return { success: true, user: userWithoutPassword, newUserData: newUser };
     } else {
       return { success: false, error: "Invalid OTP. Please try again or request a new code." };
     }
