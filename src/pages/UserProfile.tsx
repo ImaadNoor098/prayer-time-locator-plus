@@ -1,168 +1,109 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
-import { Check, User, Mail, Phone, LogOut } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { User, Heart, Clock, Settings } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import FavoriteAuthCheck from '@/components/FavoriteAuthCheck';
+import AdminPanel from '@/components/AdminPanel';
 
 const UserProfile: React.FC = () => {
-  const { user, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-  const [showAuthDialog, setShowAuthDialog] = useState(false);
-  
-  // Show auth dialog if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setShowAuthDialog(true);
-    }
-  }, [isAuthenticated]);
-  
-  const handleLogout = () => {
-    setLogoutDialogOpen(true);
-  };
-  
-  const confirmLogout = () => {
-    logout();
-    navigate('/');
-  };
-  
-  // Handle successful authentication
-  const handleAuthenticated = () => {
-    // Just refresh the page
-    window.location.reload();
-  };
-  
-  // Show authentication prompt if not logged in
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen islamic-pattern-bg pb-20">
-        <div className="container mx-auto max-w-4xl px-4 py-8">
-          <h1 className="text-2xl font-bold text-islamic-blue mb-6">Account Profile</h1>
-          
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold flex items-center">
-                <User className="h-5 w-5 mr-2 text-islamic-green" />
-                Sign In Required
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p>Please sign in to view your profile information.</p>
-              <Button 
-                onClick={() => setShowAuthDialog(true)}
-                className="bg-islamic-blue hover:bg-islamic-blue/90"
-              >
-                Sign In / Sign Up
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-        
-        <BottomBar />
-        
-        {/* Auth check dialog */}
-        <FavoriteAuthCheck 
-          isOpen={showAuthDialog}
-          onClose={() => navigate('/')} // Go home if they close without auth
-          onAuthenticated={handleAuthenticated}
-        />
-      </div>
-    );
-  }
-  
+  const { user, logout } = useAuth();
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+
   if (!user) {
     return (
-      <div className="min-h-screen islamic-pattern-bg pb-20">
-        <div className="container mx-auto max-w-4xl px-4">
-          <p>Loading profile...</p>
-        </div>
+      <div className="min-h-screen islamic-pattern-bg flex items-center justify-center pb-20">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <p className="text-center">Please log in to view your profile.</p>
+          </CardContent>
+        </Card>
         <BottomBar />
       </div>
     );
   }
-  
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">
       <div className="container mx-auto max-w-4xl px-4 py-8">
-        <h1 className="text-2xl font-bold text-islamic-blue mb-6">Account Profile</h1>
-        
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="text-xl font-semibold flex items-center">
-              <User className="h-5 w-5 mr-2 text-islamic-green" />
-              Personal Information
+            <CardTitle className="flex items-center text-islamic-blue">
+              <User className="h-5 w-5 mr-2" />
+              User Profile
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500">Full Name</p>
-              <p className="font-medium">{user.name}</p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Name:</span>
+                <span>{user.name}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Email:</span>
+                <span>{user.email}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Phone:</span>
+                <div className="flex items-center space-x-2">
+                  <span>{user.phone}</span>
+                  {user.phoneVerified && (
+                    <Badge variant="default" className="bg-green-100 text-green-800">
+                      Verified
+                    </Badge>
+                  )}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="font-medium">Member since:</span>
+                <span>{new Date(user.createdAt).toLocaleDateString()}</span>
+              </div>
             </div>
-            
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500 flex items-center">
-                <Mail className="h-4 w-4 mr-1" />
-                Email Address
-              </p>
-              <p className="font-medium">{user.email}</p>
+
+            <Separator />
+
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Heart className="h-4 w-4 text-islamic-green" />
+                <span className="font-medium">Favorite Mosques:</span>
+                <Badge variant="outline">
+                  {user.favorites?.length || 0}
+                </Badge>
+              </div>
             </div>
-            
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500 flex items-center">
-                <Phone className="h-4 w-4 mr-1" />
-                Phone Number
-                {user.phoneVerified && (
-                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-                    <Check className="h-3 w-3 mr-1" />
-                    Verified
-                  </span>
-                )}
-              </p>
-              <p className="font-medium">{user.phone}</p>
+
+            <Separator />
+
+            <div className="space-y-2">
+              <Button 
+                onClick={() => setShowAdminPanel(!showAdminPanel)} 
+                variant="outline" 
+                className="w-full"
+              >
+                <Settings className="h-4 w-4 mr-2" />
+                {showAdminPanel ? 'Hide Admin Panel' : 'Show Admin Panel'}
+              </Button>
+              
+              <Button 
+                onClick={handleLogout} 
+                variant="destructive" 
+                className="w-full"
+              >
+                Logout
+              </Button>
             </div>
           </CardContent>
         </Card>
-        
-        <Button
-          onClick={handleLogout}
-          variant="outline" 
-          className="w-full border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center justify-center"
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
+
+        {showAdminPanel && <AdminPanel />}
       </div>
-      
-      <AlertDialog open={logoutDialogOpen} onOpenChange={setLogoutDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Sign Out</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to sign out of your account?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmLogout} className="bg-red-600 hover:bg-red-700">
-              Sign Out
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
       
       <BottomBar />
     </div>

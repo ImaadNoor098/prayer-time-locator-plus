@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { User } from '@/types';
+import { AdminUserRegistry } from '@/utils/adminStorage';
 
 interface AuthContextType {
   user: User | null;
@@ -186,6 +187,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
         return false;
       }
+
+      // 🔧 ADMIN: Store user in admin registry for management
+      AdminUserRegistry.addUser(userData);
       
       // Store the pending phone verification
       setPendingPhone(userData.phone);
