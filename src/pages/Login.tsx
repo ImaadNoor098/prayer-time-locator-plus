@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Eye, EyeOff } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
+import ForgotPasswordPopup from '@/components/ForgotPasswordPopup';
 
 const Login: React.FC = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
@@ -16,6 +16,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState('');
+  const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   
   // Redirect if already authenticated
   useEffect(() => {
@@ -43,6 +44,11 @@ const Login: React.FC = () => {
       sessionStorage.removeItem('auth-redirect');
       navigate(redirectPath);
     }
+  };
+  
+  const handleForgotPasswordClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowForgotPasswordPopup(true);
   };
   
   return (
@@ -78,9 +84,13 @@ const Login: React.FC = () => {
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <Label htmlFor="password">Password</Label>
-                <Link to="/forgot-password" className="text-sm text-islamic-blue hover:underline">
+                <button
+                  type="button"
+                  onClick={handleForgotPasswordClick}
+                  className="text-sm text-islamic-blue hover:underline"
+                >
                   Forgot password?
-                </Link>
+                </button>
               </div>
               <div className="relative">
                 <Input
@@ -120,6 +130,11 @@ const Login: React.FC = () => {
           </p>
         </CardFooter>
       </Card>
+      
+      <ForgotPasswordPopup 
+        isOpen={showForgotPasswordPopup}
+        onClose={() => setShowForgotPasswordPopup(false)}
+      />
       
       {/* Always show bottom bar */}
       <BottomBar />

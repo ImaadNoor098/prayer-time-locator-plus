@@ -69,8 +69,8 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
     }
     
     if (prayer === 'eidUlFitr') {
-      // Since date is not known (based on moon sighting), don't mark as done
-      return { isPassed: false, isCurrentPrayer: false };
+      // Eid ul-Fitr salah for 2025 was done on 1st April 2025, so always mark as done
+      return { isPassed: true, isCurrentPrayer: false };
     }
     
     // For regular prayers, use the passed props
@@ -145,13 +145,13 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
                 <span className="font-semibold text-islamic-blue">This Year:</span>
                 <span className={cn(
                   "px-3 py-1 rounded-full font-bold text-white",
-                  prayer === 'eidUlAdha' ? "bg-islamic-green" : "bg-islamic-blue"
+                  prayer === 'eidUlAdha' ? "bg-islamic-green" : "bg-red-500"
                 )}>
-                  {prayer === 'eidUlAdha' ? '7th June 2025' : 'Based on Moon Sighting'}
+                  {prayer === 'eidUlAdha' ? '7th June 2025' : 'Done on 1st April 2025'}
                 </span>
               </div>
               <div className="text-sm text-islamic-gray">
-                These timings are for the year 2025
+                {prayer === 'eidUlFitr' ? 'Eid ul-Fitr salah for the year 2025 has been completed' : 'These timings are for the year 2025'}
               </div>
             </div>
           </AlertDescription>

@@ -8,7 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, AlertTriangle, Calendar } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -154,6 +154,8 @@ const MosqueList: React.FC = () => {
   
   const mosques = getFilteredMosques();
   
+  const [isDistanceNoticeExpanded, setIsDistanceNoticeExpanded] = useState(false);
+  
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
@@ -195,6 +197,29 @@ const MosqueList: React.FC = () => {
         
         <CurrentTime />
         
+        {/* Eid ul-Fitr Date Banner - Only show when Eid ul-Fitr prayer is selected */}
+        {selectedPrayer.name === 'Eid ul-Fitr' && (
+          <Alert className="mb-4 bg-red-100 border-red-500 border-2">
+            <Calendar className="h-5 w-5 text-red-600" />
+            <AlertDescription className="text-black">
+              <div className="font-bold text-lg mb-2 text-red-600">
+                🌙 EID UL-FITR 🌙
+              </div>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-red-600">This Year:</span>
+                  <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
+                    Done on 1st April 2025
+                  </span>
+                </div>
+                <div className="text-sm text-red-700">
+                  Eid Ul Fitr salah for the year 2025 has been done on 1st April 2025
+                </div>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
+        
         {/* Eid ul-Adha Date Banner - Only show when Eid ul-Adha prayer is selected */}
         {selectedPrayer.name === 'Eid ul-Adha' && (
           <Alert className="mb-4 bg-islamic-gold/20 border-islamic-gold border-2">
@@ -218,14 +243,41 @@ const MosqueList: React.FC = () => {
           </Alert>
         )}
         
-        {/* Distance Calculation Notice */}
+        {/* Distance Calculation Notice with Read More/Less */}
         <Alert className="mb-4 border-orange-200 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-800">
           <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400" />
           <AlertDescription className="text-orange-800 dark:text-orange-200">
-            <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development. 
-            We apologize for any inconvenience and are working to improve this feature. 
-            In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button 
-            on each mosque card to find the accurate way to the mosque.
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <strong>Notice:</strong> Distance calculations may be inaccurate and are currently under development.
+                {isDistanceNoticeExpanded && (
+                  <span className="block mt-2">
+                    We apologize for any inconvenience and are working to improve this feature. 
+                    In the meantime, you can use the <span className="bg-islamic-blue text-white px-2 py-1 rounded text-sm font-medium">Directions</span> button 
+                    on each mosque card to find the accurate way to the mosque. Our team is actively working on implementing 
+                    GPS-based distance calculations for more precise results.
+                  </span>
+                )}
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="ml-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300"
+                onClick={() => setIsDistanceNoticeExpanded(!isDistanceNoticeExpanded)}
+              >
+                {isDistanceNoticeExpanded ? (
+                  <>
+                    <ChevronUp className="h-4 w-4 mr-1" />
+                    Read Less
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-4 w-4 mr-1" />
+                    Read More
+                  </>
+                )}
+              </Button>
+            </div>
           </AlertDescription>
         </Alert>
         

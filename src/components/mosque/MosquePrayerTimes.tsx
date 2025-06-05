@@ -82,8 +82,8 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
     }
     
     if (prayer === 'eidUlFitr') {
-      // Since date is not known (based on moon sighting), don't mark as done
-      return { isPassed: false, isCurrentPrayer: false };
+      // Eid ul-Fitr salah for 2025 was done on 1st April 2025, so always mark as done
+      return { isPassed: true, isCurrentPrayer: false };
     }
     
     // For regular prayers, use the passed props
