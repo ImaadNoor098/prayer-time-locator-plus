@@ -19,7 +19,7 @@ export const mosques: Mosque[] = [
       fajr: '05:30',
       dhuhr: '14:15',
       asr: '18:00',
-      maghrib: '19:30',
+      maghrib: '19:11',
       isha: '21:15',
       jummah: '13:00', // Updated time format to make it consistent with other mosques
       eidUlAdha: '09:00',
