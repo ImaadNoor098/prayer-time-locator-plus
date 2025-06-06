@@ -8,7 +8,7 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
-  const [timeLeft, setTimeLeft] = useState<{ minutes: number; seconds: number }>({ minutes: 0, seconds: 0 });
+  const [minutesLeft, setMinutesLeft] = useState<number>(0);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -18,22 +18,21 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
       
       if (difference <= 0) {
         setIsVisible(false);
-        return { minutes: 0, seconds: 0 };
+        return 0;
       }
 
       // Only show the countdown if less than 60 minutes are left
       const minutes = Math.floor(difference / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
       
       setIsVisible(minutes < 60);
-      return { minutes, seconds };
+      return minutes;
     };
 
-    setTimeLeft(calculateTimeLeft());
+    setMinutesLeft(calculateTimeLeft());
     
     const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+      setMinutesLeft(calculateTimeLeft());
+    }, 60000); // Update every minute instead of every second
     
     return () => clearInterval(timer);
   }, [endTime]);
@@ -42,14 +41,14 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
     return null;
   }
 
-  // Format the time to include a minus symbol with better visibility
-  const formattedTime = `-${timeLeft.minutes.toString().padStart(2, '0')}:${timeLeft.seconds.toString().padStart(2, '0')}`;
+  // Format to show only minutes with "min" suffix
+  const formattedTime = `${minutesLeft} min`;
 
   return (
     <div className={cn(
       "px-3 py-1.5 rounded-md text-sm font-bold flex items-center shadow-sm border",
       type === 'active' 
-        ? "bg-islamic-green/20 text-islamic-green border-islamic-green/30 animate-pulse" 
+        ? "bg-islamic-green/20 text-islamic-green border-islamic-green/30" 
         : "bg-islamic-blue/20 text-islamic-blue border-islamic-blue/30"
     )}>
       <span className="inline-block font-mono tracking-wider">
