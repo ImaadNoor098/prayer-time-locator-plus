@@ -41,8 +41,8 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ endTime, type }) => {
     return null;
   }
 
-  // Format to show only minutes with "min" suffix
-  const formattedTime = `${minutesLeft} min`;
+  // Format to show "X minutes left"
+  const formattedTime = `${minutesLeft} minutes left`;
 
   return (
     <div className={cn(

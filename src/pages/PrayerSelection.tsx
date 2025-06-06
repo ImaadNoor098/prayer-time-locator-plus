@@ -15,6 +15,14 @@ const PrayerSelection: React.FC = () => {
     setSelectedPrayer(prayer);
     navigate('/mosques');
   };
+
+  const handleCall = () => {
+    window.location.href = 'tel:9548160990';
+  };
+
+  const handleWhatsApp = () => {
+    window.open('https://wa.me/919548160990', '_blank');
+  };
   
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">
@@ -26,6 +34,26 @@ const PrayerSelection: React.FC = () => {
           <p className="text-islamic-gray dark:text-islamic-cream/70">
             Select a prayer to find mosques and prayer times
           </p>
+          
+          {/* Contact Note */}
+          <div className="mt-4 p-3 bg-islamic-blue/10 dark:bg-islamic-cream/10 rounded-lg border border-islamic-blue/20">
+            <p className="text-sm text-islamic-blue dark:text-islamic-cream">
+              To Add Mosque Please{' '}
+              <button 
+                onClick={handleCall}
+                className="underline hover:text-islamic-green font-medium transition-colors"
+              >
+                Call
+              </button>
+              {' '}Or{' '}
+              <button 
+                onClick={handleWhatsApp}
+                className="underline hover:text-islamic-green font-medium transition-colors"
+              >
+                WhatsApp
+              </button>
+            </p>
+          </div>
         </header>
         
         <div className="flex justify-center mb-8">
