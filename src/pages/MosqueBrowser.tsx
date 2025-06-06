@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePrayer } from '@/contexts/prayer';
 import MosqueCardSimple from '@/components/MosqueCardSimple';
 import BottomBar from '@/components/BottomBar';
@@ -7,14 +7,25 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '@/components/SearchBar';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowDownAZ, ArrowDownZA } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 const MosqueBrowser: React.FC = () => {
-  const { getFilteredMosques, trackPageVisit, saveScrollPosition, getSavedScrollPosition } = usePrayer();
+  const { getFilteredMosques, trackPageVisit, saveScrollPosition, getSavedScrollPosition, searchParams, setSearchParams } = usePrayer();
   const navigate = useNavigate();
+  const [sortOrder, setSortOrder] = useState<'aToZ' | 'zToA'>('aToZ');
   
   // Get filtered mosques based on search query
   const mosques = getFilteredMosques();
+
+  // Sort mosques alphabetically
+  const sortedMosques = [...mosques].sort((a, b) => {
+    if (sortOrder === 'aToZ') {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
+    }
+  });
   
   // Handle navigation and scrolling behavior
   useEffect(() => {
@@ -25,6 +36,17 @@ const MosqueBrowser: React.FC = () => {
     
     // Get saved position for this page
     const savedPosition = getSavedScrollPosition(path);
+    
+    // Clear search on refresh/initial load
+    if (performance.navigation && performance.navigation.type === 1) { // 1 is TYPE_RELOAD
+      setSearchParams({ query: '' });
+    } else if (window.performance) {
+      // Modern browsers
+      const navEntries = performance.getEntriesByType('navigation');
+      if (navEntries.length > 0 && (navEntries[0] as any).type === 'reload') {
+        setSearchParams({ query: '' });
+      }
+    }
     
     // Restore previous scroll position if available
     if (savedPosition > 0) {
@@ -40,7 +62,7 @@ const MosqueBrowser: React.FC = () => {
     return () => {
       saveScrollPosition(path, window.scrollY);
     };
-  }, [trackPageVisit, getSavedScrollPosition, saveScrollPosition]);
+  }, [trackPageVisit, getSavedScrollPosition, saveScrollPosition, setSearchParams]);
   
   return (
     <div className="min-h-screen islamic-pattern-bg pb-20">
@@ -71,11 +93,49 @@ const MosqueBrowser: React.FC = () => {
             
             <SearchBar />
           </header>
+          
+          {/* Sort Filter Bar */}
+          <div className="p-3 bg-white dark:bg-card rounded-md shadow-sm mb-4">
+            <div className="mb-2 text-sm font-medium text-islamic-blue dark:text-islamic-light-blue">
+              Sort Mosques
+            </div>
+            <ToggleGroup 
+              type="single" 
+              value={sortOrder} 
+              onValueChange={(value) => value && setSortOrder(value as 'aToZ' | 'zToA')}
+              className="justify-start"
+            >
+              <ToggleGroupItem 
+                value="aToZ"
+                aria-label="Sort A to Z"
+                className={`text-xs flex items-center gap-1 ${
+                  sortOrder === 'aToZ' 
+                    ? 'bg-islamic-green text-white' 
+                    : 'hover:bg-islamic-cream hover:text-islamic-green'
+                }`}
+              >
+                <ArrowDownAZ className="h-4 w-4" />
+                A to Z
+              </ToggleGroupItem>
+              <ToggleGroupItem 
+                value="zToA"
+                aria-label="Sort Z to A"
+                className={`text-xs flex items-center gap-1 ${
+                  sortOrder === 'zToA' 
+                    ? 'bg-islamic-green text-white' 
+                    : 'hover:bg-islamic-cream hover:text-islamic-green'
+                }`}
+              >
+                <ArrowDownZA className="h-4 w-4" />
+                Z to A
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
         </div>
         
         <div className="pt-4 grid gap-4 grid-cols-1">
-          {mosques.length > 0 ? (
-            mosques.map((mosque) => (
+          {sortedMosques.length > 0 ? (
+            sortedMosques.map((mosque) => (
               <MosqueCardSimple key={mosque.id} mosque={mosque} />
             ))
           ) : (

@@ -21,13 +21,12 @@ export const mosques: Mosque[] = [
       asr: '18:00',
       maghrib: '19:30',
       isha: '21:15',
-      jummah: '01:00',
+      jummah: '13:00', // Updated time format to make it consistent with other mosques
       eidUlAdha: '09:00',
       eidUlFitr: '07:00'
     },
     images: [
       '/mosques/pulqazidemo.jpg',  // These can be local images
-    
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
@@ -110,5 +109,4 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
-
 ];

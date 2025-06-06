@@ -77,9 +77,41 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
     return { isPassed, isCurrentPrayer };
   };
 
+  // Special handling for Jummah prayer
+  const getJummahPrayerStatus = () => {
+    // If it's not Jummah prayer, return the normal status
+    if (prayer !== 'jummah') {
+      return { isPassed, isCurrentPrayer };
+    }
+    
+    // For Jummah, we check if today is Friday
+    const isFriday = new Date().getDay() === 5; // 5 is Friday
+    
+    if (!isFriday) {
+      // If it's not Friday, Jummah is neither passed nor current
+      return { isPassed: false, isCurrentPrayer: false };
+    }
+    
+    // If it's Friday, use normal time-based logic
+    return { isPassed, isCurrentPrayer };
+  };
+
   const eidStatus = getEidPrayerStatus();
-  const finalIsPassed = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isPassed : isPassed;
-  const finalIsCurrentPrayer = (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') ? eidStatus.isCurrentPrayer : isCurrentPrayer;
+  const jummahStatus = getJummahPrayerStatus();
+  
+  // Determine final status based on prayer type
+  let finalIsPassed, finalIsCurrentPrayer;
+  
+  if (prayer === 'eidUlAdha' || prayer === 'eidUlFitr') {
+    finalIsPassed = eidStatus.isPassed;
+    finalIsCurrentPrayer = eidStatus.isCurrentPrayer;
+  } else if (prayer === 'jummah') {
+    finalIsPassed = jummahStatus.isPassed;
+    finalIsCurrentPrayer = jummahStatus.isCurrentPrayer;
+  } else {
+    finalIsPassed = isPassed;
+    finalIsCurrentPrayer = isCurrentPrayer;
+  }
 
   // Calculate the prayer end time (for countdown)
   const getPrayerEndTime = () => {
