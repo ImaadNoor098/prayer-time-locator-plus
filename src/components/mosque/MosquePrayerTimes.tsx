@@ -22,15 +22,10 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
   formatTimeToAmPm 
 }) => {
   // Function to get the countdown end time
-  const getCountdownEndTime = (time: string, isPrayerTimeActive: boolean) => {
+  const getCountdownEndTime = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
     const endTime = new Date();
     endTime.setHours(hours, minutes, 0);
-    
-    // If prayer is active, countdown ends 5 minutes after prayer time
-    if (isPrayerTimeActive) {
-      return new Date(endTime.getTime() + 5 * 60 * 1000);
-    }
     
     // For upcoming prayers, countdown ends at prayer time
     return endTime;
@@ -138,10 +133,10 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
             // Check if today is Friday for Jummah prayer timer logic
             const isFriday = new Date().getDay() === 5;
             
-            // Calculate if we should show a countdown
-            const shouldShowCountdown = isPrayerTimeActive || 
-              (!isPrayerTimeOver && prayer !== "sunrise" && prayer !== 'eidUlFitr' &&
-               !(prayer === 'jummah' && !isFriday)); // Don't show timer for Jummah unless it's Friday
+            // Calculate if we should show a countdown - ONLY show before prayer starts, NOT when active
+            const shouldShowCountdown = !isPrayerTimeActive && !isPrayerTimeOver && 
+              prayer !== "sunrise" && prayer !== 'eidUlFitr' &&
+              !(prayer === 'jummah' && !isFriday); // Don't show timer for Jummah unless it's Friday
             
             // Get display name for prayer
             const getDisplayName = (prayer: string) => {
@@ -204,8 +199,8 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
                   
                   {shouldShowCountdown && (
                     <CountdownTimer 
-                      endTime={getCountdownEndTime(time, isPrayerTimeActive)}
-                      type={isPrayerTimeActive ? 'active' : 'upcoming'}
+                      endTime={getCountdownEndTime(time)}
+                      type="upcoming"
                     />
                   )}
                   

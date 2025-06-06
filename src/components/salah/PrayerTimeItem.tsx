@@ -115,16 +115,10 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
 
   // Calculate the prayer end time (for countdown)
   const getPrayerEndTime = () => {
-    const now = new Date();
     const [hours, minutes] = time.split(':').map(Number);
     
     const prayerDate = new Date(date);
     prayerDate.setHours(hours, minutes, 0);
-    
-    // For active prayer, end time is 5 minutes after start
-    if (finalIsCurrentPrayer) {
-      return new Date(prayerDate.getTime() + 5 * 60 * 1000);
-    }
     
     // For upcoming prayer, end time is the prayer time itself
     return prayerDate;
@@ -135,10 +129,10 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
   // Check if today is Friday for Jummah prayer timer logic
   const isFriday = new Date().getDay() === 5;
   
-  // Updated logic for showing timer
-  const shouldShowTimer = finalIsCurrentPrayer || 
-    (!finalIsPassed && prayer !== 'sunrise' && prayer !== 'eidUlFitr' && 
-     !(prayer === 'jummah' && !isFriday)); // Don't show timer for Jummah unless it's Friday
+  // Updated logic for showing timer - ONLY show before prayer starts, NOT when active
+  const shouldShowTimer = !finalIsCurrentPrayer && !finalIsPassed && 
+    prayer !== 'sunrise' && prayer !== 'eidUlFitr' && 
+    !(prayer === 'jummah' && !isFriday); // Don't show timer for Jummah unless it's Friday
 
   // Special display for Eid prayers
   const getEidDisplayInfo = () => {
@@ -247,7 +241,7 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
           {shouldShowTimer && (
             <CountdownTimer 
               endTime={endTime} 
-              type={finalIsCurrentPrayer ? 'active' : 'upcoming'} 
+              type="upcoming"
             />
           )}
           
