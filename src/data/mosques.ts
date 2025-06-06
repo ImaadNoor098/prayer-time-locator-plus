@@ -26,7 +26,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:00'
     },
     images: [
-      '/mosques/pulqazidemo.jpg',  // These can be local images
+      '/mosques/pulqazi_masjid.jpg',  // These can be local images
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
@@ -51,8 +51,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '05:45'
     },
     images: [
-      '/mosques/mosque2.jpg',
-      '/mosques/mosque2-interior.jpg'
+      '/mosques/anar_wali_masjid.jpg',
     ],
     facilities: ['Prayer Hall', 'Library', 'Conference Room', 'Educational Classes']
   },
@@ -77,7 +76,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:30'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/raza_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -118,7 +117,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/nGYXitoc1sb9XgZo6?g_st=aw',
     prayerTimes: {
       fajr: '04:40',
       dhuhr: '13:45',
@@ -130,7 +129,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '08:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/syed_rasool_shah_baba_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -144,7 +143,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/V8nvrgPptuonY1hq6?g_st=aw',
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '13:30',
@@ -156,7 +155,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/mustufai_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -170,7 +169,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/22K5bQCxsjtJX4qJ7?g_st=aw',
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '13:30',
@@ -182,7 +181,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '06:30'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/abu_bakr_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -196,7 +195,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/hQbME41D57QpmWri8?g_st=aw',
     prayerTimes: {
       fajr: '04:50',
       dhuhr: '14:00',
@@ -208,7 +207,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/domni_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -222,7 +221,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/YdT1Yp9z1qFEGFCD9?g_st=aw',
     prayerTimes: {
       fajr: '04:45',
       dhuhr: '13:45',
@@ -234,7 +233,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:30'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/noor_jahan_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -248,7 +247,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/swApaq7gSp5T6iA37',
     prayerTimes: {
       fajr: '04:50',
       dhuhr: '13:30',
@@ -260,7 +259,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/hashmi_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -274,7 +273,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/cpjGSELJpXyQt6Wb7?g_st=aw',
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '13:30',
@@ -286,7 +285,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '05:45'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/madina_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -300,7 +299,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/RrCo2YVgBBm96EsXA?g_st=aw',
     prayerTimes: {
       fajr: '04:45',
       dhuhr: '14:00',
@@ -312,7 +311,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '08:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/rehani_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -326,7 +325,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/Nxn7aeffpGv8gYZC9?g_st=aw',
     prayerTimes: {
       fajr: '04:55',
       dhuhr: '14:00',
@@ -338,7 +337,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '09:00'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/noori_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -352,7 +351,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/JLoBwTcdzmQqGJBC9?g_st=aw',
     prayerTimes: {
       fajr: '04:55',
       dhuhr: '13:30',
@@ -364,7 +363,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '07:30'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/shamsuddin_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
@@ -378,7 +377,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    googleMapsLink: 'https://maps.app.goo.gl/UQwKWnfuoiCKoNqW7?g_st=aw',
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '13:45',
@@ -390,7 +389,7 @@ export const mosques: Mosque[] = [
       eidUlFitr: '06:30'
     },
     images: [
-      '/mosques/mosque3.jpg',
+      '/mosques/thane_wali_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
