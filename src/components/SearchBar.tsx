@@ -1,9 +1,10 @@
 
 import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { usePrayer } from '@/contexts/prayer';
 import { useNavigation } from '@/contexts/NavigationContext';
+import { Button } from '@/components/ui/button';
 
 const SearchBar: React.FC = () => {
   const { searchParams, setSearchParams } = usePrayer();
@@ -35,16 +36,32 @@ const SearchBar: React.FC = () => {
     setLastSearchQuery(query);
   };
   
+  const handleClear = () => {
+    setSearchParams({ query: '' });
+    setLastSearchQuery('');
+  };
+  
   return (
     <div className="relative">
       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-islamic-gray" size={16} />
       <Input
         type="text"
         placeholder="Search mosques..."
-        value={searchParams.query}
+        value={searchParams.query || ''}
         onChange={handleSearch}
-        className="pl-10 bg-background border-islamic-green/20 focus-visible:ring-islamic-green"
+        className="pl-10 pr-10 bg-background border-islamic-green/20 focus-visible:ring-islamic-green"
       />
+      {searchParams.query && (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleClear}
+          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-islamic-gray/10"
+          aria-label="Clear search"
+        >
+          <X className="h-4 w-4 text-islamic-gray" />
+        </Button>
+      )}
     </div>
   );
 };
