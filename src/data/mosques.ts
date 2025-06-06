@@ -109,4 +109,290 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Madarsa', 'Ablution Area', 'Women\'s Section', 'Parking']
   },
+  {
+    id: 'm5',
+    name: 'Syed Rasool Shah Baba Masjid',
+    address: 'Bareilly Club, Civil Lines, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:40',
+      dhuhr: '13:45',
+      asr: '17:45',
+      maghrib: '19:15',
+      isha: '21:00',
+      jummah: '13:00',
+      eidUlAdha: '08:00',
+      eidUlFitr: '08:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm6',
+    name: 'Mustufai Masjid, urf Begum Wali',
+    address: 'Garhaiya, Phoota Darwaza, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '05:00',
+      dhuhr: '13:30',
+      asr: '17:30',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '13:00',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm7',
+    name: 'Abu Bakr Masjid',
+    address: 'Phoolwalan, Zakhira, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '05:00',
+      dhuhr: '13:30',
+      asr: '17:30',
+      maghrib: '19:10',
+      isha: '21:00',
+      jummah: '12:35',
+      eidUlAdha: '06:30',
+      eidUlFitr: '06:30'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm8',
+    name: 'Domni Masjid',
+    address: 'Phoolwalan, Zakhira, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:50',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:15',
+      jummah: '12:45',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm9',
+    name: 'Noor Jahan Masjid',
+    address: 'Phoolwalan, Zakhira, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:45',
+      dhuhr: '13:45',
+      asr: '17:30',
+      maghrib: '19:13',
+      isha: '21:00',
+      jummah: '13:15',
+      eidUlAdha: '07:30',
+      eidUlFitr: '07:30'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm10',
+    name: 'Hashmi Masjid',
+    address: 'Garhaiya, Bara Bazar, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:50',
+      dhuhr: '13:30',
+      asr: '17:30',
+      maghrib: '19:10',
+      isha: '21:00',
+      jummah: '13:15',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm11',
+    name: 'Madina Masjid',
+    address: 'Sahukara, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '05:00',
+      dhuhr: '13:30',
+      asr: '17:15',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '12:45',
+      eidUlAdha: '05:45',
+      eidUlFitr: '05:45'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm12',
+    name: 'Rehani Masjid',
+    address: 'Sahukara, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:45',
+      dhuhr: '14:00',
+      asr: '17:30',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '14:00',
+      eidUlAdha: '08:00',
+      eidUlFitr: '08:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm13',
+    name: 'Noori Masjid',
+    address: 'Garhaiya, Phoota Darwaza, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:55',
+      dhuhr: '14:00',
+      asr: '17:30',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '14:45',
+      eidUlAdha: '09:00',
+      eidUlFitr: '09:00'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm14',
+    name: 'Shamsuddin Masjid',
+    address: 'Phoota Darwaza, Sahukara, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '04:55',
+      dhuhr: '13:30',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '14:00',
+      eidUlAdha: '07:30',
+      eidUlFitr: '07:30'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm15',
+    name: 'Thane Wali Masjid',
+    address: 'Sahukara, Thana Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/1seSgh5moaMCpj8y7',
+    prayerTimes: {
+      fajr: '05:00',
+      dhuhr: '13:45',
+      asr: '17:30',
+      maghrib: '19:10',
+      isha: '21:00',
+      jummah: '13:15',
+      eidUlAdha: '06:30',
+      eidUlFitr: '06:30'
+    },
+    images: [
+      '/mosques/mosque3.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
