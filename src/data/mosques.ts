@@ -394,4 +394,30 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+  {
+    id: 'm16',
+    name: 'Hari Minar Masjid',
+    address: 'Katghar, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/UQwKWnfuoiCKoNqW7?g_st=aw',
+    prayerTimes: {
+      fajr: '04:45',
+      dhuhr: '14:00',
+      asr: '18:00',
+      maghrib: '19:11',
+      isha: '21:15',
+      jummah: '13:14',
+      eidUlAdha: '07:30',
+      eidUlFitr: '07:30'
+    },
+    images: [
+      '/mosques/hari_minar_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
