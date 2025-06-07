@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,8 +21,12 @@ const BottomBar: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { getLastVisitedPage, getLastDetailedMosqueId } = useNavigation();
-  const { selectedPrayer } = usePrayer();
+  const { selectedPrayer, setSelectedPrayer } = usePrayer();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
+  
+  // Double-tap detection for Home button
+  const lastTapRef = useRef<number>(0);
+  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navItems: NavItem[] = [
     {
@@ -54,10 +58,29 @@ const BottomBar: React.FC = () => {
     },
   ];
 
-  const handleNavigation = (item: NavItem) => {
-    // Special handling for home button
-    if (item.path === '/') {
-      // If no prayer is selected, go to prayer selection page
+  const handleHomeButtonTap = () => {
+    const currentTime = Date.now();
+    const timeDiff = currentTime - lastTapRef.current;
+    
+    // If this is a double-tap (within 300ms)
+    if (timeDiff < 300 && timeDiff > 0) {
+      // Clear any pending single-tap timeout
+      if (tapTimeoutRef.current) {
+        clearTimeout(tapTimeoutRef.current);
+        tapTimeoutRef.current = null;
+      }
+      
+      // Double-tap detected - navigate to prayer selection and clear selected prayer
+      setSelectedPrayer(null);
+      navigate('/', { replace: true });
+      lastTapRef.current = 0; // Reset to prevent triple-tap issues
+      return;
+    }
+    
+    // Single tap - set a timeout to handle normal navigation
+    lastTapRef.current = currentTime;
+    tapTimeoutRef.current = setTimeout(() => {
+      // This is a single tap - handle normal home navigation
       if (!selectedPrayer) {
         navigate('/', { replace: true });
         return;
@@ -65,6 +88,14 @@ const BottomBar: React.FC = () => {
       
       // If a prayer is selected, show the mosque list for that prayer
       navigate('/mosques', { state: { fromBottomBar: true } });
+      tapTimeoutRef.current = null;
+    }, 300);
+  };
+
+  const handleNavigation = (item: NavItem) => {
+    // Special handling for home button with double-tap detection
+    if (item.path === '/') {
+      handleHomeButtonTap();
       return;
     }
     

@@ -10,25 +10,25 @@ const SearchBar: React.FC = () => {
   const { searchParams, setSearchParams } = usePrayer();
   const { getLastSearchQuery, setLastSearchQuery } = useNavigation();
   
-  // On component mount, get the last search query from navigation context
-  // But skip this if we're in a page refresh scenario
+  // On component mount, restore the last search query only if we're navigating between pages
   useEffect(() => {
-    // Check if this is a page load/refresh
-    const isPageRefresh = !document.referrer || 
-      document.referrer.includes(window.location.origin);
+    // Check if this is a fresh page load (page refresh or direct URL access)
+    const isPageRefresh = performance.navigation.type === 1 || 
+      !document.referrer || 
+      document.referrer === window.location.href;
     
     if (isPageRefresh) {
-      // Clear search on page refresh
+      // Clear search on page refresh/reload
       setSearchParams({ query: '' });
       setLastSearchQuery('');
     } else {
-      // Normal navigation between pages - restore last search
+      // Normal navigation between pages - restore last search if available
       const lastQuery = getLastSearchQuery();
-      if (lastQuery && lastQuery !== searchParams.query) {
+      if (lastQuery && !searchParams.query) {
         setSearchParams({ query: lastQuery });
       }
     }
-  }, [getLastSearchQuery, searchParams.query, setSearchParams, setLastSearchQuery]);
+  }, []); // Only run on mount
   
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
