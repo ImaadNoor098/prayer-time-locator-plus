@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -20,7 +21,9 @@ const MosqueList: React.FC = () => {
     saveScrollPosition, 
     getSavedScrollPosition, 
     trackPageVisit, 
-    setSelectedPrayer 
+    setSelectedPrayer,
+    currentFilter,
+    setCurrentFilter
   } = usePrayer();
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,6 +33,11 @@ const MosqueList: React.FC = () => {
   // Get current prayer based on prayer times
   const { currentTime, isPrayerTime, salahTimes } = useSalahTimes(new Date());
   const [currentActivePrayer, setCurrentActivePrayer] = useState<string | null>(null);
+  
+  // Set default filter to 'earliest' for prayer-based filtering
+  useEffect(() => {
+    setCurrentFilter('earliest');
+  }, [setCurrentFilter]);
   
   // Determine the current active prayer
   useEffect(() => {
@@ -207,11 +215,11 @@ const MosqueList: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-red-600">This Year:</span>
                   <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
-                    Done on 1st April 2025
+                    SALAH DONE
                   </span>
                 </div>
                 <div className="text-sm text-red-700">
-                  Eid Ul Fitr salah for the year 2025 has been done on 1st April 2025
+                  Eid Ul Fitr salah for the year 2025 has been completed
                 </div>
               </div>
             </AlertDescription>
@@ -230,11 +238,11 @@ const MosqueList: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-islamic-blue">This Year:</span>
                   <span className="px-3 py-1 rounded-full font-bold text-white bg-islamic-green">
-                    7th June 2025
+                    SALAH DONE
                   </span>
                 </div>
                 <div className="text-sm text-islamic-gray">
-                  Festival of Sacrifice - Find mosques offering Eid prayers
+                  Festival of Sacrifice - Eid prayers have been completed
                 </div>
               </div>
             </AlertDescription>
