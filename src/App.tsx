@@ -37,7 +37,7 @@ const App = () => {
                   <Routes>
                     <Route path="/" element={<PrayerSelection />} />
                     <Route path="/mosques" element={<MosqueList />} />
-                    <Route path="/mosque-browser" element={<MosqueBrowser />} />
+                    <Route path="/browse" element={<MosqueBrowser />} />
                     <Route path="/favorites" element={
                       <ProtectedRoute>
                         <Favorites />

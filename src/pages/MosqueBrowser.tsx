@@ -23,12 +23,10 @@ const MosqueBrowser: React.FC = () => {
   const pageRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef(true);
   
-  // Set default filter to A-Z on component mount
+  // Set default filter to A-Z on component mount for browse page
   useEffect(() => {
-    if (currentFilter !== 'alphabetical' && currentFilter !== 'alphabetical-desc') {
-      setCurrentFilter('alphabetical');
-    }
-  }, [currentFilter, setCurrentFilter]);
+    setCurrentFilter('alphabetical');
+  }, [setCurrentFilter]);
   
   // Use useEffect to handle navigation and scrolling behavior
   useEffect(() => {
