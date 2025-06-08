@@ -38,6 +38,7 @@ const App = () => {
                     <Route path="/" element={<PrayerSelection />} />
                     <Route path="/mosques" element={<MosqueList />} />
                     <Route path="/browse" element={<MosqueBrowser />} />
+                    <Route path="/mosque-browser" element={<MosqueBrowser />} />
                     <Route path="/favorites" element={
                       <ProtectedRoute>
                         <Favorites />
