@@ -403,7 +403,7 @@ export const mosques: Mosque[] = [
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/UQwKWnfuoiCKoNqW7?g_st=aw',
+    googleMapsLink: 'https://maps.app.goo.gl/SV1VXg44fivkfxjDA',
     prayerTimes: {
       fajr: '04:45',
       dhuhr: '14:00',
@@ -416,6 +416,32 @@ export const mosques: Mosque[] = [
     },
     images: [
       '/mosques/hari_minar_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+    {
+    id: 'm17',
+    name: 'Duliya Wali/Bi Masjid',
+    address: 'Zakhira, Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/4jsSo8xPZSe6G1Zh7',
+    prayerTimes: {
+      fajr: '04:50',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '14:30',
+      eidUlAdha: '05:40',
+      eidUlFitr: '05:40'
+    },
+    images: [
+      '/mosques/duliya_wali_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
