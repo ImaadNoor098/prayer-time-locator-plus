@@ -173,11 +173,11 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
                   "px-3 py-1 rounded-full font-bold text-white",
                   prayer === 'eidUlAdha' ? "bg-islamic-green" : "bg-red-500"
                 )}>
-                  {prayer === 'eidUlAdha' ? '7th June 2025' : 'Done on 1st April 2025'}
+                  {prayer === 'eidUlAdha' ? 'SALAH DONE on 7th June 2025' : 'SALAH DONE on 1st April 2025'}
                 </span>
               </div>
               <div className="text-sm text-islamic-gray">
-                {prayer === 'eidUlFitr' ? 'Eid ul-Fitr salah for the year 2025 has been completed' : 'These timings are for the year 2025'}
+                {prayer === 'eidUlFitr' ? 'Eid ul-Fitr salah for the year 2025 has been completed' : 'Eid ul-Adha salah for the year 2025 has been completed'}
               </div>
             </div>
           </AlertDescription>

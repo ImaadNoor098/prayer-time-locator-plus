@@ -33,6 +33,7 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return null;
   });
   
+  // Set default filter to 'earliest' for prayer-based filtering
   const [currentFilter, setCurrentFilter] = useState<FilterOption>('earliest');
   const [searchParams, setSearchParams] = useState<SearchParams>({ query: '', showFavorites: false });
   
