@@ -84,6 +84,12 @@ export const getFilteredMosques = (
     case 'farthest':
       return [...filtered].sort((a, b) => b.distance - a.distance);
       
+    case 'alphabetical':
+      return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+      
+    case 'alphabetical-desc':
+      return [...filtered].sort((a, b) => b.name.localeCompare(a.name));
+      
     default:
       return filtered;
   }

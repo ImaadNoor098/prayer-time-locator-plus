@@ -1,4 +1,3 @@
-
 import { Mosque } from '@/types';
 
 // Mock mosque data
@@ -22,8 +21,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:30',
       jummah: '13:00', // Updated time format to make it consistent with other mosques
-      eidUlAdha: '09:00',
-      eidUlFitr: '07:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/pulqazi_masjid.jpg',  // These can be local images
@@ -47,8 +46,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '12:35',
-      eidUlAdha: '05:45',
-      eidUlFitr: '05:45'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/anar_wali_masjid.jpg',
@@ -72,8 +71,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:15',
       jummah: '13:05',
-      eidUlAdha: '07:30',
-      eidUlFitr: '07:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/raza_masjid.jpg',
@@ -100,8 +99,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:06',
       isha: '21:00',
       jummah: '13:00',
-      eidUlAdha: '07:00',
-      eidUlFitr: '07:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/razvi_masjid.jpg',  // These can be local images
@@ -125,8 +124,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:15',
       isha: '21:00',
       jummah: '13:00',
-      eidUlAdha: '08:00',
-      eidUlFitr: '08:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/syed_rasool_shah_baba_masjid.jpg',
@@ -151,8 +150,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '13:00',
-      eidUlAdha: '07:00',
-      eidUlFitr: '07:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/mustufai_masjid.jpg',
@@ -177,8 +176,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:10',
       isha: '21:00',
       jummah: '12:35',
-      eidUlAdha: '06:30',
-      eidUlFitr: '06:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/abu_bakr_masjid.jpg',
@@ -203,8 +202,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:15',
       jummah: '12:45',
-      eidUlAdha: '07:00',
-      eidUlFitr: '07:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/domni_masjid.jpg',
@@ -229,8 +228,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:13',
       isha: '21:00',
       jummah: '13:15',
-      eidUlAdha: '07:30',
-      eidUlFitr: '07:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/noor_jahan_masjid.jpg',
@@ -255,8 +254,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:10',
       isha: '21:00',
       jummah: '13:15',
-      eidUlAdha: '07:00',
-      eidUlFitr: '07:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/hashmi_masjid.jpg',
@@ -281,8 +280,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '12:45',
-      eidUlAdha: '05:45',
-      eidUlFitr: '05:45'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/madina_masjid.jpg',
@@ -307,8 +306,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '14:00',
-      eidUlAdha: '08:00',
-      eidUlFitr: '08:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/rehani_masjid.jpg',
@@ -333,8 +332,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '14:45',
-      eidUlAdha: '09:00',
-      eidUlFitr: '09:00'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/noori_masjid.jpg',
@@ -359,8 +358,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '14:00',
-      eidUlAdha: '07:30',
-      eidUlFitr: '07:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/shamsuddin_masjid.jpg',
@@ -385,8 +384,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:10',
       isha: '21:00',
       jummah: '13:15',
-      eidUlAdha: '06:30',
-      eidUlFitr: '06:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/thane_wali_masjid.jpg',
@@ -411,8 +410,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:15',
       jummah: '13:14',
-      eidUlAdha: '07:30',
-      eidUlFitr: '07:30'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/hari_minar_masjid.jpg',
@@ -437,8 +436,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:00',
       jummah: '14:30',
-      eidUlAdha: '05:40',
-      eidUlFitr: '05:40'
+      eidUlAdha: 'SALAH DONE on 7 June 2025',
+      eidUlFitr: 'SALAH DONE on 31 March 2025'
     },
     images: [
       '/mosques/duliya_wali_masjid.jpg',

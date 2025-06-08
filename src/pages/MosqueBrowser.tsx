@@ -6,8 +6,6 @@ import FilterBar from '@/components/FilterBar';
 import CurrentTime from '@/components/CurrentTime';
 import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const MosqueBrowser: React.FC = () => {
@@ -15,6 +13,7 @@ const MosqueBrowser: React.FC = () => {
     mosques,
     searchParams,
     currentFilter,
+    setCurrentFilter,
     saveScrollPosition, 
     getSavedScrollPosition, 
     trackPageVisit 
@@ -23,6 +22,13 @@ const MosqueBrowser: React.FC = () => {
   const location = useLocation();
   const pageRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef(true);
+  
+  // Set default filter to A-Z on component mount
+  useEffect(() => {
+    if (currentFilter !== 'alphabetical' && currentFilter !== 'alphabetical-desc') {
+      setCurrentFilter('alphabetical');
+    }
+  }, [currentFilter, setCurrentFilter]);
   
   // Use useEffect to handle navigation and scrolling behavior
   useEffect(() => {
@@ -62,7 +68,7 @@ const MosqueBrowser: React.FC = () => {
     };
   }, [location.pathname, getSavedScrollPosition, saveScrollPosition, trackPageVisit, location.state]);
   
-  // Filter mosques based on search query and favorites
+  // Filter mosques based on search query and sorting
   const getFilteredMosques = () => {
     let filtered = [...mosques];
     
@@ -75,20 +81,14 @@ const MosqueBrowser: React.FC = () => {
       );
     }
     
-    // Apply favorites filter
-    if (searchParams.showFavorites) {
-      // This would need access to favorites from context
-      // For now, we'll skip this filter in browse mode
-    }
-    
     // Apply sorting based on current filter
     switch (currentFilter) {
-      case 'nearest':
-        return [...filtered].sort((a, b) => a.distance - b.distance);
-      case 'farthest':
-        return [...filtered].sort((a, b) => b.distance - a.distance);
+      case 'alphabetical':
+        return [...filtered].sort((a, b) => a.name.localeCompare(b.name));
+      case 'alphabetical-desc':
+        return [...filtered].sort((a, b) => b.name.localeCompare(a.name));
       default:
-        return filtered;
+        return [...filtered].sort((a, b) => a.name.localeCompare(b.name)); // Default to A-Z
     }
   };
   
@@ -113,22 +113,6 @@ const MosqueBrowser: React.FC = () => {
         </div>
         
         <CurrentTime />
-        
-        {/* Distance Notice for NEAREST and FARTHEST filters */}
-        {(currentFilter === 'nearest' || currentFilter === 'farthest') && (
-          <div className="mb-4 bg-orange-50 border border-orange-200 rounded-md p-3 dark:bg-orange-950/20 dark:border-orange-800">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
-              <div className="text-orange-800 dark:text-orange-200 text-sm leading-relaxed">
-                <div className="font-medium mb-1">Distance Filter Notice:</div>
-                <div className="space-y-1">
-                  <div>The <span className="font-semibold">{currentFilter.toUpperCase()}</span> filter may show inaccurate distance results.</div>
-                  <div>Use the <span className="bg-islamic-blue text-white px-2 py-0.5 rounded text-xs font-medium">Directions</span> button on each mosque card for accurate navigation.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
         
         <FilterBar />
         

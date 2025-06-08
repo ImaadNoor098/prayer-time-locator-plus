@@ -74,8 +74,8 @@ export interface SalahDay {
   };
 }
 
-// Extending FilterOption to include latest and farthest
-export type FilterOption = 'earliest' | 'nearest' | 'alphabetical' | 'latest' | 'farthest';
+// Updated FilterOption to include new alphabetical sorting options
+export type FilterOption = 'earliest' | 'nearest' | 'alphabetical' | 'alphabetical-desc' | 'latest' | 'farthest';
 
 export interface SearchParams {
   query: string;
