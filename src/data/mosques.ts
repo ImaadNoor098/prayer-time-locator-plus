@@ -72,8 +72,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:11',
       isha: '21:15',
       jummah: '13:05',
-      eidUlAdha: 'Not Decided',
-      eidUlFitr: 'Not Decided'
+      eidUlAdha: 'Not Known',
+      eidUlFitr: 'Not Known'
     },
     images: [
       '/mosques/raza_masjid.jpg',
@@ -100,8 +100,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:06',
       isha: '21:00',
       jummah: '13:00',
-      eidUlAdha: 'Not Decided',
-      eidUlFitr: 'Not Decided'
+      eidUlAdha: '7:30',
+      eidUlFitr: '7:30'
     },
     images: [
       '/mosques/razvi_masjid.jpg',  // These can be local images
