@@ -10,8 +10,8 @@ const FilterBar: React.FC = () => {
   const { currentFilter, setCurrentFilter } = usePrayer();
   const location = useLocation();
   
-  // Check if we're on the browse mosques page
-  const isBrowsePage = location.pathname === '/browse';
+  // Check if we're on the browse mosques page (either /browse or /mosque-browser)
+  const isBrowsePage = location.pathname === '/browse' || location.pathname === '/mosque-browser';
   
   // Define filters based on the current page
   const filters: { value: FilterOption; label: string; icon: React.ReactNode }[] = isBrowsePage 
