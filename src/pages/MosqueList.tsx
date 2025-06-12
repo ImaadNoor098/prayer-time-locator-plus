@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -9,7 +8,7 @@ import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, AlertTriangle, Calendar } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Calendar, Info } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
@@ -205,48 +204,74 @@ const MosqueList: React.FC = () => {
         
         {/* Eid ul-Fitr Date Banner - Only show when Eid ul-Fitr prayer is selected */}
         {selectedPrayer.name === 'Eid ul-Fitr' && (
-          <Alert className="mb-4 bg-red-100 border-red-500 border-2">
-            <Calendar className="h-5 w-5 text-red-600" />
-            <AlertDescription className="text-black">
-              <div className="font-bold text-lg mb-2 text-red-600">
-                🌙 EID UL-FITR 🌙
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-red-600">This Year:</span>
-                  <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
-                    SALAH DONE
-                  </span>
+          <>
+            <Alert className="mb-4 bg-blue-100 border-blue-500 border-2">
+              <Info className="h-5 w-5 text-blue-600" />
+              <AlertDescription className="text-black">
+                <div className="font-bold text-lg mb-2 text-blue-600">
+                  📅 EID UL-FITR TIMINGS - YEAR 2025 📅
                 </div>
-                <div className="text-sm text-red-700">
-                  Eid Ul Fitr salah for the year 2025 has been completed
+                <div className="text-sm text-blue-700">
+                  All Eid ul-Fitr prayer timings shown below are according to the year 2025.
                 </div>
-              </div>
-            </AlertDescription>
-          </Alert>
+              </AlertDescription>
+            </Alert>
+            <Alert className="mb-4 bg-red-100 border-red-500 border-2">
+              <Calendar className="h-5 w-5 text-red-600" />
+              <AlertDescription className="text-black">
+                <div className="font-bold text-lg mb-2 text-red-600">
+                  🌙 EID UL-FITR 🌙
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-red-600">This Year:</span>
+                    <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
+                      SALAH DONE
+                    </span>
+                  </div>
+                  <div className="text-sm text-red-700">
+                    Eid Ul Fitr salah for the year 2025 has been completed
+                  </div>
+                </div>
+              </AlertDescription>
+            </Alert>
+          </>
         )}
         
         {/* Eid ul-Adha Date Banner - Only show when Eid ul-Adha prayer is selected */}
         {selectedPrayer.name === 'Eid ul-Adha' && (
-          <Alert className="mb-4 bg-red-100 border-red-500 border-2">
-            <Calendar className="h-5 w-5 text-red-600" />
-            <AlertDescription className="text-black">
-              <div className="font-bold text-lg mb-2 text-red-600">
-                🌙 EID UL-ADHA 🌙
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-red-600">This Year:</span>
-                  <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
-                    SALAH DONE
-                  </span>
+          <>
+            <Alert className="mb-4 bg-blue-100 border-blue-500 border-2">
+              <Info className="h-5 w-5 text-blue-600" />
+              <AlertDescription className="text-black">
+                <div className="font-bold text-lg mb-2 text-blue-600">
+                  📅 EID UL-ADHA TIMINGS - YEAR 2025 📅
                 </div>
-                <div className="text-sm text-red-700">
-                  Eid Ul Adha salah for the year 2025 has been completed
+                <div className="text-sm text-blue-700">
+                  All Eid ul-Adha prayer timings shown below are according to the year 2025.
                 </div>
-              </div>
-            </AlertDescription>
-          </Alert>
+              </AlertDescription>
+            </Alert>
+            <Alert className="mb-4 bg-red-100 border-red-500 border-2">
+              <Calendar className="h-5 w-5 text-red-600" />
+              <AlertDescription className="text-black">
+                <div className="font-bold text-lg mb-2 text-red-600">
+                  🌙 EID UL-ADHA 🌙
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-red-600">This Year:</span>
+                    <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
+                      SALAH DONE
+                    </span>
+                  </div>
+                  <div className="text-sm text-red-700">
+                    Eid Ul Adha salah for the year 2025 has been completed
+                  </div>
+                </div>
+              </AlertDescription>
+            </Alert>
+          </>
         )}
         
         {/* Distance Notice - Shortened and Rectangular */}
