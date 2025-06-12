@@ -209,7 +209,7 @@ const MosqueList: React.FC = () => {
               <Info className="h-5 w-5 text-blue-600" />
               <AlertDescription className="text-black">
                 <div className="font-bold text-lg mb-2 text-blue-600">
-                  📅 EID UL-FITR TIMINGS - YEAR 2025 📅
+                  🔴 EID UL-FITR TIMINGS - YEAR 2025
                 </div>
                 <div className="text-sm text-blue-700">
                   All Eid ul-Fitr prayer timings shown below are according to the year 2025.
@@ -245,7 +245,7 @@ const MosqueList: React.FC = () => {
               <Info className="h-5 w-5 text-blue-600" />
               <AlertDescription className="text-black">
                 <div className="font-bold text-lg mb-2 text-blue-600">
-                  📅 EID UL-ADHA TIMINGS - YEAR 2025 📅
+                  🔴 EID UL-ADHA TIMINGS - YEAR 2025
                 </div>
                 <div className="text-sm text-blue-700">
                   All Eid ul-Adha prayer timings shown below are according to the year 2025.
