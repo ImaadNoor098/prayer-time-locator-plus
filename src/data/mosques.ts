@@ -434,7 +434,7 @@ export const mosques: Mosque[] = [
       dhuhr: '14:00',
       asr: '17:45',
       maghrib: '19:11',
-      isha: '21:00',
+      isha: '21:15',
       jummah: '14:30',
       eidUlAdha: 'SALAH DONE on 7 June 2025',
       eidUlFitr: 'SALAH DONE on 31 March 2025'
