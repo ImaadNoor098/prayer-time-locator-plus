@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
@@ -160,24 +159,21 @@ const PrayerTimeItem: React.FC<PrayerTimeItemProps> = ({
     <div className="space-y-4">
       {/* Eid Date Banner */}
       {showEidBanner && (
-        <Alert className="bg-islamic-gold/20 border-islamic-gold border-2">
-          <Calendar className="h-5 w-5 text-islamic-blue" />
+        <Alert className="bg-red-100 border-red-500 border-2">
+          <Calendar className="h-5 w-5 text-red-600" />
           <AlertDescription className="text-black">
-            <div className="font-bold text-lg mb-2 text-islamic-blue">
+            <div className="font-bold text-lg mb-2 text-red-600">
               🌙 {prayer === 'eidUlAdha' ? 'EID UL-ADHA' : 'EID UL-FITR'} 🌙
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-islamic-blue">This Year:</span>
-                <span className={cn(
-                  "px-3 py-1 rounded-full font-bold text-white",
-                  prayer === 'eidUlAdha' ? "bg-islamic-green" : "bg-red-500"
-                )}>
-                  {prayer === 'eidUlAdha' ? 'SALAH DONE on 7th June 2025' : 'SALAH DONE on 1st April 2025'}
+                <span className="font-semibold text-red-600">This Year:</span>
+                <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
+                  SALAH DONE
                 </span>
               </div>
-              <div className="text-sm text-islamic-gray">
-                {prayer === 'eidUlFitr' ? 'Eid ul-Fitr salah for the year 2025 has been completed' : 'Eid ul-Adha salah for the year 2025 has been completed'}
+              <div className="text-sm text-red-700">
+                {prayer === 'eidUlFitr' ? 'Eid Ul Fitr salah for the year 2025 has been completed' : 'Eid Ul Adha salah for the year 2025 has been completed'}
               </div>
             </div>
           </AlertDescription>

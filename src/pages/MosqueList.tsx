@@ -228,21 +228,21 @@ const MosqueList: React.FC = () => {
         
         {/* Eid ul-Adha Date Banner - Only show when Eid ul-Adha prayer is selected */}
         {selectedPrayer.name === 'Eid ul-Adha' && (
-          <Alert className="mb-4 bg-islamic-gold/20 border-islamic-gold border-2">
-            <Calendar className="h-5 w-5 text-islamic-blue" />
+          <Alert className="mb-4 bg-red-100 border-red-500 border-2">
+            <Calendar className="h-5 w-5 text-red-600" />
             <AlertDescription className="text-black">
-              <div className="font-bold text-lg mb-2 text-islamic-blue">
+              <div className="font-bold text-lg mb-2 text-red-600">
                 🌙 EID UL-ADHA 🌙
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-islamic-blue">This Year:</span>
-                  <span className="px-3 py-1 rounded-full font-bold text-white bg-islamic-green">
+                  <span className="font-semibold text-red-600">This Year:</span>
+                  <span className="px-3 py-1 rounded-full font-bold text-white bg-red-500">
                     SALAH DONE
                   </span>
                 </div>
-                <div className="text-sm text-islamic-gray">
-                  Festival of Sacrifice - Eid prayers have been completed
+                <div className="text-sm text-red-700">
+                  Eid Ul Adha salah for the year 2025 has been completed
                 </div>
               </div>
             </AlertDescription>
