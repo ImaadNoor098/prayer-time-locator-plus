@@ -465,7 +465,7 @@ export const mosques: Mosque[] = [
       jummah: '13:30',
     },
     images: [
-      '/mosques/duliya_wali_masjid.jpg',
+      '/mosques/jama_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
