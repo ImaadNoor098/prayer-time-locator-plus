@@ -138,7 +138,7 @@ const Register: React.FC = () => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter Your Full Name Eg. Aslam"
+                placeholder="Enter Your Full Name (Eg. Aslam)"
                 required
               />
             </div>
