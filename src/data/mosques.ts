@@ -446,4 +446,28 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+    {
+    id: 'm18',
+    name: 'JAMA Masjid',
+    address: 'Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/K1NrG4CRgzpX6ph7A',
+    prayerTimes: {
+      fajr: '04:50',
+      dhuhr: '14:00',
+      asr: '18:00',
+      maghrib: '19:14',
+      isha: '21:15',
+      jummah: '13:30',
+    },
+    images: [
+      '/mosques/duliya_wali_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
