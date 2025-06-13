@@ -138,7 +138,7 @@ const Register: React.FC = () => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
+                placeholder="Enter Your Full Name Eg. Aslam"
                 required
               />
             </div>
@@ -163,7 +163,7 @@ const Register: React.FC = () => {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+1234567890"
+                placeholder="Eg. 8734567890"
                 autoComplete="tel"
                 required
               />
