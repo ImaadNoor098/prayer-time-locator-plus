@@ -42,6 +42,12 @@ const PrayerSelection: React.FC = () => {
   const handleLocationSelect = (location: { latitude: number; longitude: number; address: string }) => {
     setUserLocation(location);
   };
+
+  const handleBackgroundChange = (backgroundId: string) => {
+    setSelectedBackground(backgroundId);
+    // Automatically close the background selector after selection
+    setShowBackgroundSelector(false);
+  };
   
   return (
     <div className={`min-h-screen ${currentBackgroundClass} pb-20`}>
@@ -95,7 +101,7 @@ const PrayerSelection: React.FC = () => {
           <div className="mb-6">
             <BackgroundSelector
               currentBackground={selectedBackground}
-              onBackgroundChange={setSelectedBackground}
+              onBackgroundChange={handleBackgroundChange}
             />
           </div>
         )}
