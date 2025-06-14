@@ -6,21 +6,15 @@ import PrayerCard from '@/components/PrayerCard';
 import CurrentTime from '@/components/CurrentTime';
 import BottomBar from '@/components/BottomBar';
 import PrayerTimesButton from '@/components/PrayerTimesButton';
-import LocationInput from '@/components/LocationInput';
 import BackgroundSelector from '@/components/BackgroundSelector';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Info, Loader2, Palette, X } from 'lucide-react';
+import { Palette, X } from 'lucide-react';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const PrayerSelection: React.FC = () => {
   const { 
     prayers, 
-    setSelectedPrayer, 
-    userLocation, 
-    setUserLocation, 
-    isGoogleMapsLoaded,
-    isCalculatingDistances
+    setSelectedPrayer
   } = usePrayer();
   const navigate = useNavigate();
   const { selectedBackground, setSelectedBackground, currentBackgroundClass } = useBackgroundSelector();
@@ -37,10 +31,6 @@ const PrayerSelection: React.FC = () => {
 
   const handleWhatsApp = () => {
     window.open('https://wa.me/919548160990', '_blank');
-  };
-
-  const handleLocationSelect = (location: { latitude: number; longitude: number; address: string }) => {
-    setUserLocation(location);
   };
 
   const handleBackgroundChange = (backgroundId: string) => {
@@ -104,48 +94,6 @@ const PrayerSelection: React.FC = () => {
               onBackgroundChange={handleBackgroundChange}
             />
           </div>
-        )}
-
-        {/* Google Maps Loading Alert */}
-        {!isGoogleMapsLoaded && (
-          <Alert className="mb-6 bg-blue-50/80 border-blue-200 backdrop-blur-sm">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <AlertDescription>
-              Loading Google Maps services for location features...
-            </AlertDescription>
-          </Alert>
-        )}
-        
-        {/* Location Input */}
-        {isGoogleMapsLoaded && (
-          <LocationInput 
-            onLocationSelect={handleLocationSelect}
-            currentLocation={userLocation ? { 
-              latitude: userLocation.latitude, 
-              longitude: userLocation.longitude, 
-              address: userLocation.address
-            } : null}
-          />
-        )}
-
-        {/* Distance Calculation Loading */}
-        {isCalculatingDistances && (
-          <Alert className="mb-6 bg-islamic-green/10 border-islamic-green/20 backdrop-blur-sm">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            <AlertDescription>
-              Calculating distances to mosques...
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {/* Location Benefits Info */}
-        {userLocation && (
-          <Alert className="mb-6 bg-islamic-gold/10 border-islamic-gold/20 backdrop-blur-sm">
-            <Info className="h-4 w-4" />
-            <AlertDescription>
-              Great! Now mosques will be sorted by distance from your location. Use "Nearest" and "Farthest" filters for best results.
-            </AlertDescription>
-          </Alert>
         )}
         
         <div className="flex justify-center mb-8">
