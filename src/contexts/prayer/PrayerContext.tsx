@@ -9,15 +9,17 @@ import { getFilteredMosques } from './filterUtils';
 import { useFavorites } from './useFavorites';
 import { useCurrentTime } from './useCurrentTime';
 import { useLocationService } from './useLocationService';
+import { useLocationDistance } from './useLocationDistance';
 import { useNotifications } from './useNotifications';
 import { usePageScrollTracking } from './usePageScrollTracking';
 import { useUnfavoriteDialog } from './useUnfavoriteDialog';
+import { loadGoogleMapsScript } from '@/utils/googleMapsLoader';
 
 const PrayerContext = createContext<PrayerContextType | undefined>(undefined);
 
 export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [prayers] = useState<PrayerTime[]>(prayerTimes);
-  const [mosqueList] = useState<Mosque[]>(mosques);
+  const [mosqueList, setMosqueList] = useState<Mosque[]>(mosques);
   const [selectedPrayer, setSelectedPrayer] = useState<PrayerTime | null>(() => {
     // Try to load selected prayer from localStorage
     const savedPrayer = localStorage.getItem('selected-prayer');
@@ -36,12 +38,30 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Set default filter to 'earliest' for prayer-based filtering
   const [currentFilter, setCurrentFilter] = useState<FilterOption>('earliest');
   const [searchParams, setSearchParams] = useState<SearchParams>({ query: '', showFavorites: false });
+  const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
   
   const currentTime = useCurrentTime();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
-  const { userLocation, locationError } = useLocationService();
+  const { userLocation: legacyUserLocation, locationError } = useLocationService();
+  const { userLocation, setUserLocation, calculateMosqueDistances, isCalculatingDistances } = useLocationDistance();
   const { saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePageScrollTracking();
   const { unfavoriteDialogState, showUnfavoriteConfirmation, hideUnfavoriteConfirmation } = useUnfavoriteDialog();
+  
+  // Load Google Maps script on mount
+  useEffect(() => {
+    loadGoogleMapsScript().then(() => {
+      setIsGoogleMapsLoaded(true);
+    }).catch(() => {
+      console.error('Failed to load Google Maps');
+    });
+  }, []);
+  
+  // Update mosque distances when user location changes
+  useEffect(() => {
+    if (userLocation && isGoogleMapsLoaded) {
+      calculateMosqueDistances(mosques).then(setMosqueList);
+    }
+  }, [userLocation, isGoogleMapsLoaded]);
   
   // Save selected prayer to localStorage
   useEffect(() => {
@@ -98,11 +118,14 @@ export const PrayerProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         currentTime,
         searchParams,
         favorites,
-        userLocation,
+        userLocation: userLocation || legacyUserLocation,
         locationError,
+        isCalculatingDistances,
+        isGoogleMapsLoaded,
         setSelectedPrayer: setSelectedPrayerWrapper,
         setCurrentFilter,
         setSearchParams: updateSearchParams,
+        setUserLocation,
         getFilteredMosques: getFilteredMosquesList,
         isPrayerPassed: isPrayerPassedWrapper,
         isPrayerActive: isPrayerActiveWrapper,

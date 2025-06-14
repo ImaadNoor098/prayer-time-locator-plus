@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import { Mosque } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Phone } from 'lucide-react';
+import { Heart, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { usePrayer } from '@/contexts/prayer';
 import { useAuth } from '@/contexts/AuthContext';
+import { formatDistance } from '@/utils/distanceUtils';
 import FavoriteAuthCheck from './FavoriteAuthCheck';
 
 interface MosqueCardSimpleProps {
@@ -15,7 +17,7 @@ interface MosqueCardSimpleProps {
 }
 
 const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
-  const { toggleFavorite, isFavorite } = usePrayer();
+  const { toggleFavorite, isFavorite, userLocation } = usePrayer();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
@@ -54,6 +56,7 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
   };
   
   const hasPhone = mosque.contact?.phone !== undefined && mosque.contact.phone !== '';
+  const showDistance = userLocation && mosque.distance !== undefined && mosque.distance < 999;
   
   return (
     <>
@@ -62,42 +65,51 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
         onClick={handleDetails}
       >
         <CardContent className="p-4">
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-start mb-2">
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-islamic-blue dark:text-islamic-cream mb-2">
-                {mosque.name}
-              </h3>
+              <div className="flex items-start justify-between mb-2">
+                <h3 className="text-lg font-semibold text-islamic-blue dark:text-islamic-cream">
+                  {mosque.name}
+                </h3>
+                {showDistance && (
+                  <Badge variant="outline" className="ml-2 text-xs border-islamic-green text-islamic-green">
+                    <MapPin className="h-3 w-3 mr-1" />
+                    {formatDistance(mosque.distance)}
+                  </Badge>
+                )}
+              </div>
               <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 line-clamp-2">
                 {mosque.address}
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 p-0"
-                onClick={handleFavoriteToggle}
-                title={favorite ? "Remove from favorites" : "Add to favorites"}
-              >
-                <Heart 
-                  className={cn(
-                    "h-5 w-5 transition-colors",
-                    favorite && isAuthenticated ? "fill-islamic-green text-islamic-green" : "text-islamic-gray dark:text-islamic-cream/70"
-                  )} 
-                />
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 p-0 text-islamic-blue dark:text-islamic-cream/70"
-                onClick={handleCall}
-                disabled={!hasPhone}
-                title={hasPhone ? "Call mosque" : "No phone number available"}
-              >
-                <Phone className="h-5 w-5" />
-              </Button>
-            </div>
+          </div>
+          
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 p-0"
+              onClick={handleFavoriteToggle}
+              title={favorite ? "Remove from favorites" : "Add to favorites"}
+            >
+              <Heart 
+                className={cn(
+                  "h-5 w-5 transition-colors",
+                  favorite && isAuthenticated ? "fill-islamic-green text-islamic-green" : "text-islamic-gray dark:text-islamic-cream/70"
+                )} 
+              />
+            </Button>
+            
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 p-0 text-islamic-blue dark:text-islamic-cream/70"
+              onClick={handleCall}
+              disabled={!hasPhone}
+              title={hasPhone ? "Call mosque" : "No phone number available"}
+            >
+              <Phone className="h-5 w-5" />
+            </Button>
           </div>
         </CardContent>
       </Card>

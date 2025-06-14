@@ -6,9 +6,19 @@ import PrayerCard from '@/components/PrayerCard';
 import CurrentTime from '@/components/CurrentTime';
 import BottomBar from '@/components/BottomBar';
 import PrayerTimesButton from '@/components/PrayerTimesButton';
+import LocationInput from '@/components/LocationInput';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Info, Loader2 } from 'lucide-react';
 
 const PrayerSelection: React.FC = () => {
-  const { prayers, setSelectedPrayer } = usePrayer();
+  const { 
+    prayers, 
+    setSelectedPrayer, 
+    userLocation, 
+    setUserLocation, 
+    isGoogleMapsLoaded,
+    isCalculatingDistances
+  } = usePrayer();
   const navigate = useNavigate();
   
   const handlePrayerSelect = (prayer: any) => {
@@ -22,6 +32,10 @@ const PrayerSelection: React.FC = () => {
 
   const handleWhatsApp = () => {
     window.open('https://wa.me/919548160990', '_blank');
+  };
+
+  const handleLocationSelect = (location: { latitude: number; longitude: number; address: string }) => {
+    setUserLocation(location);
   };
   
   return (
@@ -55,6 +69,48 @@ const PrayerSelection: React.FC = () => {
             </p>
           </div>
         </header>
+
+        {/* Google Maps Loading Alert */}
+        {!isGoogleMapsLoaded && (
+          <Alert className="mb-6 bg-blue-50 border-blue-200">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <AlertDescription>
+              Loading Google Maps services for location features...
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        {/* Location Input */}
+        {isGoogleMapsLoaded && (
+          <LocationInput 
+            onLocationSelect={handleLocationSelect}
+            currentLocation={userLocation ? { 
+              latitude: userLocation.latitude, 
+              longitude: userLocation.longitude, 
+              address: userLocation.address || `${userLocation.latitude}, ${userLocation.longitude}`
+            } : null}
+          />
+        )}
+
+        {/* Distance Calculation Loading */}
+        {isCalculatingDistances && (
+          <Alert className="mb-6 bg-islamic-green/10 border-islamic-green/20">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            <AlertDescription>
+              Calculating distances to mosques...
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Location Benefits Info */}
+        {userLocation && (
+          <Alert className="mb-6 bg-islamic-gold/10 border-islamic-gold/20">
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              Great! Now mosques will be sorted by distance from your location. Use "Nearest" and "Farthest" filters for best results.
+            </AlertDescription>
+          </Alert>
+        )}
         
         <div className="flex justify-center mb-8">
           <PrayerTimesButton />

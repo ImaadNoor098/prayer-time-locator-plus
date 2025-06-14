@@ -13,9 +13,12 @@ export interface PrayerContextType {
   favorites: string[];
   userLocation: {latitude: number; longitude: number} | null;
   locationError: string | null;
+  isCalculatingDistances: boolean;
+  isGoogleMapsLoaded: boolean;
   setSelectedPrayer: (prayer: PrayerTime | null) => void;
   setCurrentFilter: (filter: FilterOption) => void;
   setSearchParams: (params: Partial<SearchParams>) => void;
+  setUserLocation: (location: {latitude: number; longitude: number; address: string} | null) => void;
   getFilteredMosques: () => Mosque[];
   isPrayerPassed: (time: string) => boolean;
   isPrayerActive: (time: string) => boolean;
