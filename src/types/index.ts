@@ -34,6 +34,7 @@ export interface Mosque {
   coordinates?: Coordinates;
   googleMapsLink?: string;
   prayerTimes: PrayerTimesData;
+  lastUpdated: string; // Added lastUpdated field
   images: string[];
   facilities: string[];
   contact?: {

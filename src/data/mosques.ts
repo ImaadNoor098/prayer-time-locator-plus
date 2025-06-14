@@ -1,3 +1,4 @@
+
 import { Mosque } from '@/types';
 
 // Mock mosque data
@@ -24,6 +25,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '09:00', // Changed to show actual time instead of "SALAH DONE" text
       eidUlFitr: '09:00' // Changed to show actual time instead of "SALAH DONE" text
     },
+    lastUpdated: 'June 14, 2025',
     images: [
       '/mosques/pulqazi_masjid.jpg',  // These can be local images
     ],
@@ -49,6 +51,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '05:45',
       eidUlFitr: '05:45'
     },
+    lastUpdated: 'June 10, 2025',
     images: [
       '/mosques/anar_wali_masjid.jpg',
     ],
@@ -74,6 +77,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 12, 2025',
     images: [
       '/mosques/raza_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -102,6 +106,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '7:30',
       eidUlFitr: '7:30'
     },
+    lastUpdated: 'June 8, 2025',
     images: [
       '/mosques/razvi_masjid.jpg',  // These can be local images
     ],
@@ -127,6 +132,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '08:00',
       eidUlFitr: '08:00'
     },
+    lastUpdated: 'June 13, 2025',
     images: [
       '/mosques/syed_rasool_shah_baba_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -153,6 +159,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 11, 2025',
     images: [
       '/mosques/mustufai_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -179,6 +186,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '06:30',
       eidUlFitr: '06:30'
     },
+    lastUpdated: 'June 9, 2025',
     images: [
       '/mosques/abu_bakr_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -205,6 +213,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 7, 2025',
     images: [
       '/mosques/domni_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -231,6 +240,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 14, 2025',
     images: [
       '/mosques/noor_jahan_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -257,6 +267,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 5, 2025',
     images: [
       '/mosques/hashmi_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -283,6 +294,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '05:45',
       eidUlFitr: '05:45'
     },
+    lastUpdated: 'June 6, 2025',
     images: [
       '/mosques/madina_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -309,6 +321,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '08:00',
       eidUlFitr: '08:00'
     },
+    lastUpdated: 'June 13, 2025',
     images: [
       '/mosques/rehani_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -335,6 +348,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '09:00',
       eidUlFitr: '09:00'
     },
+    lastUpdated: 'June 11, 2025',
     images: [
       '/mosques/noori_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -361,6 +375,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:30',
       eidUlFitr: '07:30'
     },
+    lastUpdated: 'June 4, 2025',
     images: [
       '/mosques/shamsuddin_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -387,6 +402,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '06:30',
       eidUlFitr: '06:30'
     },
+    lastUpdated: 'June 12, 2025',
     images: [
       '/mosques/thane_wali_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -413,6 +429,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:30',
       eidUlFitr: '07:30'
     },
+    lastUpdated: 'June 3, 2025',
     images: [
       '/mosques/hari_minar_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -439,6 +456,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '05:40',
       eidUlFitr: '05:40'
     },
+    lastUpdated: 'June 8, 2025',
     images: [
       '/mosques/duliya_wali_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
@@ -465,6 +483,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '07:00',
       eidUlFitr: '07:00'
     },
+    lastUpdated: 'June 14, 2025',
     images: [
       '/mosques/jama_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
