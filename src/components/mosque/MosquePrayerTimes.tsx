@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -117,10 +116,10 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
       <div className="w-full">
         <h3 className="font-medium mb-2">Prayer Times</h3>
         
-        {/* Added update message */}
+        {/* Static date that can be edited later */}
         <div className="mb-3 p-3 bg-islamic-blue/5 rounded-lg border border-islamic-blue/20">
           <p className="text-sm text-islamic-blue text-center font-medium">
-            Salah timings last updated on {getCurrentDate()}. Stay connected, And Pray Consistently.
+            Salah timings last updated on June 14, 2025. Stay connected, And Pray Consistently.
           </p>
         </div>
         
