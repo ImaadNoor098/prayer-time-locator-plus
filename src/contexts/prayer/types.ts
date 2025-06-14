@@ -11,7 +11,7 @@ export interface PrayerContextType {
   currentTime: Date;
   searchParams: SearchParams;
   favorites: string[];
-  userLocation: {latitude: number; longitude: number} | null;
+  userLocation: {latitude: number; longitude: number; address: string} | null;
   locationError: string | null;
   isCalculatingDistances: boolean;
   isGoogleMapsLoaded: boolean;
