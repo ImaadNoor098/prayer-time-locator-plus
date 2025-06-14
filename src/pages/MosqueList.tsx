@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -11,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ArrowLeft, AlertTriangle, Calendar, Info } from 'lucide-react';
 import useSalahTimes from '@/hooks/useSalahTimes';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const MosqueList: React.FC = () => {
   const { 
@@ -28,6 +30,7 @@ const MosqueList: React.FC = () => {
   const location = useLocation();
   const pageRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef(true);
+  const { currentBackgroundClass } = useBackgroundSelector();
   
   // Get current prayer based on prayer times
   const { currentTime, isPrayerTime, salahTimes } = useSalahTimes(new Date());
@@ -133,7 +136,7 @@ const MosqueList: React.FC = () => {
   // If coming from mosque button with no prayer selected, show message
   if (!selectedPrayer) {
     return (
-      <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
+      <div className={`min-h-screen ${currentBackgroundClass} pb-20`} ref={pageRef}>
         <div className="container mx-auto max-w-4xl px-4 py-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream">
@@ -162,7 +165,7 @@ const MosqueList: React.FC = () => {
   const mosques = getFilteredMosques();
   
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
+    <div className={`min-h-screen ${currentBackgroundClass} pb-20`} ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
           <div className="flex justify-between items-center mb-2">

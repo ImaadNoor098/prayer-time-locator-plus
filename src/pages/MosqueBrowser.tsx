@@ -7,6 +7,7 @@ import CurrentTime from '@/components/CurrentTime';
 import SearchBar from '@/components/SearchBar';
 import BottomBar from '@/components/BottomBar';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const MosqueBrowser: React.FC = () => {
   const { 
@@ -22,6 +23,7 @@ const MosqueBrowser: React.FC = () => {
   const location = useLocation();
   const pageRef = useRef<HTMLDivElement>(null);
   const firstRenderRef = useRef(true);
+  const { currentBackgroundClass } = useBackgroundSelector();
   
   // Set default filter to A-Z on component mount for browse page
   useEffect(() => {
@@ -93,7 +95,7 @@ const MosqueBrowser: React.FC = () => {
   const filteredMosques = getFilteredMosques();
   
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20" ref={pageRef}>
+    <div className={`min-h-screen ${currentBackgroundClass} pb-20`} ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
           <div className="flex justify-between items-center mb-2">
