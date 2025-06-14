@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Mosque } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { usePrayer } from '@/contexts/prayer';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,6 +19,7 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
   const { toggleFavorite, isFavorite, userLocation } = usePrayer();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showAuthDialog, setShowAuthDialog] = useState(false);
   
   const favorite = isFavorite(mosque.id);
@@ -56,7 +56,12 @@ const MosqueCardSimple: React.FC<MosqueCardSimpleProps> = ({ mosque }) => {
   };
   
   const hasPhone = mosque.contact?.phone !== undefined && mosque.contact.phone !== '';
-  const showDistance = userLocation && mosque.distance !== undefined && mosque.distance < 999;
+  
+  // Hide distance when navigating from bottom bar
+  const showDistance = userLocation && 
+    mosque.distance !== undefined && 
+    mosque.distance < 999 && 
+    !location.state?.fromBottomBar;
   
   return (
     <>
