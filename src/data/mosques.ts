@@ -1,4 +1,3 @@
-
 import { Mosque } from '@/types';
 
 // Mock mosque data
@@ -463,6 +462,8 @@ export const mosques: Mosque[] = [
       maghrib: '19:14',
       isha: '21:15',
       jummah: '13:30',
+      eidUlAdha: '07:00',
+      eidUlFitr: '07:00'
     },
     images: [
       '/mosques/jama_masjid.jpg',
