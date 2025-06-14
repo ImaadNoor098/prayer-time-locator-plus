@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Mosque } from '@/types';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -15,6 +16,41 @@ interface MosqueCardProps {
   mosque: Mosque;
 }
 
+// Helper function to get Eid prayer status (consistent with filterUtils)
+const getEidPrayerStatus = (prayer: string, time: string, currentTime: Date) => {
+  if (prayer === 'eidUlAdha') {
+    // Eid ul-Adha is on 7th June 2025
+    const eidDate = new Date('2025-06-07');
+    
+    // If current date is before Eid date, don't mark as done
+    if (currentTime < eidDate) {
+      return { isPassed: false, isCurrentPrayer: false };
+    }
+    
+    // If it's Eid date, use normal logic for prayer times
+    if (currentTime.toDateString() === eidDate.toDateString()) {
+      const [hours, minutes] = time.split(':').map(Number);
+      const prayerDateTime = new Date(eidDate);
+      prayerDateTime.setHours(hours, minutes, 0);
+      
+      const isActive = currentTime >= prayerDateTime && currentTime <= new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
+      const hasPassed = currentTime > new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
+      
+      return { isPassed: hasPassed, isCurrentPrayer: isActive };
+    }
+    
+    // If after Eid date, mark as passed
+    return { isPassed: true, isCurrentPrayer: false };
+  }
+  
+  if (prayer === 'eidUlFitr') {
+    // Eid ul-Fitr salah for 2025 was done on 1st April 2025, so always mark as done
+    return { isPassed: true, isCurrentPrayer: false };
+  }
+  
+  return null; // Not an Eid prayer
+};
+
 const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   const { 
     selectedPrayer, 
@@ -25,7 +61,8 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     formatTimeToAmPm,
     showUnfavoriteConfirmation,
     unfavoriteDialogState,
-    hideUnfavoriteConfirmation
+    hideUnfavoriteConfirmation,
+    currentTime
   } = usePrayer();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -47,44 +84,6 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
     };
     
     return prayerKeyMap[prayerName] || prayerName.toLowerCase();
-  };
-
-  // Special logic for Eid prayers to determine their status
-  const getEidPrayerStatus = (prayer: string, time: string) => {
-    const currentDate = new Date();
-    
-    if (prayer === 'eidUlAdha') {
-      // Eid ul-Adha is on 7th June 2025
-      const eidDate = new Date('2025-06-07');
-      
-      // If current date is before Eid date, don't mark as done
-      if (currentDate < eidDate) {
-        return { isPassed: false, isCurrentPrayer: false };
-      }
-      
-      // If it's Eid date, use normal logic for prayer times
-      if (currentDate.toDateString() === eidDate.toDateString()) {
-        const [hours, minutes] = time.split(':').map(Number);
-        const prayerDateTime = new Date(eidDate);
-        prayerDateTime.setHours(hours, minutes, 0);
-        
-        const isActive = currentDate >= prayerDateTime && currentDate <= new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
-        const hasPassed = currentDate > new Date(prayerDateTime.getTime() + 5 * 60 * 1000);
-        
-        return { isPassed: hasPassed, isCurrentPrayer: isActive };
-      }
-      
-      // If after Eid date, mark as passed
-      return { isPassed: true, isCurrentPrayer: false };
-    }
-    
-    if (prayer === 'eidUlFitr') {
-      // Eid ul-Fitr salah for 2025 was done on 1st April 2025, so always mark as done
-      return { isPassed: true, isCurrentPrayer: false };
-    }
-    
-    // For regular prayers, use the passed props
-    return { isPassed: isPrayerPassed(time), isCurrentPrayer: isPrayerActive(time) };
   };
   
   // Special logic for Jummah prayer to check if it's Friday
@@ -118,9 +117,14 @@ const MosqueCard: React.FC<MosqueCardProps> = ({ mosque }) => {
   let isPassed, isActive;
   
   if (prayerKey === 'eidUlAdha' || prayerKey === 'eidUlFitr') {
-    const eidStatus = getEidPrayerStatus(prayerKey, displayTime);
-    isPassed = eidStatus.isPassed;
-    isActive = eidStatus.isCurrentPrayer;
+    const eidStatus = getEidPrayerStatus(prayerKey, displayTime, currentTime);
+    if (eidStatus) {
+      isPassed = eidStatus.isPassed;
+      isActive = eidStatus.isCurrentPrayer;
+    } else {
+      isPassed = isPrayerPassed(displayTime);
+      isActive = isPrayerActive(displayTime);
+    }
   } else if (prayerKey === 'jummah') {
     const jummahStatus = getJummahPrayerStatus(displayTime);
     isPassed = jummahStatus.isPassed;
