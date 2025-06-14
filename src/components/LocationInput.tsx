@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { MapPin, Loader2, X } from 'lucide-react';
+import { MapPin, Loader2, X, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface LocationInputProps {
   onLocationSelect: (location: { latitude: number; longitude: number; address: string }) => void;
@@ -15,20 +17,53 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isGettingLocation, setIsGettingLocation] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
   const geocoder = useRef<google.maps.Geocoder | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const suggestionsCacheRef = useRef<Map<string, any[]>>(new Map());
 
   useEffect(() => {
-    // Initialize Google Maps services
+    // Initialize Google Maps services with error handling
+    const initializeServices = async () => {
+      try {
+        if (window.google && window.google.maps && window.google.maps.places) {
+          autocompleteService.current = new window.google.maps.places.AutocompleteService();
+          geocoder.current = new window.google.maps.Geocoder();
+          setApiError(null);
+          console.log('Google Maps services initialized successfully');
+        } else {
+          setApiError('Google Maps services not available');
+        }
+      } catch (error) {
+        console.error('Error initializing Google Maps services:', error);
+        setApiError('Failed to initialize location services');
+      }
+    };
+
+    // Check if Google Maps is loaded
     if (window.google) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-      geocoder.current = new window.google.maps.Geocoder();
+      initializeServices();
+    } else {
+      // Wait for Google Maps to load
+      const checkGoogleMaps = setInterval(() => {
+        if (window.google) {
+          clearInterval(checkGoogleMaps);
+          initializeServices();
+        }
+      }, 100);
+
+      // Clear interval after 10 seconds to prevent infinite checking
+      setTimeout(() => {
+        clearInterval(checkGoogleMaps);
+        if (!window.google) {
+          setApiError('Google Maps failed to load');
+        }
+      }, 10000);
     }
   }, []);
 
-  // Debounced search function
+  // Optimized debounced search function with faster debounce
   const debouncedSearch = useCallback((input: string) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -36,7 +71,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
 
     debounceTimerRef.current = setTimeout(() => {
       searchPlaces(input);
-    }, 300); // 300ms debounce
+    }, 150); // Reduced from 300ms to 150ms for faster response
   }, []);
 
   const searchPlaces = (input: string) => {
@@ -46,31 +81,46 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
       return;
     }
 
-    // Check cache first
+    // Check cache first for instant results
     const cacheKey = input.toLowerCase().trim();
     if (suggestionsCacheRef.current.has(cacheKey)) {
-      setSuggestions(suggestionsCacheRef.current.get(cacheKey) || []);
+      const cachedResults = suggestionsCacheRef.current.get(cacheKey) || [];
+      setSuggestions(cachedResults);
       setIsLoading(false);
+      console.log('Using cached results for:', input);
       return;
     }
 
     setIsLoading(true);
     console.log('Searching for places:', input);
 
+    // Optimized autocomplete request
+    const request = {
+      input: input.trim(),
+      types: ['geocode'],
+      componentRestrictions: { country: 'in' },
+      // Add session token for better performance (if available)
+    };
+
     autocompleteService.current.getPlacePredictions(
-      {
-        input: input.trim(),
-        types: ['geocode'],
-        componentRestrictions: { country: 'in' }
-      },
+      request,
       (predictions, status) => {
         console.log('Places API response:', status, predictions?.length || 0, 'results');
         setIsLoading(false);
         
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
-          // Cache the results
+          // Cache the results for instant access
           suggestionsCacheRef.current.set(cacheKey, predictions);
           setSuggestions(predictions);
+          setApiError(null);
+        } else if (status === window.google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
+          console.error('Places API access denied - check API key');
+          setApiError('Location services access denied. Please check API configuration.');
+          setSuggestions([]);
+        } else if (status === window.google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
+          console.error('Places API quota exceeded');
+          setApiError('Location service quota exceeded. Please try again later.');
+          setSuggestions([]);
         } else {
           console.warn('Places API error:', status);
           setSuggestions([]);
@@ -93,7 +143,10 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
   };
 
   const handlePlaceSelect = (placeId: string, description: string) => {
-    if (!geocoder.current) return;
+    if (!geocoder.current) {
+      console.error('Geocoder not available');
+      return;
+    }
 
     console.log('Selecting place:', placeId, description);
     setIsLoading(true);
@@ -117,14 +170,14 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
         setIsOpen(false);
       } else {
         console.error('Geocoding failed:', status);
-        alert('Unable to get location details. Please try another address.');
+        setApiError('Unable to get location details. Please try another address.');
       }
     });
   };
 
   const getCurrentLocation = () => {
     if (!navigator.geolocation) {
-      alert('Geolocation is not supported by this browser.');
+      setApiError('Geolocation is not supported by this browser.');
       return;
     }
 
@@ -191,7 +244,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
             errorMessage = 'Location request timed out.';
             break;
         }
-        alert(errorMessage);
+        setApiError(errorMessage);
       },
       {
         enableHighAccuracy: true,
@@ -256,6 +309,16 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
             )}
           </div>
           
+          {/* API Error Alert */}
+          {apiError && (
+            <Alert className="border-red-200 bg-red-50">
+              <AlertCircle className="h-4 w-4 text-red-600" />
+              <AlertDescription className="text-red-800">
+                {apiError}
+              </AlertDescription>
+            </Alert>
+          )}
+          
           <div className="relative">
             <Input
               type="text"
@@ -264,6 +327,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
               onChange={handleInputChange}
               className="pr-10"
               autoComplete="off"
+              disabled={!!apiError}
             />
             {isLoading && (
               <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-islamic-gray" />
@@ -272,7 +336,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
 
           <Button
             onClick={getCurrentLocation}
-            disabled={isGettingLocation}
+            disabled={isGettingLocation || !!apiError}
             className="w-full bg-islamic-green hover:bg-islamic-green/90"
           >
             {isGettingLocation ? (
@@ -312,7 +376,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
             </div>
           )}
 
-          {query.length >= 2 && !isLoading && suggestions.length === 0 && (
+          {query.length >= 2 && !isLoading && suggestions.length === 0 && !apiError && (
             <div className="text-center py-4 text-islamic-gray">
               <p>No suggestions found. Try a different search term.</p>
             </div>
