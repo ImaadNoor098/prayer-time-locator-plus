@@ -8,15 +8,17 @@ import { Separator } from '@/components/ui/separator';
 import { User, Heart, Clock, Settings } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import AdminPanel from '@/components/AdminPanel';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const UserProfile: React.FC = () => {
   const { user, logout } = useAuth();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const { currentBackgroundClass } = useBackgroundSelector();
 
   if (!user) {
     return (
-      <div className="min-h-screen islamic-pattern-bg flex items-center justify-center pb-20">
-        <Card className="w-full max-w-md">
+      <div className={`min-h-screen ${currentBackgroundClass} flex items-center justify-center pb-20`}>
+        <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm">
           <CardContent className="pt-6">
             <p className="text-center">Please log in to view your profile.</p>
           </CardContent>
@@ -31,9 +33,9 @@ const UserProfile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20">
+    <div className={`min-h-screen ${currentBackgroundClass} pb-20`}>
       <div className="container mx-auto max-w-4xl px-4 py-8">
-        <Card className="mb-6">
+        <Card className="mb-6 bg-white/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center text-islamic-blue">
               <User className="h-5 w-5 mr-2" />

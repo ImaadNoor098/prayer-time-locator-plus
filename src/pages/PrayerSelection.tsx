@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
 import PrayerCard from '@/components/PrayerCard';
@@ -6,8 +7,11 @@ import CurrentTime from '@/components/CurrentTime';
 import BottomBar from '@/components/BottomBar';
 import PrayerTimesButton from '@/components/PrayerTimesButton';
 import LocationInput from '@/components/LocationInput';
+import BackgroundSelector from '@/components/BackgroundSelector';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Info, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Info, Loader2, Palette, X } from 'lucide-react';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const PrayerSelection: React.FC = () => {
   const { 
@@ -19,6 +23,8 @@ const PrayerSelection: React.FC = () => {
     isCalculatingDistances
   } = usePrayer();
   const navigate = useNavigate();
+  const { selectedBackground, setSelectedBackground, currentBackgroundClass } = useBackgroundSelector();
+  const [showBackgroundSelector, setShowBackgroundSelector] = useState(false);
   
   const handlePrayerSelect = (prayer: any) => {
     setSelectedPrayer(prayer);
@@ -38,18 +44,33 @@ const PrayerSelection: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20">
+    <div className={`min-h-screen ${currentBackgroundClass} pb-20`}>
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <header className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream mb-2">
-            SALAH LOCATOR
-          </h1>
+          <div className="flex items-center justify-center mb-4">
+            <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream mr-4">
+              SALAH LOCATOR
+            </h1>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowBackgroundSelector(!showBackgroundSelector)}
+              className="bg-white/80 hover:bg-white border-islamic-blue/20"
+            >
+              {showBackgroundSelector ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Palette className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+          
           <p className="text-islamic-gray dark:text-islamic-cream/70">
             Select a prayer to find mosques and prayer times
           </p>
           
           {/* Contact Note */}
-          <div className="mt-4 p-3 bg-islamic-blue/10 dark:bg-islamic-cream/10 rounded-lg border border-islamic-blue/20">
+          <div className="mt-4 p-3 bg-white/60 dark:bg-islamic-cream/10 rounded-lg border border-islamic-blue/20 backdrop-blur-sm">
             <p className="text-sm text-islamic-blue dark:text-islamic-cream">
               To Add Mosque Please{' '}
               <button 
@@ -69,9 +90,19 @@ const PrayerSelection: React.FC = () => {
           </div>
         </header>
 
+        {/* Background Selector */}
+        {showBackgroundSelector && (
+          <div className="mb-6">
+            <BackgroundSelector
+              currentBackground={selectedBackground}
+              onBackgroundChange={setSelectedBackground}
+            />
+          </div>
+        )}
+
         {/* Google Maps Loading Alert */}
         {!isGoogleMapsLoaded && (
-          <Alert className="mb-6 bg-blue-50 border-blue-200">
+          <Alert className="mb-6 bg-blue-50/80 border-blue-200 backdrop-blur-sm">
             <Loader2 className="h-4 w-4 animate-spin" />
             <AlertDescription>
               Loading Google Maps services for location features...
@@ -93,7 +124,7 @@ const PrayerSelection: React.FC = () => {
 
         {/* Distance Calculation Loading */}
         {isCalculatingDistances && (
-          <Alert className="mb-6 bg-islamic-green/10 border-islamic-green/20">
+          <Alert className="mb-6 bg-islamic-green/10 border-islamic-green/20 backdrop-blur-sm">
             <Loader2 className="h-4 w-4 animate-spin" />
             <AlertDescription>
               Calculating distances to mosques...
@@ -103,7 +134,7 @@ const PrayerSelection: React.FC = () => {
 
         {/* Location Benefits Info */}
         {userLocation && (
-          <Alert className="mb-6 bg-islamic-gold/10 border-islamic-gold/20">
+          <Alert className="mb-6 bg-islamic-gold/10 border-islamic-gold/20 backdrop-blur-sm">
             <Info className="h-4 w-4" />
             <AlertDescription>
               Great! Now mosques will be sorted by distance from your location. Use "Nearest" and "Farthest" filters for best results.

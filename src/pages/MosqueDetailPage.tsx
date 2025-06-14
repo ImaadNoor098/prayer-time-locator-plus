@@ -4,9 +4,11 @@ import MosqueDetail from '@/components/MosqueDetail';
 import BottomBar from '@/components/BottomBar';
 import { useNavigation } from '@/contexts/NavigationContext';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const MosqueDetailPage: React.FC = () => {
   const { setLastMosqueDetailState } = useNavigation();
+  const { currentBackgroundClass } = useBackgroundSelector();
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -20,7 +22,7 @@ const MosqueDetailPage: React.FC = () => {
   }, [setLastMosqueDetailState]);
 
   return (
-    <div className="flex flex-col h-screen islamic-pattern-bg">
+    <div className={`flex flex-col h-screen ${currentBackgroundClass}`}>
       <ScrollArea className="flex-grow overflow-y-auto pb-16">
         <div className="container mx-auto max-w-4xl px-4 py-4">
           <MosqueDetail />
