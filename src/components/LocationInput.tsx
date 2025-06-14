@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,9 +61,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
       {
         input: input.trim(),
         types: ['geocode'],
-        componentRestrictions: { country: 'in' },
-        // Add session token for better performance
-        sessionToken: new window.google.maps.places.AutocompleteSessionToken()
+        componentRestrictions: { country: 'in' }
       },
       (predictions, status) => {
         console.log('Places API response:', status, predictions?.length || 0, 'results');
