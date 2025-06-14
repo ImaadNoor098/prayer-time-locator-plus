@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Mosque } from '@/types';
+import { Mosque, Coordinates } from '@/types';
 import { calculateDistance, extractCoordinatesFromMapsLink, geocodeAddress } from '@/utils/distanceUtils';
 
 interface UserLocation {
@@ -39,7 +39,11 @@ export const useLocationDistance = () => {
         if (!mosqueCoords && mosque.googleMapsLink) {
           const extractedCoords = extractCoordinatesFromMapsLink(mosque.googleMapsLink);
           if (extractedCoords) {
-            mosqueCoords = extractedCoords;
+            // Convert {lat, lng} format to {latitude, longitude} format
+            mosqueCoords = {
+              latitude: extractedCoords.lat,
+              longitude: extractedCoords.lng
+            };
           }
         }
         
@@ -47,7 +51,11 @@ export const useLocationDistance = () => {
         if (!mosqueCoords) {
           const geocodedCoords = await geocodeAddress(mosque.address);
           if (geocodedCoords) {
-            mosqueCoords = geocodedCoords;
+            // Convert {lat, lng} format to {latitude, longitude} format
+            mosqueCoords = {
+              latitude: geocodedCoords.lat,
+              longitude: geocodedCoords.lng
+            };
           }
         }
         
@@ -57,18 +65,15 @@ export const useLocationDistance = () => {
           distance = calculateDistance(
             userLocation.latitude,
             userLocation.longitude,
-            mosqueCoords.latitude || mosqueCoords.lat,
-            mosqueCoords.longitude || mosqueCoords.lng
+            mosqueCoords.latitude,
+            mosqueCoords.longitude
           );
         }
         
         return {
           ...mosque,
           distance,
-          coordinates: mosqueCoords ? {
-            latitude: mosqueCoords.latitude || mosqueCoords.lat,
-            longitude: mosqueCoords.longitude || mosqueCoords.lng
-          } : mosque.coordinates
+          coordinates: mosqueCoords
         };
       })
     );

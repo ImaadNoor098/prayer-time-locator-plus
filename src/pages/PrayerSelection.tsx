@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -87,7 +86,7 @@ const PrayerSelection: React.FC = () => {
             currentLocation={userLocation ? { 
               latitude: userLocation.latitude, 
               longitude: userLocation.longitude, 
-              address: userLocation.address || `${userLocation.latitude}, ${userLocation.longitude}`
+              address: userLocation.address
             } : null}
           />
         )}
