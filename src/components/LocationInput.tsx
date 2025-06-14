@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MapPin, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +18,8 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
   const geocoder = useRef<google.maps.Geocoder | null>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const suggestionsCacheRef = useRef<Map<string, any[]>>(new Map());
 
   useEffect(() => {
     // Initialize Google Maps services
@@ -27,44 +29,98 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
     }
   }, []);
 
+  // Debounced search function
+  const debouncedSearch = useCallback((input: string) => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      searchPlaces(input);
+    }, 300); // 300ms debounce
+  }, []);
+
   const searchPlaces = (input: string) => {
     if (!autocompleteService.current || input.length < 2) {
       setSuggestions([]);
+      setIsLoading(false);
+      return;
+    }
+
+    // Check cache first
+    const cacheKey = input.toLowerCase().trim();
+    if (suggestionsCacheRef.current.has(cacheKey)) {
+      setSuggestions(suggestionsCacheRef.current.get(cacheKey) || []);
+      setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
+    console.log('Searching for places:', input);
+
     autocompleteService.current.getPlacePredictions(
       {
-        input,
+        input: input.trim(),
         types: ['geocode'],
-        componentRestrictions: { country: 'in' } // Restrict to India
+        componentRestrictions: { country: 'in' },
+        // Add session token for better performance
+        sessionToken: new window.google.maps.places.AutocompleteSessionToken()
       },
       (predictions, status) => {
+        console.log('Places API response:', status, predictions?.length || 0, 'results');
         setIsLoading(false);
+        
         if (status === window.google.maps.places.PlacesServiceStatus.OK && predictions) {
+          // Cache the results
+          suggestionsCacheRef.current.set(cacheKey, predictions);
           setSuggestions(predictions);
         } else {
+          console.warn('Places API error:', status);
           setSuggestions([]);
         }
       }
     );
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+    
+    if (value.length >= 2) {
+      setIsLoading(true);
+      debouncedSearch(value);
+    } else {
+      setSuggestions([]);
+      setIsLoading(false);
+    }
+  };
+
   const handlePlaceSelect = (placeId: string, description: string) => {
     if (!geocoder.current) return;
 
+    console.log('Selecting place:', placeId, description);
+    setIsLoading(true);
+
     geocoder.current.geocode({ placeId }, (results, status) => {
+      setIsLoading(false);
+      console.log('Geocoding result:', status, results?.[0]?.geometry?.location);
+      
       if (status === 'OK' && results?.[0]) {
         const location = results[0].geometry.location;
-        onLocationSelect({
+        const selectedLocation = {
           latitude: location.lat(),
           longitude: location.lng(),
           address: description
-        });
+        };
+        
+        console.log('Location selected:', selectedLocation);
+        onLocationSelect(selectedLocation);
         setQuery(description);
         setSuggestions([]);
         setIsOpen(false);
+      } else {
+        console.error('Geocoding failed:', status);
+        alert('Unable to get location details. Please try another address.');
       }
     });
   };
@@ -76,9 +132,12 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
     }
 
     setIsGettingLocation(true);
+    console.log('Getting current location...');
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
+        console.log('Current location obtained:', latitude, longitude);
         
         // Reverse geocode to get address
         if (geocoder.current) {
@@ -86,37 +145,56 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
             { location: { lat: latitude, lng: longitude } },
             (results, status) => {
               setIsGettingLocation(false);
+              console.log('Reverse geocoding result:', status, results?.[0]?.formatted_address);
+              
               if (status === 'OK' && results?.[0]) {
                 const address = results[0].formatted_address;
-                onLocationSelect({ latitude, longitude, address });
+                const currentLoc = { latitude, longitude, address };
+                console.log('Current location with address:', currentLoc);
+                onLocationSelect(currentLoc);
                 setQuery(address);
                 setIsOpen(false);
               } else {
+                const coordAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+                console.log('Using coordinate address:', coordAddress);
                 onLocationSelect({ 
                   latitude, 
                   longitude, 
-                  address: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}` 
+                  address: coordAddress 
                 });
-                setQuery(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+                setQuery(coordAddress);
                 setIsOpen(false);
               }
             }
           );
         } else {
           setIsGettingLocation(false);
+          const coordAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
           onLocationSelect({ 
             latitude, 
             longitude, 
-            address: `${latitude.toFixed(6)}, ${longitude.toFixed(6)}` 
+            address: coordAddress 
           });
-          setQuery(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+          setQuery(coordAddress);
           setIsOpen(false);
         }
       },
       (error) => {
         setIsGettingLocation(false);
-        console.error('Error getting location:', error);
-        alert('Unable to get your current location. Please try searching manually.');
+        console.error('Geolocation error:', error);
+        let errorMessage = 'Unable to get your current location.';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access denied. Please enable location services.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out.';
+            break;
+        }
+        alert(errorMessage);
       },
       {
         enableHighAccuracy: true,
@@ -125,6 +203,15 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
       }
     );
   };
+
+  // Clean up debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   if (!isOpen && currentLocation) {
     return (
@@ -177,11 +264,9 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
               type="text"
               placeholder="Search for your location..."
               value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                searchPlaces(e.target.value);
-              }}
+              onChange={handleInputChange}
               className="pr-10"
+              autoComplete="off"
             />
             {isLoading && (
               <Loader2 className="absolute right-3 top-3 h-4 w-4 animate-spin text-islamic-gray" />
@@ -207,12 +292,12 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
           </Button>
 
           {suggestions.length > 0 && (
-            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-md">
+            <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-md bg-white shadow-lg">
               {suggestions.map((suggestion) => (
                 <button
                   key={suggestion.place_id}
                   onClick={() => handlePlaceSelect(suggestion.place_id, suggestion.description)}
-                  className="w-full text-left p-3 hover:bg-islamic-cream/50 border-b border-gray-100 last:border-b-0 transition-colors"
+                  className="w-full text-left p-3 hover:bg-islamic-cream/50 border-b border-gray-100 last:border-b-0 transition-colors focus:bg-islamic-cream/70 focus:outline-none"
                 >
                   <div className="flex items-start">
                     <MapPin className="h-4 w-4 text-islamic-gray mt-1 mr-2 flex-shrink-0" />
@@ -227,6 +312,12 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
                   </div>
                 </button>
               ))}
+            </div>
+          )}
+
+          {query.length >= 2 && !isLoading && suggestions.length === 0 && (
+            <div className="text-center py-4 text-islamic-gray">
+              <p>No suggestions found. Try a different search term.</p>
             </div>
           )}
         </div>
