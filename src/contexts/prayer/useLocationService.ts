@@ -1,8 +1,14 @@
 
 import { useState, useEffect } from 'react';
 
+interface UserLocation {
+  latitude: number;
+  longitude: number;
+  address: string;
+}
+
 export const useLocationService = () => {
-  const [userLocation, setUserLocation] = useState<{latitude: number; longitude: number} | null>(null);
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
 
   // Get user's geolocation
@@ -10,9 +16,15 @@ export const useLocationService = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          const { latitude, longitude } = position.coords;
+          
+          // Use coordinates as address fallback
+          const coordinateAddress = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+          
           setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+            latitude,
+            longitude,
+            address: coordinateAddress
           });
           setLocationError(null);
         },
