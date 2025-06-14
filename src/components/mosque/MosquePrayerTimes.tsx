@@ -101,11 +101,28 @@ const MosquePrayerTimes: React.FC<MosquePrayerTimesProps> = ({
 
   const prayerKey = getPrayerKey(selectedPrayer.name);
 
+  // Get current date for the update message
+  const getCurrentDate = () => {
+    const now = new Date();
+    return now.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
   return (
     <div className="flex items-start">
       <Clock className="h-5 w-5 mr-2 text-islamic-green mt-0.5" />
       <div className="w-full">
         <h3 className="font-medium mb-2">Prayer Times</h3>
+        
+        {/* Added update message */}
+        <div className="mb-3 p-3 bg-islamic-blue/5 rounded-lg border border-islamic-blue/20">
+          <p className="text-sm text-islamic-blue text-center font-medium">
+            Salah timings last updated on {getCurrentDate()}. Stay connected, And Pray Consistently.
+          </p>
+        </div>
         
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-islamic-green/20">
           {Object.entries(mosque.prayerTimes).map(([prayer, time], index) => {
