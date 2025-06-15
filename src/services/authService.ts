@@ -122,15 +122,28 @@ export class AuthService {
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Delete account using AdminUserRegistry functionality
-      const success = AdminUserRegistry.deleteUserAccount(userEmail);
+      // Remove from admin registry
+      AdminUserRegistry.removeUserByEmail(userEmail);
       
-      if (success) {
-        console.log(`🗑️ User self-deleted account: ${userEmail}`);
-        return { success: true };
-      } else {
-        return { success: false, error: "Failed to delete account. Please try again." };
-      }
+      // Remove from main users storage
+      const users = JSON.parse(localStorage.getItem('mosque-users') || '[]');
+      const filteredUsers = users.filter((u: any) => u.email !== userEmail);
+      localStorage.setItem('mosque-users', JSON.stringify(filteredUsers));
+      
+      // Add to deleted users list for tracking
+      const deletedUsers = JSON.parse(localStorage.getItem('deleted-users') || '[]');
+      deletedUsers.push({
+        email: userEmail,
+        deletedAt: new Date().toISOString(),
+        deletedBy: 'self'
+      });
+      localStorage.setItem('deleted-users', JSON.stringify(deletedUsers));
+      
+      // Remove current user session
+      localStorage.removeItem('mosque-user');
+      
+      console.log(`🗑️ User self-deleted account: ${userEmail}`);
+      return { success: true };
     } catch (error) {
       console.error('Error during self-deletion:', error);
       return { success: false, error: "An error occurred while deleting your account. Please try again." };
