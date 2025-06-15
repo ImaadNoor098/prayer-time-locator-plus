@@ -1,3 +1,4 @@
+
 import { User } from '@/types/auth';
 import { AdminUserRegistry } from '@/utils/adminStorage';
 import { sendRegistrationNotification } from './emailService';
@@ -21,7 +22,7 @@ export class AuthService {
     if (deletedUser) {
       return { 
         success: false, 
-        error: "Your account has been deleted by an administrator. Please register again to create a new account." 
+        error: "Your account has been deleted. Please register again to create a new account." 
       };
     }
     
@@ -113,6 +114,26 @@ export class AuthService {
       return { success: true };
     } catch (error) {
       return { success: false, error: "Failed to resend OTP. Please try again." };
+    }
+  }
+
+  static async deleteOwnAccount(userEmail: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Delete account using AdminUserRegistry functionality
+      const success = AdminUserRegistry.deleteUserAccount(userEmail);
+      
+      if (success) {
+        console.log(`🗑️ User self-deleted account: ${userEmail}`);
+        return { success: true };
+      } else {
+        return { success: false, error: "Failed to delete account. Please try again." };
+      }
+    } catch (error) {
+      console.error('Error during self-deletion:', error);
+      return { success: false, error: "An error occurred while deleting your account. Please try again." };
     }
   }
 }

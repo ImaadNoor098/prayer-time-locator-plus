@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -5,18 +6,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { User, Heart, Clock, Settings } from 'lucide-react';
+import { User, Heart, Clock, Settings, Trash2 } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import AdminPanel from '@/components/AdminPanel';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 import { isAdminEmail } from '@/utils/adminConfig';
 import LogoutConfirmationDialog from '@/components/LogoutConfirmationDialog';
+import DeleteAccountDialog from '@/components/DeleteAccountDialog';
 
 const UserProfile: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, deleteAccount, isLoading } = useAuth();
   const navigate = useNavigate();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { currentBackgroundClass } = useBackgroundSelector();
 
   // Check if current user is an admin
@@ -45,6 +48,18 @@ const UserProfile: React.FC = () => {
     logout();
     navigate('/login');
     setShowLogoutDialog(false);
+  };
+
+  const handleDeleteAccount = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDeleteAccount = async () => {
+    const success = await deleteAccount();
+    if (success) {
+      setShowDeleteDialog(false);
+      navigate('/login?deleted=true');
+    }
   };
 
   return (
@@ -114,11 +129,21 @@ const UserProfile: React.FC = () => {
               
               <Button 
                 onClick={handleLogout} 
-                variant="destructive" 
+                variant="outline" 
                 className="w-full text-sm"
                 size="sm"
               >
                 Logout
+              </Button>
+
+              <Button 
+                onClick={handleDeleteAccount} 
+                variant="destructive" 
+                className="w-full text-sm bg-red-600 hover:bg-red-700"
+                size="sm"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Account
               </Button>
             </div>
           </CardContent>
@@ -135,6 +160,13 @@ const UserProfile: React.FC = () => {
         isOpen={showLogoutDialog}
         onClose={() => setShowLogoutDialog(false)}
         onConfirm={confirmLogout}
+      />
+
+      <DeleteAccountDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        onConfirm={confirmDeleteAccount}
+        isLoading={isLoading}
       />
       
       <BottomBar />

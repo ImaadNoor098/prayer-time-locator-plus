@@ -15,6 +15,7 @@ interface AuthContextType {
   logout: () => void;
   verifyOtp: (otp: string) => Promise<boolean>;
   resendOtp: () => Promise<boolean>;
+  deleteAccount: () => Promise<boolean>;
   pendingPhoneVerification: boolean;
   pendingPhone: string;
 }
@@ -203,6 +204,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const deleteAccount = async (): Promise<boolean> => {
+    if (!user?.email) {
+      toast({
+        title: "Error",
+        description: "No user found to delete.",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const result = await AuthService.deleteOwnAccount(user.email);
+      
+      if (result.success) {
+        // Clear user session
+        setUser(null);
+        setCurrentUser(null);
+        
+        toast({
+          title: "Account Deleted",
+          description: "Your account has been permanently deleted.",
+        });
+        
+        return true;
+      } else {
+        toast({
+          title: "Deletion Failed",
+          description: result.error,
+          variant: "destructive",
+        });
+        return false;
+      }
+    } catch (error) {
+      toast({
+        title: "Deletion Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     setCurrentUser(null);
@@ -224,6 +271,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         verifyOtp,
         resendOtp,
+        deleteAccount,
         pendingPhoneVerification,
         pendingPhone
       }}
