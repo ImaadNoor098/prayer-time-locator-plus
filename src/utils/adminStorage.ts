@@ -1,6 +1,7 @@
-
 // Admin utility for managing user registrations
 // This file stores user data separately for admin management
+
+import { addAdminEmail, removeAdminEmail, ADMIN_EMAILS } from './adminConfig';
 
 interface AdminUserRecord {
   id: string;
@@ -182,6 +183,24 @@ export const adminHelpers = {
   clearAll: () => {
     AdminUserRegistry.clearAllData();
     console.log('🗑️ All admin data cleared.');
+  },
+
+  // New admin management functions
+  addAdmin: (email: string) => {
+    addAdminEmail(email);
+    console.log(`👑 Admin access granted to: ${email}`);
+    console.log('💡 User will need to refresh the page to see admin panel access.');
+  },
+
+  removeAdmin: (email: string) => {
+    removeAdminEmail(email);
+    console.log(`👑 Admin access revoked from: ${email}`);
+  },
+
+  listAdmins: () => {
+    console.log('👑 Current admin emails:');
+    console.table(ADMIN_EMAILS.map((email, index) => ({ index: index + 1, email })));
+    return ADMIN_EMAILS;
   }
 };
 

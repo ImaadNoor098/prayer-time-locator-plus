@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,12 +5,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AdminUserRegistry, adminHelpers } from '@/utils/adminStorage';
 import { useToast } from "@/hooks/use-toast";
-import { Trash2, Shield, ShieldOff, Download, RefreshCw } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { isAdminEmail } from '@/utils/adminConfig';
+import { Trash2, Shield, ShieldOff, Download, RefreshCw, AlertCircle } from 'lucide-react';
 
 const AdminPanel: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [emailToRemove, setEmailToRemove] = useState('');
   const { toast } = useToast();
+  const { user } = useAuth();
+
+  // Check if current user is authorized admin
+  const isAuthorizedAdmin = user?.email ? isAdminEmail(user.email) : false;
 
   const loadUsers = () => {
     const allUsers = AdminUserRegistry.getAllUsers();
@@ -19,8 +24,34 @@ const AdminPanel: React.FC = () => {
   };
 
   useEffect(() => {
-    loadUsers();
-  }, []);
+    if (isAuthorizedAdmin) {
+      loadUsers();
+    }
+  }, [isAuthorizedAdmin]);
+
+  // If user is not an authorized admin, show access denied message
+  if (!isAuthorizedAdmin) {
+    return (
+      <Card className="border-red-200">
+        <CardHeader>
+          <CardTitle className="text-red-600 flex items-center">
+            <AlertCircle className="h-5 w-5 mr-2" />
+            Access Denied
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center space-y-4">
+            <p className="text-gray-600">
+              You don't have permission to access the admin panel.
+            </p>
+            <p className="text-sm text-gray-500">
+              Only authorized administrators can view this section.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const handleRemoveUser = () => {
     if (!emailToRemove.trim()) {
@@ -81,6 +112,9 @@ const AdminPanel: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-islamic-blue">🔧 Admin User Registry</CardTitle>
+          <p className="text-sm text-green-600">
+            ✅ Authorized Admin: {user?.email}
+          </p>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-2">
@@ -160,6 +194,11 @@ const AdminPanel: React.FC = () => {
             <div><strong>Block/unblock user:</strong> adminHelpers.toggleBlock('email@example.com')</div>
             <div><strong>Export data:</strong> adminHelpers.export()</div>
             <div><strong>Clear all data:</strong> adminHelpers.clearAll()</div>
+            <div className="mt-4 pt-2 border-t">
+              <div><strong>Add new admin:</strong> adminHelpers.addAdmin('newemail@example.com')</div>
+              <div><strong>Remove admin:</strong> adminHelpers.removeAdmin('email@example.com')</div>
+              <div><strong>List admins:</strong> adminHelpers.listAdmins()</div>
+            </div>
           </div>
         </CardContent>
       </Card>
