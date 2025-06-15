@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,7 @@ import LogoutConfirmationDialog from '@/components/LogoutConfirmationDialog';
 
 const UserProfile: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { currentBackgroundClass } = useBackgroundSelector();
@@ -42,6 +43,7 @@ const UserProfile: React.FC = () => {
 
   const confirmLogout = () => {
     logout();
+    navigate('/login');
     setShowLogoutDialog(false);
   };
 

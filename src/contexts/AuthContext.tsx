@@ -1,10 +1,10 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { User } from '@/types';
 import { useAuthStorage } from '@/hooks/useAuthStorage';
 import { useOtpVerification } from '@/hooks/useOtpVerification';
 import { AuthService, RegisterFormData } from '@/services/authService';
-import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: User | null;
@@ -34,7 +34,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
-  const navigate = useNavigate();
   
   const { getCurrentUser, setCurrentUser, getUsers, setUsers, syncUserData } = useAuthStorage();
   const { 
@@ -207,7 +206,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     setCurrentUser(null);
-    navigate('/login');
+    // Navigate to login will be handled by the component that calls logout
     toast({
       title: "Logged Out",
       description: "You have been successfully logged out.",

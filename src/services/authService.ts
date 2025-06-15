@@ -1,4 +1,3 @@
-
 import { User } from '@/types/auth';
 import { AdminUserRegistry } from '@/utils/adminStorage';
 import { sendRegistrationNotification } from './emailService';
@@ -14,6 +13,17 @@ export class AuthService {
   static async login(email: string, password: string, users: any[]): Promise<{ success: boolean; user?: User; error?: string }> {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Check if user was deleted by admin
+    const deletedUsers = JSON.parse(localStorage.getItem('deleted-users') || '[]');
+    const deletedUser = deletedUsers.find((u: any) => u.email === email);
+    
+    if (deletedUser) {
+      return { 
+        success: false, 
+        error: "Your account has been deleted by an administrator. Please register again to create a new account." 
+      };
+    }
     
     const foundUser = users.find((u: any) => u.email === email);
     
@@ -32,6 +42,16 @@ export class AuthService {
   static async register(userData: RegisterFormData, users: any[]): Promise<{ success: boolean; error?: string }> {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Check if user was deleted by admin
+    const deletedUsers = JSON.parse(localStorage.getItem('deleted-users') || '[]');
+    const deletedUser = deletedUsers.find((u: any) => u.email === userData.email);
+    
+    if (deletedUser) {
+      // Remove from deleted users list to allow re-registration
+      const filteredDeletedUsers = deletedUsers.filter((u: any) => u.email !== userData.email);
+      localStorage.setItem('deleted-users', JSON.stringify(filteredDeletedUsers));
+    }
     
     if (users.some((u: any) => u.email === userData.email)) {
       return { success: false, error: "Email already exists. Please use another email or login." };

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,11 +8,23 @@ import { AdminUserRegistry, adminHelpers } from '@/utils/adminStorage';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/contexts/AuthContext';
 import { isAdminEmail } from '@/utils/adminConfig';
-import { Trash2, Shield, ShieldOff, Download, RefreshCw, AlertCircle } from 'lucide-react';
+import { Trash2, Shield, ShieldOff, Download, RefreshCw, AlertCircle, UserX } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 const AdminPanel: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [emailToRemove, setEmailToRemove] = useState('');
+  const [emailToDelete, setEmailToDelete] = useState('');
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -78,6 +91,55 @@ const AdminPanel: React.FC = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleDeleteAccountRequest = (email: string) => {
+    setEmailToDelete(email);
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteAccountConfirm = () => {
+    if (!emailToDelete) return;
+
+    // Delete user from admin registry
+    const adminSuccess = AdminUserRegistry.removeUserByEmail(emailToDelete);
+    
+    // Delete user from main users storage
+    const users = JSON.parse(localStorage.getItem('mosque-users') || '[]');
+    const filteredUsers = users.filter((u: any) => u.email !== emailToDelete);
+    localStorage.setItem('mosque-users', JSON.stringify(filteredUsers));
+    
+    // Add to deleted users list for tracking
+    const deletedUsers = JSON.parse(localStorage.getItem('deleted-users') || '[]');
+    deletedUsers.push({
+      email: emailToDelete,
+      deletedAt: new Date().toISOString(),
+      deletedBy: user?.email || 'admin'
+    });
+    localStorage.setItem('deleted-users', JSON.stringify(deletedUsers));
+
+    // Remove current user if they deleted their own account
+    const currentUser = JSON.parse(localStorage.getItem('mosque-user') || 'null');
+    if (currentUser && currentUser.email === emailToDelete) {
+      localStorage.removeItem('mosque-user');
+    }
+
+    if (adminSuccess) {
+      toast({
+        title: "Account Deleted",
+        description: `User account ${emailToDelete} has been permanently deleted by admin.`,
+      });
+      loadUsers();
+    } else {
+      toast({
+        title: "Error",
+        description: `Failed to delete user ${emailToDelete}`,
+        variant: "destructive",
+      });
+    }
+
+    setShowDeleteDialog(false);
+    setEmailToDelete('');
   };
 
   const handleToggleBlock = (email: string) => {
@@ -175,6 +237,13 @@ const AdminPanel: React.FC = () => {
                     >
                       {user.isBlocked ? <Shield className="h-4 w-4" /> : <ShieldOff className="h-4 w-4" />}
                     </Button>
+                    <Button
+                      onClick={() => handleDeleteAccountRequest(user.email)}
+                      variant="destructive"
+                      size="sm"
+                    >
+                      <UserX className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               ))
@@ -198,10 +267,43 @@ const AdminPanel: React.FC = () => {
               <div><strong>Add new admin:</strong> adminHelpers.addAdmin('newemail@example.com')</div>
               <div><strong>Remove admin:</strong> adminHelpers.removeAdmin('email@example.com')</div>
               <div><strong>List admins:</strong> adminHelpers.listAdmins()</div>
+              <div><strong>Delete account permanently:</strong> adminHelpers.deleteAccount('email@example.com')</div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center text-red-600">
+              <UserX className="h-5 w-5 mr-2" />
+              Delete User Account
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to permanently delete the account for <strong>{emailToDelete}</strong>? 
+              This action cannot be undone and will:
+              <ul className="list-disc list-inside mt-2 space-y-1">
+                <li>Remove all user data</li>
+                <li>Log out the user if currently signed in</li>
+                <li>Require the user to re-register if they want to access the site again</li>
+                <li>Show them a message that their account was deleted by an admin</li>
+              </ul>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowDeleteDialog(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteAccountConfirm}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Yes, Delete Account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

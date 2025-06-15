@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,17 +9,30 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Eye, EyeOff } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import ForgotPasswordPopup from '@/components/ForgotPasswordPopup';
+import AccountDeletedMessage from '@/components/AccountDeletedMessage';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const Login: React.FC = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState('');
+  const [showAccountDeletedMessage, setShowAccountDeletedMessage] = useState(false);
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   const { currentBackgroundClass } = useBackgroundSelector();
+  
+  // Check for account deletion message from URL params
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    if (urlParams.get('deleted') === 'true') {
+      setShowAccountDeletedMessage(true);
+      // Clean up URL
+      navigate('/login', { replace: true });
+    }
+  }, [location, navigate]);
   
   // Redirect if already authenticated
   useEffect(() => {
@@ -33,6 +47,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
+    setShowAccountDeletedMessage(false);
     
     if (!email || !password) {
       setFormError('Please fill in all fields');
@@ -45,6 +60,11 @@ const Login: React.FC = () => {
       const redirectPath = sessionStorage.getItem('auth-redirect') || '/';
       sessionStorage.removeItem('auth-redirect');
       navigate(redirectPath);
+    } else {
+      // Check if error is due to account deletion
+      if (formError.includes('deleted by an administrator')) {
+        setShowAccountDeletedMessage(true);
+      }
     }
   };
   
@@ -63,6 +83,8 @@ const Login: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <AccountDeletedMessage show={showAccountDeletedMessage} />
+          
           <form onSubmit={handleSubmit} className="space-y-6">
             {formError && (
               <div className="p-3 rounded-md bg-red-50 text-red-500 text-sm mb-4">

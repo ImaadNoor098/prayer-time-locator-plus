@@ -131,6 +131,40 @@ export class AdminUserRegistry {
       console.error('Error clearing admin data:', error);
     }
   }
+
+  // Delete user account completely
+  static deleteUserAccount(email: string): boolean {
+    try {
+      // Remove from admin registry
+      const adminRemoved = this.removeUserByEmail(email);
+      
+      // Remove from main users storage
+      const users = JSON.parse(localStorage.getItem('mosque-users') || '[]');
+      const filteredUsers = users.filter((u: any) => u.email !== email);
+      localStorage.setItem('mosque-users', JSON.stringify(filteredUsers));
+      
+      // Add to deleted users list
+      const deletedUsers = JSON.parse(localStorage.getItem('deleted-users') || '[]');
+      deletedUsers.push({
+        email,
+        deletedAt: new Date().toISOString(),
+        deletedBy: 'admin'
+      });
+      localStorage.setItem('deleted-users', JSON.stringify(deletedUsers));
+      
+      // Remove current user if they deleted their own account
+      const currentUser = JSON.parse(localStorage.getItem('mosque-user') || 'null');
+      if (currentUser && currentUser.email === email) {
+        localStorage.removeItem('mosque-user');
+      }
+      
+      console.log('🔧 Admin Registry: User account deleted completely:', email);
+      return adminRemoved;
+    } catch (error) {
+      console.error('Error deleting user account:', error);
+      return false;
+    }
+  }
 }
 
 // Admin helper functions for easy console access
@@ -201,6 +235,18 @@ export const adminHelpers = {
     console.log('👑 Current admin emails:');
     console.table(ADMIN_EMAILS.map((email, index) => ({ index: index + 1, email })));
     return ADMIN_EMAILS;
+  },
+
+  // Delete user account completely
+  deleteAccount: (email: string) => {
+    const success = AdminUserRegistry.deleteUserAccount(email);
+    if (success) {
+      console.log(`💀 User account ${email} deleted completely by admin.`);
+      console.log('💡 User will see deletion message if they try to login.');
+    } else {
+      console.log(`❌ Failed to delete user ${email}.`);
+    }
+    return success;
   }
 };
 
