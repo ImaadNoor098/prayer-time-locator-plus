@@ -106,7 +106,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '7:30',
       eidUlFitr: '7:30'
     },
-    lastUpdated: 'June 8, 2025',
+    lastUpdated: 'June 15, 2025',
     images: [
       '/mosques/razvi_masjid.jpg',  // These can be local images
     ],
