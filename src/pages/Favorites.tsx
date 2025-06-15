@@ -9,10 +9,12 @@ import { Heart } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import FavoriteAuthCheck from '@/components/FavoriteAuthCheck';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const Favorites: React.FC = () => {
   const { mosques, favorites, selectedPrayer, setSearchParams, saveScrollPosition, getSavedScrollPosition, trackPageVisit } = usePrayer();
   const { isAuthenticated } = useAuth();
+  const { currentBackgroundClass } = useBackgroundSelector();
   const location = useLocation();
   const navigate = useNavigate();
   const firstRenderRef = useRef(true);
@@ -87,7 +89,7 @@ const Favorites: React.FC = () => {
   // If not authenticated, show auth prompt but still show bottom bar
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen islamic-pattern-bg pb-20">
+      <div className={`min-h-screen ${currentBackgroundClass} pb-20`}>
         <div className="container mx-auto max-w-4xl px-4">
           <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
             <h1 className="text-2xl font-bold text-islamic-blue flex items-center mb-2">
@@ -127,7 +129,7 @@ const Favorites: React.FC = () => {
   }
   
   return (
-    <div className="min-h-screen islamic-pattern-bg pb-20">
+    <div className={`min-h-screen ${currentBackgroundClass} pb-20`}>
       <div className="container mx-auto max-w-4xl px-4">
         <header className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
           <h1 className="text-2xl font-bold text-islamic-blue flex items-center mb-2">
