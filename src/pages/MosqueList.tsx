@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrayer } from '@/contexts/prayer';
@@ -32,16 +31,13 @@ const MosqueList: React.FC = () => {
   const firstRenderRef = useRef(true);
   const { currentBackgroundClass } = useBackgroundSelector();
   
-  // Get current prayer based on prayer times
   const { currentTime, isPrayerTime, salahTimes } = useSalahTimes(new Date());
   const [currentActivePrayer, setCurrentActivePrayer] = useState<string | null>(null);
   
-  // Set default filter to 'earliest' for prayer-based filtering
   useEffect(() => {
     setCurrentFilter('earliest');
   }, [setCurrentFilter]);
   
-  // Determine the current active prayer
   useEffect(() => {
     if (!salahTimes) return;
     
@@ -53,10 +49,8 @@ const MosqueList: React.FC = () => {
       "isha": "Isha"
     };
     
-    // Check which prayer is active now
     for (const [key, name] of Object.entries(prayerMap)) {
       if (isPrayerTime(key)) {
-        // If prayer is currently active, set it
         const matchingPrayer = prayers.find(p => p.name === name);
         if (matchingPrayer && !selectedPrayer) {
           setSelectedPrayer(matchingPrayer);
@@ -66,9 +60,7 @@ const MosqueList: React.FC = () => {
       }
     }
     
-    // If no prayer is active and no prayer is selected, default to next upcoming prayer
     if (!selectedPrayer && !currentActivePrayer) {
-      // This is simplified logic - in a real app, you'd determine the next prayer more precisely
       const now = new Date();
       const currentHour = now.getHours();
       
@@ -84,7 +76,6 @@ const MosqueList: React.FC = () => {
     }
   }, [salahTimes, isPrayerTime, prayers, selectedPrayer, setSelectedPrayer]);
   
-  // Use useEffect to handle navigation and scrolling behavior
   useEffect(() => {
     if (!selectedPrayer) {
       navigate('/');
@@ -93,18 +84,13 @@ const MosqueList: React.FC = () => {
     
     const path = location.pathname;
     
-    // Track this page visit for double-tap detection
     trackPageVisit(path);
     
-    // On first render, decide whether to restore position or start at top
     if (firstRenderRef.current) {
       firstRenderRef.current = false;
       
-      // Get saved position for this page
       const savedPosition = getSavedScrollPosition(path);
       
-      // If this is direct navigation (not from bottom bar), start from top
-      // Otherwise restore previous position if available
       if (savedPosition > 0 && location.state?.fromBottomBar) {
         setTimeout(() => {
           window.scrollTo({
@@ -113,7 +99,6 @@ const MosqueList: React.FC = () => {
           });
         }, 100);
       } else {
-        // Scroll to top for first visit or non-bottom-bar navigation
         window.scrollTo({
           top: 0,
           behavior: 'auto'
@@ -121,40 +106,44 @@ const MosqueList: React.FC = () => {
       }
     }
     
-    // Save scroll position when leaving the page
     return () => {
       saveScrollPosition(path, window.scrollY);
     };
   }, [selectedPrayer, navigate, location.pathname, getSavedScrollPosition, saveScrollPosition, trackPageVisit, location.state]);
   
-  // Handle Select Prayer button click
   const handleSelectPrayerClick = () => {
-    // Navigate to home page to select a new prayer
     navigate('/', { state: { selectingNewPrayer: true } });
   };
   
-  // If coming from mosque button with no prayer selected, show message
   if (!selectedPrayer) {
     return (
       <div className={`min-h-screen ${currentBackgroundClass} pb-20`} ref={pageRef}>
         <div className="container mx-auto max-w-4xl px-4 py-8">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-islamic-blue to-islamic-green bg-clip-text text-transparent">
               Mosque List
             </h1>
             <ThemeToggle />
           </div>
           
-          <div className="bg-white dark:bg-card p-6 rounded-lg shadow islamic-card mb-4">
-            <p className="text-center mb-4">Please select a prayer to see mosque timings</p>
-            <div className="flex justify-center">
-              <Button
-                onClick={handleSelectPrayerClick}
-                className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md"
-              >
-                Select Prayer
-              </Button>
+          <div className="bg-white dark:bg-card p-8 rounded-xl shadow-lg islamic-card mb-4 text-center">
+            <div className="mb-6">
+              <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-islamic-cream to-white dark:from-gray-800 dark:to-gray-700 shadow-md flex items-center justify-center">
+                <span className="text-3xl">🕌</span>
+              </div>
+              <h2 className="text-xl font-semibold text-islamic-blue dark:text-islamic-cream mb-2">
+                Select a Prayer
+              </h2>
+              <p className="text-islamic-gray dark:text-islamic-cream/70">
+                Please select a prayer to see mosque timings
+              </p>
             </div>
+            <Button
+              onClick={handleSelectPrayerClick}
+              className="bg-gradient-to-r from-islamic-gold to-islamic-gold/90 hover:from-islamic-gold/90 hover:to-islamic-gold text-black font-semibold px-6 py-3 rounded-lg shadow-md transform transition-transform hover:scale-105"
+            >
+              Select Prayer
+            </Button>
           </div>
         </div>
         <BottomBar />
@@ -168,20 +157,20 @@ const MosqueList: React.FC = () => {
     <div className={`min-h-screen ${currentBackgroundClass} pb-20`} ref={pageRef}>
       <div className="container mx-auto max-w-4xl px-4">
         <div className="sticky top-0 bg-background/80 backdrop-blur-sm z-20 pt-4 pb-2">
-          <div className="flex justify-between items-center mb-2">
+          <div className="flex justify-between items-center mb-3">
             <Button
               onClick={() => navigate('/')}
               variant="ghost"
-              className="text-islamic-blue dark:text-islamic-cream"
+              className="text-islamic-blue dark:text-islamic-cream hover:bg-islamic-blue/10 rounded-lg"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
             </Button>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Button
                 onClick={handleSelectPrayerClick}
-                className="bg-islamic-gold hover:bg-islamic-gold/90 text-black font-medium px-4 py-2 rounded-md shadow-md transform transition-transform hover:scale-105"
+                className="bg-gradient-to-r from-islamic-gold to-islamic-gold/90 hover:from-islamic-gold/90 hover:to-islamic-gold text-black font-semibold px-4 py-2 rounded-lg shadow-md transform transition-transform hover:scale-105"
               >
                 Select Prayer
               </Button>
@@ -190,14 +179,20 @@ const MosqueList: React.FC = () => {
             </div>
           </div>
           
-          <header className="mb-2">
-            <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream flex items-center">
-              <span className="mr-2">{selectedPrayer.icon}</span>
-              {selectedPrayer.name} Prayer Times
-            </h1>
-            <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 mb-4">
-              Find mosques offering {selectedPrayer.name} prayer
-            </p>
+          <header className="mb-4">
+            <div className="flex items-center mb-3">
+              <div className="h-12 w-12 mr-4 rounded-full bg-gradient-to-br from-islamic-cream to-white dark:from-gray-800 dark:to-gray-700 shadow-md flex items-center justify-center">
+                <span className="text-2xl">{selectedPrayer.icon}</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-islamic-blue to-islamic-green bg-clip-text text-transparent">
+                  {selectedPrayer.name} Prayer Times
+                </h1>
+                <p className="text-sm text-islamic-gray dark:text-islamic-cream/70">
+                  Find mosques offering {selectedPrayer.name} prayer
+                </p>
+              </div>
+            </div>
             
             <SearchBar />
           </header>
@@ -278,11 +273,11 @@ const MosqueList: React.FC = () => {
         )}
         
         {/* Distance Notice - Shortened and Rectangular */}
-        <div className="mb-4 bg-orange-50 border border-orange-200 rounded-md p-3 dark:bg-orange-950/20 dark:border-orange-800">
+        <div className="mb-4 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-4 dark:from-orange-950/20 dark:to-amber-950/20 dark:border-orange-800">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="h-4 w-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+            <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
             <div className="text-orange-800 dark:text-orange-200 text-sm leading-relaxed">
-              <div className="font-medium mb-1">Distance Notice:</div>
+              <div className="font-semibold mb-2 text-orange-900 dark:text-orange-100">Distance Notice:</div>
               <div className="space-y-1">
                 <div>Distance calculations are currently under development and may be inaccurate.</div>
                 <div>Use the <span className="bg-islamic-blue text-white px-2 py-0.5 rounded text-xs font-medium">Directions</span> button on each mosque card for accurate navigation.</div>
@@ -293,13 +288,26 @@ const MosqueList: React.FC = () => {
         
         <FilterBar />
         
-        <div className="pt-4 space-y-4">
+        <div className="pt-6 space-y-4">
           {mosques.length > 0 ? (
-            mosques.map((mosque) => (
-              <MosqueCard key={mosque.id} mosque={mosque} />
-            ))
+            <>
+              <div className="mb-4 text-center">
+                <p className="text-sm text-islamic-gray dark:text-islamic-cream/70">
+                  Found {mosques.length} mosque{mosques.length !== 1 ? 's' : ''} for {selectedPrayer.name} prayer
+                </p>
+              </div>
+              {mosques.map((mosque) => (
+                <MosqueCard key={mosque.id} mosque={mosque} />
+              ))}
+            </>
           ) : (
-            <div className="text-center p-8 bg-white dark:bg-card rounded-lg shadow islamic-card">
+            <div className="text-center p-12 bg-white dark:bg-card rounded-xl shadow-lg islamic-card">
+              <div className="h-16 w-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-islamic-cream to-white dark:from-gray-800 dark:to-gray-700 shadow-md flex items-center justify-center">
+                <span className="text-3xl">🔍</span>
+              </div>
+              <h3 className="text-lg font-semibold text-islamic-blue dark:text-islamic-cream mb-2">
+                No mosques found
+              </h3>
               <p className="text-islamic-gray dark:text-islamic-cream/70">
                 No mosques found for {selectedPrayer.name} prayer.
               </p>
