@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Eye, EyeOff } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import ForgotPasswordPopup from '@/components/ForgotPasswordPopup';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const Login: React.FC = () => {
   const { login, isLoading, isAuthenticated } = useAuth();
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState('');
   const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
+  const { currentBackgroundClass } = useBackgroundSelector();
   
   // Redirect if already authenticated
   useEffect(() => {
@@ -52,8 +54,8 @@ const Login: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen islamic-pattern-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pb-20">
-      <Card className="w-full max-w-md">
+    <div className={`min-h-screen ${currentBackgroundClass} flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pb-20`}>
+      <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center text-islamic-blue">Sign in to your account</CardTitle>
           <CardDescription className="text-center">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,10 +7,12 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Eye, EyeOff, Check, X } from 'lucide-react';
 import { PasswordRequirement } from '@/types/auth';
+import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
 const Register: React.FC = () => {
   const { register, isLoading } = useAuth();
   const navigate = useNavigate();
+  const { currentBackgroundClass } = useBackgroundSelector();
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -116,8 +117,8 @@ const Register: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen islamic-pattern-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className={`min-h-screen ${currentBackgroundClass} flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8`}>
+      <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center text-islamic-blue">Create an account</CardTitle>
           <CardDescription className="text-center">

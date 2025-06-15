@@ -9,11 +9,17 @@ import { User, Heart, Clock, Settings } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
 import AdminPanel from '@/components/AdminPanel';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
+import { isAdminEmail } from '@/utils/adminConfig';
+import LogoutConfirmationDialog from '@/components/LogoutConfirmationDialog';
 
 const UserProfile: React.FC = () => {
   const { user, logout } = useAuth();
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const { currentBackgroundClass } = useBackgroundSelector();
+
+  // Check if current user is an admin
+  const isUserAdmin = user?.email ? isAdminEmail(user.email) : false;
 
   if (!user) {
     return (
@@ -31,7 +37,12 @@ const UserProfile: React.FC = () => {
   }
 
   const handleLogout = () => {
+    setShowLogoutDialog(true);
+  };
+
+  const confirmLogout = () => {
     logout();
+    setShowLogoutDialog(false);
   };
 
   return (
@@ -86,15 +97,18 @@ const UserProfile: React.FC = () => {
             <Separator />
 
             <div className="space-y-3">
-              <Button 
-                onClick={() => setShowAdminPanel(!showAdminPanel)} 
-                variant="outline" 
-                className="w-full text-sm"
-                size="sm"
-              >
-                <Settings className="h-4 w-4 mr-2" />
-                {showAdminPanel ? 'Hide Admin Panel' : 'Show Admin Panel'}
-              </Button>
+              {/* Only show admin panel button for admin users */}
+              {isUserAdmin && (
+                <Button 
+                  onClick={() => setShowAdminPanel(!showAdminPanel)} 
+                  variant="outline" 
+                  className="w-full text-sm"
+                  size="sm"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  {showAdminPanel ? 'Hide Admin Panel' : 'Show Admin Panel'}
+                </Button>
+              )}
               
               <Button 
                 onClick={handleLogout} 
@@ -108,12 +122,18 @@ const UserProfile: React.FC = () => {
           </CardContent>
         </Card>
 
-        {showAdminPanel && (
+        {showAdminPanel && isUserAdmin && (
           <div className="mb-4">
             <AdminPanel />
           </div>
         )}
       </div>
+      
+      <LogoutConfirmationDialog
+        isOpen={showLogoutDialog}
+        onClose={() => setShowLogoutDialog(false)}
+        onConfirm={confirmLogout}
+      />
       
       <BottomBar />
     </div>
