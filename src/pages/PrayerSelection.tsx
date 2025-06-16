@@ -45,7 +45,7 @@ const PrayerSelection: React.FC = () => {
         <header className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream mr-4">
-              SALAH LOCATOR
+              PRAY GO
             </h1>
             <Button
               variant="outline"
