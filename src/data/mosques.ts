@@ -294,7 +294,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '05:45',
       eidUlFitr: '05:45'
     },
-    lastUpdated: 'June 6, 2025',
+    lastUpdated: 'June 16, 2025',
     images: [
       '/mosques/madina_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
