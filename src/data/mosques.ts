@@ -287,7 +287,7 @@ export const mosques: Mosque[] = [
     prayerTimes: {
       fajr: '05:00',
       dhuhr: '13:30',
-      asr: '17:15',
+      asr: '17:20',
       maghrib: '19:11',
       isha: '21:00',
       jummah: '12:45',
