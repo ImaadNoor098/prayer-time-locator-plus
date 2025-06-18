@@ -493,13 +493,13 @@ export const mosques: Mosque[] = [
   {
     id: 'm19',
     name: 'Surme Wali Masjid (Hashmi Masjid)',
-    address: 'Qila, Bareilly',
+    address: 'Naala, Bara Bazar, Bareilly',
     distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
     },
-    googleMapsLink: 'https://maps.app.goo.gl/K1NrG4CRgzpX6ph7A',
+    googleMapsLink: 'https://maps.app.goo.gl/jibnqEcH3aBnzV1e6',
     prayerTimes: {
       fajr: '04:50',
       dhuhr: '14:00',
