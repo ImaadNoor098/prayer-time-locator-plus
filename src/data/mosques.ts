@@ -490,4 +490,31 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+  {
+    id: 'm19',
+    name: 'Surme Wali Masjid (Hashmi Masjid)',
+    address: 'Qila, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/K1NrG4CRgzpX6ph7A',
+    prayerTimes: {
+      fajr: '04:50',
+      dhuhr: '14:00',
+      asr: '18:00',
+      maghrib: '19:16',
+      isha: '21:00',
+      jummah: '14:00',
+      eidUlAdha: '08:00',
+      eidUlFitr: '08:00'
+    },
+    lastUpdated: 'June 18, 2025',
+    images: [
+      '/mosques/surme_wali_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
