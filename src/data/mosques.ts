@@ -517,4 +517,31 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+  {
+    id: 'm20',
+    name: 'Chauki/Chowki Chauraha Masjid',
+    address: 'Chauki Charaha, Butler Plaza, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/jibnqEcH3aBnzV1e6',
+    prayerTimes: {
+      fajr: 'NIL',
+      dhuhr: '13:45',
+      asr: '17:30',
+      maghrib: '19:17',
+      isha: '21:00',
+      jummah: '12:45',
+      eidUlAdha: '06:00',
+      eidUlFitr: '06:00'
+    },
+    lastUpdated: 'June 21, 2025',
+    images: [
+      '/mosques/chauki_chauraha_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
