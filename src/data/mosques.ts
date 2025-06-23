@@ -16,7 +16,7 @@ export const mosques: Mosque[] = [
     // Added direct Google Maps link
     googleMapsLink: 'https://maps.app.goo.gl/S6KCoKG7Jz4KFa7NA?g_st=aw',
     prayerTimes: {
-      fajr: '05:30',
+      fajr: '04:55',
       dhuhr: '14:15',
       asr: '18:00',
       maghrib: '19:17',
