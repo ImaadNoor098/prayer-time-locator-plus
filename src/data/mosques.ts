@@ -402,7 +402,7 @@ export const mosques: Mosque[] = [
       eidUlAdha: '06:30',
       eidUlFitr: '06:30'
     },
-    lastUpdated: 'June 12, 2025',
+    lastUpdated: 'July 16, 2025',
     images: [
       '/mosques/thane_wali_masjid.jpg',
       '/mosques/mosque3-interior.jpg'
