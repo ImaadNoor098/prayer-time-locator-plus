@@ -572,7 +572,7 @@ export const mosques: Mosque[] = [
   },
   
     {
-    id: 'm21',
+    id: 'm22',
     name: 'Ek Minar Masjid',
     address: 'Anand Vihar, Swaleh Nagar, Mini Bypass, Bareilly',
     coordinates: {
@@ -598,7 +598,7 @@ export const mosques: Mosque[] = [
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
   {
-    id: 'm21',
+    id: 'm23',
     name: 'Badshah Masjid',
     address: 'Katra Manrai, Bara Bazar, Bareilly',
     coordinates: {
@@ -624,7 +624,7 @@ export const mosques: Mosque[] = [
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
    {
-    id: 'm21',
+    id: 'm24',
     name: 'Noori Masjid',
     address: 'Bareilly Railway Station, (Junction), Civil Lines, Bareilly',
     coordinates: {
