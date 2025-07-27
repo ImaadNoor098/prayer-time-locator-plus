@@ -544,4 +544,109 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+    {
+    id: 'm21',
+    name: 'Jahani Ki Masjid',
+    address: 'Kutubkhana, Bareilly',
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/xgK4UNXeDcqE6QKN7?g_st=aw',
+    prayerTimes: {
+      fajr: '5:15',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:13',
+      isha: '21:00',
+      jummah: '13:00',
+      eidUlAdha: 'Not Decided',
+      eidUlFitr: 'Not Decided'
+    },
+    lastUpdated: 'July 27, 2025',
+    images: [
+      '/mosques/jahani_ki_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  
+    {
+    id: 'm21',
+    name: 'Ek Minar Masjid',
+    address: 'Anand Vihar, Swaleh Nagar, Mini Bypass, Bareilly',
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/DRgUtAtjQyWFHfim6',
+    prayerTimes: {
+      fajr: '5:00',
+      dhuhr: '13:45',
+      asr: '17:45',
+      maghrib: '19:14',
+      isha: '21:15',
+      jummah: '13:30',
+      eidUlAdha: '6:15',
+      eidUlFitr: '6:15'
+    },
+    lastUpdated: 'July 27, 2025',
+    images: [
+      '/mosques/ek_minar_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+  {
+    id: 'm21',
+    name: 'Badshah Masjid',
+    address: 'Katra Manrai, Bara Bazar, Bareilly',
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/6dekxnBxqd3XPwys5?g_st=aw',
+    prayerTimes: {
+      fajr: '5:00',
+      dhuhr: '14:00',
+      asr: '17:30',
+      maghrib: '19:15',
+      isha: '21:00',
+      jummah: '13:45',
+      eidUlAdha: 'Not Decided',
+      eidUlFitr: 'Not Decided'
+    },
+    lastUpdated: 'July 27, 2025',
+    images: [
+      '/mosques/badshah_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+   {
+    id: 'm21',
+    name: 'Noori Masjid',
+    address: 'Bareilly Railway Station, (Junction), Civil Lines, Bareilly',
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/JbfUjzDGQYhv1QYK7?g_st=aw',
+    prayerTimes: {
+      fajr: '5:00',
+      dhuhr: '14:45',
+      asr: '18:00',
+      maghrib: '19:15',
+      isha: '21:00',
+      jummah: '13:45',
+      eidUlAdha: 'Not Decided',
+      eidUlFitr: 'Not Decided'
+    },
+    lastUpdated: 'July 27, 2025',
+    images: [
+      '/mosques/noori_masjid_junction.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
