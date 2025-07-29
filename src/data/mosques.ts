@@ -653,4 +653,58 @@ export const mosques: Mosque[] = [
     ],
     facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
   },
+     {
+    id: 'm25',
+    name: 'Masjid Muftiyan',
+    address: 'Gali Arya Samaj, Kutubkhana, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/u6st2ifB7rJeEHUJ8',
+    prayerTimes: {
+      fajr: '5:00',
+      dhuhr: '15:00',
+      asr: '17:30',
+      maghrib: '19:15',
+      isha: '21:00',
+      jummah: '15:00',
+      eidUlAdha: 'Not Decided',
+      eidUlFitr: 'Not Decided'
+    },
+    lastUpdated: 'July 29, 2025',
+    images: [
+      '/mosques/masjid_muftiyan.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
+     {
+    id: 'm26',
+    name: 'Naksh Bandiyan Masjid',
+    address: 'Zakhira, Reti Chauraha, Bareilly',
+    distance: 0.8,
+    coordinates: {
+      latitude: 28.368,
+      longitude: 79.427
+    },
+    googleMapsLink: 'https://maps.app.goo.gl/reUAAjyXNUQ2Z5xDA?g_st=aw',
+    prayerTimes: {
+      fajr: '5:00',
+      dhuhr: '14:00',
+      asr: '17:45',
+      maghrib: '19:11',
+      isha: '21:00',
+      jummah: '14:00',
+      eidUlAdha: 'Not Decided',
+      eidUlFitr: 'Not Decided'
+    },
+    lastUpdated: 'July 29, 2025',
+    images: [
+      '/mosques/naksh_bandiyan_masjid.jpg',
+      '/mosques/mosque3-interior.jpg'
+    ],
+    facilities: ['Prayer Hall', 'Community Center', 'Children\'s Area', 'Charity Services']
+  },
 ];
