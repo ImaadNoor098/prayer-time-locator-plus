@@ -548,6 +548,7 @@ export const mosques: Mosque[] = [
     id: 'm21',
     name: 'Jahani Ki Masjid',
     address: 'Kutubkhana, Bareilly',
+    distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
@@ -575,6 +576,7 @@ export const mosques: Mosque[] = [
     id: 'm22',
     name: 'Ek Minar Masjid',
     address: 'Anand Vihar, Swaleh Nagar, Mini Bypass, Bareilly',
+    distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
@@ -601,6 +603,7 @@ export const mosques: Mosque[] = [
     id: 'm23',
     name: 'Badshah Masjid',
     address: 'Katra Manrai, Bara Bazar, Bareilly',
+    distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
@@ -627,6 +630,7 @@ export const mosques: Mosque[] = [
     id: 'm24',
     name: 'Noori Masjid',
     address: 'Bareilly Railway Station, (Junction), Civil Lines, Bareilly',
+    distance: 0.8,
     coordinates: {
       latitude: 28.368,
       longitude: 79.427
