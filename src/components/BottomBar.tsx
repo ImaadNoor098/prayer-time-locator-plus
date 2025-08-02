@@ -1,7 +1,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Heart, Home, Clock, MapPin, User } from 'lucide-react';
+import { Heart, Home, Clock, MapPin, User, Navigation } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigation } from '@/contexts/NavigationContext';
@@ -35,6 +35,11 @@ const BottomBar: React.FC = () => {
       path: '/',
     },
     {
+      icon: <Navigation className="h-6 w-6" />,
+      label: 'Qibla',
+      path: '/qibla',
+    },
+    {
       icon: <Heart className="h-6 w-6" />,
       label: 'Favorites',
       path: '/favorites',
@@ -48,13 +53,6 @@ const BottomBar: React.FC = () => {
       icon: <Clock className="h-6 w-6" />,
       label: 'Prayer Times',
       path: '/salah-times',
-    },
-    {
-      icon: <User className="h-6 w-6" />,
-      label: 'Profile',
-      path: '/profile',
-      requireAuth: true,
-      authRedirect: '/login',
     },
   ];
 
@@ -127,6 +125,7 @@ const BottomBar: React.FC = () => {
 
   const isActive = (path: string) => {
     if (path === '/' && (location.pathname === '/' || (location.pathname === '/mosques' && selectedPrayer))) return true;
+    if (path === '/qibla' && location.pathname === '/qibla') return true;
     if (path === '/mosque-browser' && location.pathname === '/mosque-browser') return true;
     if (path === '/mosques' && location.pathname === '/mosques') return true;
     if (path === '/favorites' && location.pathname === '/favorites') return true;

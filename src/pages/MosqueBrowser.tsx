@@ -102,7 +102,7 @@ const MosqueBrowser: React.FC = () => {
             <h1 className="text-2xl font-bold text-islamic-blue dark:text-islamic-cream">
               Browse Mosques
             </h1>
-            <ThemeToggle variant="button" />
+            <ThemeToggle />
           </div>
           
           <p className="text-sm text-islamic-gray dark:text-islamic-cream/70 mb-4">

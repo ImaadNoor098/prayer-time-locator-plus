@@ -175,7 +175,7 @@ const MosqueList: React.FC = () => {
                 Select Prayer
               </Button>
               
-              <ThemeToggle variant="button" />
+              <ThemeToggle />
             </div>
           </div>
           

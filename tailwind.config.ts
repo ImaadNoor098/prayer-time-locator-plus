@@ -19,6 +19,11 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'arabic': ['Amiri', 'Noto Sans Arabic', 'serif'],
+				'arabic-sans': ['Noto Sans Arabic', 'sans-serif'],
+				'sans': ['Inter', 'Noto Sans Arabic', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -98,12 +103,39 @@ export default {
 				'pulse-gentle': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.7' }
+				},
+				'compass-rotate': {
+					from: { transform: 'rotate(0deg)' },
+					to: { transform: 'rotate(360deg)' }
+				},
+				'qibla-pulse': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						boxShadow: '0 0 0 0 rgba(158, 50, 35, 0.7)'
+					},
+					'50%': { 
+						transform: 'scale(1.05)',
+						boxShadow: '0 0 0 10px rgba(158, 50, 35, 0)'
+					}
+				},
+				'fade-in-up': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-gentle': 'pulse-gentle 2s ease-in-out infinite'
+				'pulse-gentle': 'pulse-gentle 2s ease-in-out infinite',
+				'compass-rotate': 'compass-rotate 20s linear infinite',
+				'qibla-pulse': 'qibla-pulse 2s infinite',
+				'fade-in-up': 'fade-in-up 0.6s ease-out'
 			}
 		}
 	},

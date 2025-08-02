@@ -10,6 +10,7 @@ import BackgroundSelector from '@/components/BackgroundSelector';
 import { Button } from '@/components/ui/button';
 import { Palette, X } from 'lucide-react';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const PrayerSelection: React.FC = () => {
   const { 
@@ -44,41 +45,44 @@ const PrayerSelection: React.FC = () => {
       <div className="container mx-auto max-w-4xl px-4 py-8">
         <header className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
-            <h1 className="text-3xl font-bold text-islamic-blue dark:text-islamic-cream mr-4">
+            <h1 className="text-4xl font-bold font-arabic-sans bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mr-4">
               PRAY GO
             </h1>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowBackgroundSelector(!showBackgroundSelector)}
-              className="bg-white/80 hover:bg-white border-islamic-blue/20"
-            >
-              {showBackgroundSelector ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Palette className="h-4 w-4" />
-              )}
-            </Button>
+            <div className="flex gap-2">
+              <ThemeToggle />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowBackgroundSelector(!showBackgroundSelector)}
+                className="bg-card/80 backdrop-blur-sm border-border/50 hover:bg-card"
+              >
+                {showBackgroundSelector ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Palette className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
           
-          <p className="text-islamic-gray dark:text-islamic-cream/70">
+          <p className="text-muted-foreground font-arabic-sans">
             Select a prayer to find mosques and prayer times
           </p>
           
           {/* Contact Note */}
-          <div className="mt-4 p-3 bg-white/60 dark:bg-islamic-cream/10 rounded-lg border border-islamic-blue/20 backdrop-blur-sm">
-            <p className="text-sm text-islamic-blue dark:text-islamic-cream">
+          <div className="mt-4 p-4 modern-islamic-card animate-fade-in-up">
+            <p className="text-sm text-foreground font-arabic-sans">
               To Add Mosque Please{' '}
               <button 
                 onClick={handleCall}
-                className="underline hover:text-islamic-green font-medium transition-colors"
+                className="underline hover:text-primary font-medium transition-colors"
               >
                 Call
               </button>
               {' '}Or{' '}
               <button 
                 onClick={handleWhatsApp}
-                className="underline hover:text-islamic-green font-medium transition-colors"
+                className="underline hover:text-primary font-medium transition-colors"
               >
                 WhatsApp
               </button>

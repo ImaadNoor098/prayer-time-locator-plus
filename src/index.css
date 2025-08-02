@@ -5,65 +5,83 @@
 
 @layer base {
   :root {
-    --background: 42 38% 95%;
-    --foreground: 222.2 84% 4.9%;
+    /* Soft Islamic Light Theme */
+    --background: 48 30% 97%;
+    --foreground: 215 25% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 20%;
 
-    --primary: 145 65% 33%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 158 50% 35%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 48 15% 92%;
+    --secondary-foreground: 215 25% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 48 15% 94%;
+    --muted-foreground: 215 15% 50%;
 
-    --accent: 42 80% 54%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 43 70% 55%;
+    --accent-foreground: 215 25% 20%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 145 65% 33%;
+    --border: 48 15% 88%;
+    --input: 48 15% 88%;
+    --ring: 158 50% 35%;
 
-    --radius: 0.5rem;
+    --radius: 12px;
+
+    /* Islamic specific colors */
+    --islamic-green: 158 50% 35%;
+    --islamic-green-light: 158 40% 50%;
+    --islamic-blue: 213 80% 25%;
+    --islamic-gold: 43 70% 55%;
+    --islamic-cream: 48 30% 96%;
+    --islamic-soft: 48 20% 92%;
   }
 
   .dark {
-    --background: 220 20% 12%;
-    --foreground: 210 40% 98%;
+    /* Soft Islamic Dark Theme */
+    --background: 215 30% 8%;
+    --foreground: 48 20% 92%;
 
-    --card: 220 25% 15%;
-    --card-foreground: 210 40% 98%;
+    --card: 215 25% 12%;
+    --card-foreground: 48 20% 92%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 48 20% 92%;
 
-    --primary: 145 65% 33%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 158 50% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 20% 15%;
+    --secondary-foreground: 48 15% 85%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215 20% 15%;
+    --muted-foreground: 215 15% 60%;
 
-    --accent: 42 80% 54%;
-    --accent-foreground: 0 0% 12%;
+    --accent: 43 60% 50%;
+    --accent-foreground: 215 25% 10%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 142.1 76.2% 36.3%;
+    --border: 215 20% 18%;
+    --input: 215 20% 18%;
+    --ring: 158 50% 40%;
+
+    /* Islamic specific colors for dark mode */
+    --islamic-green: 158 50% 40%;
+    --islamic-green-light: 158 40% 55%;
+    --islamic-blue: 213 70% 35%;
+    --islamic-gold: 43 60% 50%;
+    --islamic-cream: 48 15% 20%;
+    --islamic-soft: 215 20% 15%;
   }
 }
 
@@ -73,7 +91,17 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+  }
+
+  /* Islamic Typography */
+  .font-arabic {
+    font-family: 'Amiri', 'Noto Sans Arabic', serif;
+  }
+
+  .font-arabic-sans {
+    font-family: 'Noto Sans Arabic', sans-serif;
   }
   
   /* Background Options */
@@ -172,7 +200,52 @@
     }
   }
   
+  /* Compass Animations */
+  @keyframes compass-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes qibla-pulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(158, 50, 35, 0.7);
+    }
+    50% { 
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(158, 50, 35, 0);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
   .animate-pulse-gentle {
     animation: pulse-gentle 3s infinite;
+  }
+
+  .animate-compass-rotate {
+    animation: compass-rotate 20s linear infinite;
+  }
+
+  .animate-qibla-pulse {
+    animation: qibla-pulse 2s infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+  }
+
+  /* Modern Islamic Card */
+  .modern-islamic-card {
+    @apply bg-card/80 backdrop-blur-sm rounded-2xl shadow-lg border border-border/50 transition-all duration-300 hover:shadow-xl hover:scale-[1.02];
   }
 }
