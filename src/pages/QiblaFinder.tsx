@@ -15,6 +15,12 @@ interface LocationData {
   longitude: number;
 }
 
+// Extend DeviceOrientationEvent to include WebKit properties
+interface WebKitDeviceOrientationEvent extends DeviceOrientationEvent {
+  webkitCompassHeading?: number;
+  webkitCompassAccuracy?: number;
+}
+
 // Kaaba coordinates
 const KAABA_COORDINATES = {
   latitude: 21.4225,
@@ -30,6 +36,8 @@ const QiblaFinder: React.FC = () => {
   const [isLocationGranted, setIsLocationGranted] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isCalibrated, setIsCalibrated] = useState<boolean>(false);
+  const [compassAccuracy, setCompassAccuracy] = useState<number>(0);
 
   // Calculate Qibla direction based on user location
   const calculateQiblaDirection = (userLat: number, userLng: number): number => {
@@ -82,13 +90,42 @@ const QiblaFinder: React.FC = () => {
     );
   };
 
-  // Initialize compass
+  // Initialize compass with enhanced handling
   useEffect(() => {
     let watchId: number;
+    let calibrationTimeout: NodeJS.Timeout;
 
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       if (event.alpha !== null) {
+        const webkitEvent = event as WebKitDeviceOrientationEvent;
+        // Enhanced compass calculation
+        let heading = event.alpha;
+        
+        // For iOS, adjust the heading calculation
+        if (webkitEvent.webkitCompassHeading) {
+          heading = webkitEvent.webkitCompassHeading;
+        } else {
+          heading = 360 - heading;
+        }
+        
+        setCompassHeading(heading);
+        setCompassAccuracy(webkitEvent.webkitCompassAccuracy || 0);
+        
+        // Auto-calibration after stable readings
+        if (!isCalibrated) {
+          clearTimeout(calibrationTimeout);
+          calibrationTimeout = setTimeout(() => {
+            setIsCalibrated(true);
+          }, 3000);
+        }
+      }
+    };
+
+    const handleDeviceOrientationAbsolute = (event: DeviceOrientationEvent) => {
+      if (event.absolute && event.alpha !== null) {
+        const webkitEvent = event as WebKitDeviceOrientationEvent;
         setCompassHeading(360 - event.alpha);
+        setCompassAccuracy(webkitEvent.webkitCompassAccuracy || 0);
       }
     };
 
@@ -99,22 +136,26 @@ const QiblaFinder: React.FC = () => {
           try {
             const permission = await (DeviceOrientationEvent as any).requestPermission();
             if (permission === 'granted') {
-              window.addEventListener('deviceorientation', handleDeviceOrientation);
+              window.addEventListener('deviceorientationabsolute', handleDeviceOrientationAbsolute, true);
+              window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+              setIsCompassSupported(true);
             } else {
               setIsCompassSupported(false);
-              setError('Compass permission denied');
+              setError('Compass permission denied. Please grant permission for accurate direction.');
             }
           } catch (error) {
             setIsCompassSupported(false);
-            setError('Compass not supported');
+            setError('Compass not supported on this device.');
           }
         } else {
-          // For other devices
-          window.addEventListener('deviceorientation', handleDeviceOrientation);
+          // For Android and other devices
+          window.addEventListener('deviceorientationabsolute', handleDeviceOrientationAbsolute, true);
+          window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+          setIsCompassSupported(true);
         }
       } else {
         setIsCompassSupported(false);
-        setError('Device orientation not supported');
+        setError('Device orientation not supported. Please use a mobile device with compass capability.');
       }
     };
 
@@ -123,15 +164,25 @@ const QiblaFinder: React.FC = () => {
 
     return () => {
       window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      window.removeEventListener('deviceorientationabsolute', handleDeviceOrientationAbsolute);
+      clearTimeout(calibrationTimeout);
       if (watchId) {
         navigator.geolocation.clearWatch(watchId);
       }
     };
-  }, []);
+  }, [isCalibrated]);
 
   const getRelativeQiblaDirection = () => {
     if (!isLocationGranted) return 0;
+    // Calculate the angle between current device heading and Qibla direction
+    // This ensures the Qibla arrow always points correctly relative to device orientation
     return (qiblaDirection - compassHeading + 360) % 360;
+  };
+
+  const getQiblaArrowRotation = () => {
+    if (!isLocationGranted) return 0;
+    // The arrow should point towards Qibla direction relative to the top of the screen
+    return getRelativeQiblaDirection();
   };
 
   const formatDirection = (degrees: number) => {
@@ -212,16 +263,18 @@ const QiblaFinder: React.FC = () => {
               </div>
             )}
 
-            {/* Qibla Direction Pointer */}
+            {/* Qibla Direction Pointer - Always points to top of screen when facing Qibla */}
             {isLocationGranted && (
               <div 
                 className="absolute inset-8 transition-transform duration-500"
-                style={{ transform: `rotate(${getRelativeQiblaDirection()}deg)` }}
+                style={{ transform: `rotate(${getQiblaArrowRotation()}deg)` }}
               >
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
-                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center animate-qibla-pulse">
+                  <div className="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center animate-qibla-pulse shadow-lg">
                     <div className="text-white text-xs font-bold">🕋</div>
                   </div>
+                  {/* Arrow pointing upward */}
+                  <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[12px] border-l-transparent border-r-transparent border-b-red-600"></div>
                 </div>
               </div>
             )}
@@ -244,8 +297,18 @@ const QiblaFinder: React.FC = () => {
           </div>
         </Card>
 
+        {/* Calibration Status */}
+        {isCompassSupported && !isCalibrated && (
+          <Alert className="mb-6 border-primary/20 bg-primary/5">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Calibrating compass... Move your device in a figure-8 pattern for better accuracy.
+            </AlertDescription>
+          </Alert>
+        )}
+
         {/* Status Cards */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-3 gap-4 mb-6">
           <Card className="p-4 modern-islamic-card text-center">
             <MapPin className={`h-6 w-6 mx-auto mb-2 ${isLocationGranted ? 'text-green-600' : 'text-gray-400'}`} />
             <div className="text-sm font-medium">Location</div>
@@ -259,6 +322,16 @@ const QiblaFinder: React.FC = () => {
             <div className="text-sm font-medium">Compass</div>
             <div className="text-xs text-muted-foreground">
               {isCompassSupported ? 'Active' : 'Not Supported'}
+            </div>
+          </Card>
+
+          <Card className="p-4 modern-islamic-card text-center">
+            <div className={`h-6 w-6 mx-auto mb-2 rounded-full flex items-center justify-center ${isCalibrated ? 'bg-green-600' : 'bg-yellow-500'}`}>
+              <div className="text-white text-xs">✓</div>
+            </div>
+            <div className="text-sm font-medium">Calibration</div>
+            <div className="text-xs text-muted-foreground">
+              {isCalibrated ? 'Ready' : 'Calibrating...'}
             </div>
           </Card>
         </div>

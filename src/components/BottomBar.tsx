@@ -30,29 +30,36 @@ const BottomBar: React.FC = () => {
 
   const navItems: NavItem[] = [
     {
-      icon: <Home className="h-6 w-6" />,
+      icon: <Home className="h-5 w-5" />,
       label: 'Home',
       path: '/',
     },
     {
-      icon: <Navigation className="h-6 w-6" />,
+      icon: <Navigation className="h-5 w-5" />,
       label: 'Qibla',
       path: '/qibla',
     },
     {
-      icon: <Heart className="h-6 w-6" />,
+      icon: <Heart className="h-5 w-5" />,
       label: 'Favorites',
       path: '/favorites',
     },
     {
-      icon: <MapPin className="h-6 w-6" />,
+      icon: <MapPin className="h-5 w-5" />,
       label: 'Mosques',
       path: '/mosque-browser',
     },
     {
-      icon: <Clock className="h-6 w-6" />,
+      icon: <Clock className="h-5 w-5" />,
       label: 'Prayer Times',
       path: '/salah-times',
+    },
+    {
+      icon: <User className="h-5 w-5" />,
+      label: 'Account',
+      path: '/profile',
+      requireAuth: true,
+      authRedirect: '/login',
     },
   ];
 

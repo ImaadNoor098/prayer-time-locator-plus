@@ -13,6 +13,7 @@ import MosqueList from "./pages/MosqueList";
 import Favorites from "./pages/Favorites";
 import MosqueDetailPage from "./pages/MosqueDetailPage";
 import SalahTimes from "./pages/SalahTimes";
+import EnhancedPrayerTimes from "./pages/EnhancedPrayerTimes";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -47,7 +48,7 @@ const App = () => {
                       </ProtectedRoute>
                     } />
                     <Route path="/mosque/:id" element={<MosqueDetailPage />} />
-                    <Route path="/salah-times" element={<SalahTimes />} />
+                    <Route path="/salah-times" element={<EnhancedPrayerTimes />} />
                     
                     {/* Auth routes */}
                     <Route path="/login" element={<Login />} />

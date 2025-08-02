@@ -46,42 +46,42 @@
   }
 
   .dark {
-    /* Soft Islamic Dark Theme */
-    --background: 215 30% 8%;
-    --foreground: 48 20% 92%;
+    /* Enhanced Soft Islamic Dark Theme */
+    --background: 215 25% 9%;
+    --foreground: 48 25% 95%;
 
-    --card: 215 25% 12%;
-    --card-foreground: 48 20% 92%;
+    --card: 215 20% 12%;
+    --card-foreground: 48 20% 95%;
 
-    --popover: 215 25% 12%;
-    --popover-foreground: 48 20% 92%;
+    --popover: 215 20% 12%;
+    --popover-foreground: 48 20% 95%;
 
-    --primary: 158 50% 40%;
+    --primary: 158 45% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 20% 15%;
-    --secondary-foreground: 48 15% 85%;
+    --secondary: 215 18% 16%;
+    --secondary-foreground: 48 18% 88%;
 
-    --muted: 215 20% 15%;
-    --muted-foreground: 215 15% 60%;
+    --muted: 215 18% 16%;
+    --muted-foreground: 215 12% 65%;
 
-    --accent: 43 60% 50%;
-    --accent-foreground: 215 25% 10%;
+    --accent: 43 55% 55%;
+    --accent-foreground: 215 25% 12%;
 
-    --destructive: 0 60% 45%;
+    --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 20% 18%;
-    --input: 215 20% 18%;
-    --ring: 158 50% 40%;
+    --border: 215 18% 20%;
+    --input: 215 18% 20%;
+    --ring: 158 45% 45%;
 
-    /* Islamic specific colors for dark mode */
-    --islamic-green: 158 50% 40%;
-    --islamic-green-light: 158 40% 55%;
-    --islamic-blue: 213 70% 35%;
-    --islamic-gold: 43 60% 50%;
-    --islamic-cream: 48 15% 20%;
-    --islamic-soft: 215 20% 15%;
+    /* Enhanced Islamic specific colors for dark mode */
+    --islamic-green: 158 45% 45%;
+    --islamic-green-light: 158 40% 60%;
+    --islamic-blue: 213 65% 40%;
+    --islamic-gold: 43 55% 55%;
+    --islamic-cream: 48 12% 22%;
+    --islamic-soft: 215 18% 16%;
   }
 }
 
