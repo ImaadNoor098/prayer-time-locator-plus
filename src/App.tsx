@@ -17,7 +17,7 @@ import EnhancedPrayerTimes from "./pages/EnhancedPrayerTimes";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import VerifyOtp from "./pages/VerifyOtp";
+
 import UserProfile from "./pages/UserProfile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import MosqueBrowser from "./pages/MosqueBrowser";
@@ -53,7 +53,7 @@ const App = () => {
                     {/* Auth routes */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/verify-otp" element={<VerifyOtp />} />
+                    
                     <Route path="/profile" element={<UserProfile />} />
                     
                     {/* Catch-all route */}

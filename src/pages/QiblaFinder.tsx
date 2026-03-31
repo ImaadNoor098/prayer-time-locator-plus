@@ -93,7 +93,7 @@ const QiblaFinder: React.FC = () => {
   // Initialize compass with enhanced handling
   useEffect(() => {
     let watchId: number;
-    let calibrationTimeout: NodeJS.Timeout;
+    let calibrationTimeout: ReturnType<typeof setTimeout>;
 
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       if (event.alpha !== null) {
