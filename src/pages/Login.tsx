@@ -8,7 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Eye, EyeOff } from 'lucide-react';
 import BottomBar from '@/components/BottomBar';
-import ForgotPasswordPopup from '@/components/ForgotPasswordPopup';
 import AccountDeletedMessage from '@/components/AccountDeletedMessage';
 import { useBackgroundSelector } from '@/hooks/useBackgroundSelector';
 
@@ -21,23 +20,18 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState('');
   const [showAccountDeletedMessage, setShowAccountDeletedMessage] = useState(false);
-  const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
   const { currentBackgroundClass } = useBackgroundSelector();
   
-  // Check for account deletion message from URL params
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     if (urlParams.get('deleted') === 'true') {
       setShowAccountDeletedMessage(true);
-      // Clean up URL
       navigate('/login', { replace: true });
     }
   }, [location, navigate]);
   
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      // Check if we have a redirect path stored
       const redirectPath = sessionStorage.getItem('auth-redirect') || '/';
       sessionStorage.removeItem('auth-redirect');
       navigate(redirectPath);
@@ -56,21 +50,10 @@ const Login: React.FC = () => {
     
     const success = await login(email, password);
     if (success) {
-      // Check if we have a redirect path stored
       const redirectPath = sessionStorage.getItem('auth-redirect') || '/';
       sessionStorage.removeItem('auth-redirect');
       navigate(redirectPath);
-    } else {
-      // Check if error is due to account deletion
-      if (formError.includes('deleted by an administrator')) {
-        setShowAccountDeletedMessage(true);
-      }
     }
-  };
-  
-  const handleForgotPasswordClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowForgotPasswordPopup(true);
   };
   
   return (
@@ -106,16 +89,7 @@ const Login: React.FC = () => {
             </div>
             
             <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <Label htmlFor="password">Password</Label>
-                <button
-                  type="button"
-                  onClick={handleForgotPasswordClick}
-                  className="text-sm text-islamic-blue hover:underline"
-                >
-                  Forgot password?
-                </button>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -155,12 +129,6 @@ const Login: React.FC = () => {
         </CardFooter>
       </Card>
       
-      <ForgotPasswordPopup 
-        isOpen={showForgotPasswordPopup}
-        onClose={() => setShowForgotPasswordPopup(false)}
-      />
-      
-      {/* Always show bottom bar */}
       <BottomBar />
     </div>
   );
