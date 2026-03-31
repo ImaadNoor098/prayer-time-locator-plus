@@ -20,7 +20,7 @@ const LocationInput: React.FC<LocationInputProps> = ({ onLocationSelect, current
   const [apiError, setApiError] = useState<string | null>(null);
   const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
   const geocoder = useRef<google.maps.Geocoder | null>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const suggestionsCacheRef = useRef<Map<string, any[]>>(new Map());
 
   useEffect(() => {

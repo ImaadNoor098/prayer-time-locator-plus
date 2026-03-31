@@ -24,7 +24,7 @@ const VerifyOtp: React.FC = () => {
   
   // Handle resend cooldown
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     
     if (resendDisabled && countdown > 0) {
       timer = setTimeout(() => {
