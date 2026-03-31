@@ -53,7 +53,7 @@ const App = () => {
                     {/* Auth routes */}
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/verify-otp" element={<VerifyOtp />} />
+                    
                     <Route path="/profile" element={<UserProfile />} />
                     
                     {/* Catch-all route */}
